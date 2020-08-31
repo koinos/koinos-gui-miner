@@ -25,5 +25,9 @@
   "homepage": "https://github.com/open-orchard/koinos-gui-miner#readme",
   "devDependencies": {
     "electron": "^10.1.0"
+  },
+  "dependencies": {
+    "koinos-miner": "git@github.com:open-orchard/koinos-miner.git",
+    "web3": "^1.2.11"
   }
 }
