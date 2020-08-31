@@ -1,0 +1,22 @@
+bin
+build
+Testing
+libraries/pack/gen
+
+# Mac files
+.DS_Store
+
+# Python temp files
+*.pyc
+*.pyo
+__pycache__
+
+# Editor cache files
+*~*
+*#*
+
+.vscode/
+
+# npm
+node_modules
+

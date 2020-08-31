@@ -1,0 +1,33 @@
+{
+  "name": "koinos-gui-miner",
+  "version": "1.0.0",
+  "description": "The official Koinos GUI mining application.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/open-orchard/koinos-gui-miner.git"
+  },
+  "keywords": [
+    "koinos",
+    "erc-20",
+    "cryptocurrency",
+    "smart-contract"
+  ],
+  "author": "OpenOrchard, Inc.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/open-orchard/koinos-gui-miner/issues"
+  },
+  "homepage": "https://github.com/open-orchard/koinos-gui-miner#readme",
+  "devDependencies": {
+    "electron": "^10.1.0"
+  },
+  "dependencies": {
+    "koinos-miner": "git@github.com:open-orchard/koinos-miner.git",
+    "web3": "^1.2.11"
+  }
+}
