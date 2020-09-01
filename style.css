@@ -1,0 +1,186 @@
+/*
+Colors:
+Green: 34DD00
+Red: DD003F
+Light Purple: 6F00F6
+Very Deep Purple: 0F091F
+*/
+
+@font-face {
+  font-family: Space-l;
+  src: url("fonts/SpaceGrotesk-Light.woff");
+}
+
+body {
+  background-color: #0f091f;
+  color: white;
+  font-family: space-l;
+}
+
+.grid-container {
+  padding: 2em;
+  align-items: center;
+  display: -ms-grid;
+  display: grid;
+  grid-auto-columns: 1fr;
+  /* grid-column-gap: 16px;
+  grid-row-gap: 16px; */
+  -ms-grid-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  -ms-grid-rows: auto auto auto auto auto auto auto auto auto;
+  grid-template-rows: auto auto auto auto auto auto auto auto auto;
+}
+
+.brand {
+  grid-column: 1 / 6;
+  grid-row: 1;
+}
+.brand span {
+  color: #6f00f6;
+  margin: 20px;
+}
+.brand img {
+  width: 200px;
+}
+.eth-start {
+  grid-column: 6 / 10;
+  grid-row: 1;
+  justify-self: end;
+  padding-right: 3rem;
+}
+
+.eth-start input {
+  width: 20em;
+  border: 1px #6f00f6 solid;
+  padding: 0.6em;
+}
+.eth-start button {
+  background: #dd003f;
+  color: white;
+  border: 1px #6f00f6 solid;
+  padding: 0.6em 2em;
+}
+
+.tip {
+  grid-column: 8 / 10;
+  grid-row: 2;
+  justify-self: end;
+  padding-right: 3em;
+}
+.tip span {
+  padding-right: 1em;
+  font-size: 1.2em;
+}
+.hashrate {
+  grid-column: 6 / 9;
+  grid-row: 3 / 9;
+  position: relative;
+  text-align: center;
+}
+.hashrate-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.hashrate-current {
+  font-size: 5em;
+}
+.koin-mined {
+  grid-column: 1 / 6;
+  grid-row: 3 / 9;
+  text-align: center;
+}
+.km-text {
+  font-size: 5rem;
+}
+.km-text-label {
+  font-size: 2rem;
+}
+
+/* input resets */
+input {
+  border: none;
+  background-image: none;
+  background-color: transparent;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+/* Styles for hiding the native input */
+input[type="checkbox"].check-custom {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Styles for the basic appearance of the toggle switch */
+input[type="checkbox"].check-custom.toggle-switch ~ .check-toggle {
+  width: 2rem;
+  height: 1.5rem;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+/* Common styles for the ::before and ::after pseudo-elements of the toggle switch */
+input[type="checkbox"].check-custom.toggle-switch ~ .check-toggle::before,
+input[type="checkbox"].check-custom.toggle-switch ~ .check-toggle::after {
+  content: "";
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+
+/* Styles for the ::before pseudo-element (the outer frame) of the toggle switch */
+input[type="checkbox"].check-custom.toggle-switch ~ .check-toggle::before {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.8rem;
+  background: #dbdbdb;
+}
+
+/* Styles for the ::after pseudo-element (the inner slider) of the toggle switch */
+input[type="checkbox"].check-custom.toggle-switch ~ .check-toggle::after {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0.125rem;
+  border-radius: 50%;
+  background: #0f091f;
+}
+
+/* Styles for the ::before pseudo-element of the toggle switch in hover state */
+input[type="checkbox"].check-custom.toggle-switch:hover
+  ~ .check-toggle::before {
+  background: #c4c4c4;
+}
+
+/* Styles for the ::before pseudo-element of the toggle switch in focus state */
+input[type="checkbox"].check-custom.toggle-switch:focus
+  ~ .check-toggle::before {
+  box-shadow: 0 0 0 2px rgba(118, 15, 193, 0.5);
+}
+
+/* Styles for the ::before pseudo-element of the toggle switch in both focus and checked or enabled state */
+input[type="checkbox"].check-custom.toggle-switch:focus:checked
+  ~ .check-toggle::before {
+  box-shadow: 0 0 0 2px rgba(105, 15, 150, 0.5);
+}
+
+/* Styles for the ::before pseudo-element of the toggle switch in checked or enabled state */
+input[type="checkbox"].check-custom.toggle-switch:checked
+  ~ .check-toggle::before {
+  background: #6f00f6;
+}
+
+/* Styles for the ::after pseudo-element of the toggle switch in checked or enabled state */
+input[type="checkbox"].check-custom.toggle-switch:checked
+  ~ .check-toggle::after {
+  left: auto;
+  right: 0;
+}
