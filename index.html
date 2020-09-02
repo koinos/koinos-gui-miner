@@ -4,43 +4,49 @@
     <meta charset="UTF-8" />
     <title>Hello World!</title>
     <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="script-src 'self' 'unsafe-inline';"
-    />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="assets/css/normalize.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <style>
+      #chart {
+        text-align: center;
+        margin-top: 40px;
+      }
+    </style>
   </head>
   <body>
     <div class="grid-container">
       <div class="brand">
-        <img src="images/koinos-logo.svg" alt="" />
+        <img src="assets/images/koinos-logo.svg" alt="" />
       </div>
-      <div>v0.01</div>
-      <div class="eth-start">
-        <input type="text" />
-        <button>START</button>
-      </div>
+      <span class="version">v0.01</span>
+
+      <div class="eth-start"><input type="text" /><button>START</button></div>
       <div class="tip">
-        <span>Dev Tip</span>
-        <label>
-          <input type="checkbox" class="check-custom toggle-switch" />
-          <span class="check-toggle"></span>
+        <span>Dev Tip</span
+        ><label
+          ><input type="checkbox" class="check-custom toggle-switch" /><span
+            class="check-toggle"
+          ></span>
         </label>
+        <div class="thank-you">OpenOrchard thanks you!</div>
       </div>
       <div class="koin-mined">
         <div>
           <div class="km-text">1,288,234</div>
           <span class="km-text-label">KOIN</span>
         </div>
+        <div id="chart"></div>
       </div>
       <div class="hashrate">
         <div class="hashrate-text">
           <div class="hashrate-current">99.3</div>
           <span>Mh/s</span>
         </div>
-        <img src="images/glow-circle.svg" alt="" />
+        <img src="assets/images/glow-circle.svg" alt="" />
       </div>
     </div>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="assets/js/graph.js"></script>
     <!-- <h1>Hello World!</h1>
     We are using node <script>document.write(process.versions.node)</script>,
     Chrome <script>document.write(process.versions.chrome)</script>,

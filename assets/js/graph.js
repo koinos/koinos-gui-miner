@@ -6,75 +6,75 @@ const data = [
   },
   {
     time: 2,
-    rate: 12,
+    rate: 6,
   },
   {
     time: 3,
-    rate: 20,
+    rate: 8,
   },
   {
     time: 4,
-    rate: 21,
+    rate: 10,
   },
   {
     time: 5,
-    rate: 22,
+    rate: 10,
   },
   {
     time: 6,
-    rate: 23,
+    rate: 12,
   },
   {
     time: 7,
-    rate: 27,
+    rate: 11,
   },
   {
     time: 8,
-    rate: 33,
+    rate: 12,
   },
   {
     time: 9,
-    rate: 29,
+    rate: 13,
   },
   {
     time: 10,
-    rate: 50,
+    rate: 15,
   },
   {
     time: 11,
-    rate: 55,
+    rate: 16,
   },
   {
     time: 12,
-    rate: 59,
+    rate: 15,
   },
   {
     time: 13,
-    rate: 69,
+    rate: 29,
   },
   {
     time: 14,
-    rate: 50,
+    rate: 30,
   },
   {
     time: 15,
-    rate: 55,
+    rate: 31,
   },
   {
     time: 16,
-    rate: 59,
+    rate: 29,
   },
   {
     time: 17,
-    rate: 69,
+    rate: 31,
   },
 ]
 
 const svg = d3
   .select("#chart")
   .append("svg")
-  .attr("height", 300)
-  .attr("width", 600)
+  .attr("height", 200)
+  .attr("width", 400)
 const margin = { top: 0, bottom: 20, left: 30, right: 20 }
 const chart = svg.append("g").attr("transform", `translate(${margin.left},0)`)
 const width = +svg.attr("width") - margin.left - margin.right
@@ -105,13 +105,12 @@ grp
   .attr("stroke", "steelblue")
   .attr("stroke-linejoin", "round")
   .attr("stroke-linecap", "round")
-  .attr("stroke-width", 3)
+  .attr("stroke-width", 2)
   .attr("d", line)
 
-// Add the X Axis
 chart
   .append("g")
   .attr("transform", `translate(0,${height})`)
   .call(d3.axisBottom(xScale).ticks(data.length))
-// Add the Y Axis
+
 chart.append("g").attr("transform", `translate(0, 0)`).call(d3.axisLeft(yScale))
