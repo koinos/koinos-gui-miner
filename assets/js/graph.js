@@ -74,7 +74,7 @@ const svg = d3
   .select("#chart")
   .append("svg")
   .attr("height", 200)
-  .attr("width", 400)
+  .attr("width", 600)
 const margin = { top: 0, bottom: 20, left: 30, right: 20 }
 const chart = svg.append("g").attr("transform", `translate(${margin.left},0)`)
 const width = +svg.attr("width") - margin.left - margin.right
@@ -82,6 +82,30 @@ const height = +svg.attr("height") - margin.top - margin.bottom
 const grp = chart
   .append("g")
   .attr("transform", `translate(-${margin.left},-${margin.top})`)
+
+var defs = svg.append("defs")
+
+var gradient = defs
+  .append("linearGradient")
+  .attr("id", "svgGradient")
+  .attr("x1", "0%")
+  .attr("x2", "100%")
+  .attr("y1", "0%")
+  .attr("y2", "100%")
+
+gradient
+  .append("stop")
+  .attr("class", "start")
+  .attr("offset", "0%")
+  .attr("stop-color", "red")
+  .attr("stop-opacity", 1)
+
+gradient
+  .append("stop")
+  .attr("class", "end")
+  .attr("offset", "100%")
+  .attr("stop-color", "blue")
+  .attr("stop-opacity", 1)
 
 const yScale = d3
   .scaleLinear()
@@ -107,6 +131,8 @@ grp
   .attr("stroke-linecap", "round")
   .attr("stroke-width", 2)
   .attr("d", line)
+  .attr("stroke", "url(#svgGradient)")
+  .attr("fill", "none")
 
 chart
   .append("g")

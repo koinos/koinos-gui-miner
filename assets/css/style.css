@@ -108,6 +108,7 @@ body {
 #chart {
   grid-column: 1 / 7;
   grid-row: 8;
+  color: #25133c;
 }
 
 /* input resets */
