@@ -1,5 +1,5 @@
 // Fake hashrate data
-const data = [
+let data = [
   {
     time: 1,
     rate: 5,
