@@ -13,7 +13,7 @@ Very Deep Purple: 0F091F
 
 body {
   background-color: #0f091f;
-  color: white;
+  color: #eee;
   font-family: space-l;
 }
 
@@ -53,14 +53,20 @@ body {
 
 .eth-start input {
   width: 20em;
-  border: 1px #6f00f6 solid;
-  padding: 0.6em;
+  border-bottom: 1px #6f00f6 solid;
+  padding: 0.67em;
+  color: white;
+  margin-right: 2em;
 }
 .eth-start button {
-  background: #dd003f;
-  color: white;
+  /* background: #dd003f; */
+  background: none;
   border: 1px #dd003f solid;
-  padding: 0.6em 2em;
+  /* padding: 0.4em 1em; */
+  padding-top: 0.2em;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
 }
 
 .tip {
@@ -110,8 +116,20 @@ body {
   grid-row: 8;
   color: #25133c;
 }
+.info {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  font-size: 0.6em;
+  color: rgb(162, 56, 162);
+  padding: 2em;
+}
 
 /* input resets */
+*:focus {
+  outline: none;
+}
+
 input {
   border: none;
   background-image: none;

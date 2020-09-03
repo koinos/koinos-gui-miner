@@ -97,14 +97,14 @@ gradient
   .append("stop")
   .attr("class", "start")
   .attr("offset", "0%")
-  .attr("stop-color", "red")
-  .attr("stop-opacity", 1)
+  .attr("stop-color", "#6F00F6")
+  .attr("stop-opacity", 0.4)
 
 gradient
   .append("stop")
   .attr("class", "end")
   .attr("offset", "100%")
-  .attr("stop-color", "blue")
+  .attr("stop-color", "red")
   .attr("stop-opacity", 1)
 
 const yScale = d3

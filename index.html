@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Hello World!</title>
+    <title>Koinos Miner!</title>
     <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
     <link rel="stylesheet" href="assets/css/normalize.css" />
     <link rel="stylesheet" href="assets/css/style.css" />
@@ -20,13 +20,19 @@
       </div>
       <span class="version">v0.01</span>
 
-      <div class="eth-start"><input type="text" /><button>START</button></div>
+      <div class="eth-start">
+        <input type="text" placeholder="ETH address" /><button>
+          <img src="assets/images/power_24px.svg" alt="" />
+        </button>
+      </div>
       <div class="tip">
         <span>Dev Tip</span
         ><label
-          ><input type="checkbox" class="check-custom toggle-switch" /><span
-            class="check-toggle"
-          ></span>
+          ><input
+            type="checkbox"
+            class="check-custom toggle-switch"
+            checked
+          /><span class="check-toggle"></span>
         </label>
         <div class="thank-you">OpenOrchard thanks you!</div>
       </div>
@@ -45,11 +51,23 @@
         <img src="assets/images/glow-circle.svg" alt="" />
       </div>
     </div>
-    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="assets/js/d3.min.js"></script>
     <script src="assets/js/graph.js"></script>
-    <!-- <h1>Hello World!</h1>
-    We are using node <script>document.write(process.versions.node)</script>,
-    Chrome <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>. -->
+
+    <div class="info">
+      Node:
+      <script>
+        document.write(process.versions.node)
+      </script>
+      , Chrome:
+      <script>
+        document.write(process.versions.chrome)
+      </script>
+      , Electron:
+      <script>
+        document.write(process.versions.electron)
+      </script>
+      .
+    </div>
   </body>
 </html>
