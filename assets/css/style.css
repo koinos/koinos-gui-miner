@@ -1,0 +1,420 @@
+/*
+Colors:
+Green: 34DD00
+Red: DD003F
+Light Purple: 6F00F6
+Very Deep Purple: 0F091F
+*/
+
+@font-face {
+  font-family: Space-l;
+  src: url("../fonts/SpaceGrotesk-Light.woff");
+}
+
+body {
+  background-color: #0f091f;
+  color: #eee;
+  font-family: space-l;
+}
+
+.grid-container {
+  padding: 2em;
+  align-items: center;
+  display: -ms-grid;
+  display: grid;
+  grid-auto-columns: 1fr;
+  /* grid-column-gap: 16px;
+  grid-row-gap: 16px; */
+  -ms-grid-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  -ms-grid-rows: auto auto auto auto auto auto auto auto auto;
+  grid-template-rows: auto auto auto auto auto auto auto auto auto;
+}
+
+.brand {
+  grid-column: 1 / 2;
+  grid-row: 1;
+  grid-row-end: auto;
+}
+.version {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: #6f00f6;
+  padding: 2em;
+}
+
+.eth-start {
+  grid-column: 6 / 10;
+  grid-row: 1;
+  justify-self: end;
+  padding-right: 3rem;
+}
+
+.eth-start input {
+  width: 20em;
+  border-bottom: 1px #6f00f6 solid;
+  padding: 0.67em;
+  color: white;
+  margin-right: 2em;
+}
+.eth-start button {
+  /* background: #dd003f; */
+  background: none;
+  border: 1px #dd003f solid;
+  /* padding: 0.4em 1em; */
+  padding-top: 0.2em;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+
+.tip {
+  grid-column: 8 / 10;
+  grid-row: 2;
+  justify-self: end;
+  padding-right: 3em;
+  margin-top: 30px;
+  text-align: right;
+}
+.tip span {
+  padding-right: 1em;
+}
+.thank-you {
+  font-size: 0.6em;
+  padding-top: 1em;
+}
+
+.hashrate {
+  grid-column: 6 / 9;
+  grid-row: 7;
+  position: relative;
+  text-align: center;
+}
+.hashrate-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.hashrate-current {
+  font-size: 5em;
+}
+.koin-mined {
+  grid-column: 1 / 6;
+  grid-row: 7;
+  text-align: center;
+}
+.km-text {
+  font-size: 5rem;
+}
+.km-text-label {
+  font-size: 2rem;
+}
+#chart {
+  grid-column: 1 / 7;
+  grid-row: 8;
+  color: #25133c;
+}
+.info {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  font-size: 0.6em;
+  color: rgb(162, 56, 162);
+  padding: 2em;
+}
+
+/* input resets */
+*:focus {
+  outline: none;
+}
+
+input {
+  border: none;
+  background-image: none;
+  background-color: transparent;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+/* Styles for hiding the native input */
+input[type="checkbox"].check-custom {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Styles for the basic appearance of the toggle switch */
+input[type="checkbox"].check-custom.toggle-switch ~ .check-toggle {
+  width: 2rem;
+  height: 1.5rem;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+/* Common styles for the ::before and ::after pseudo-elements of the toggle switch */
+input[type="checkbox"].check-custom.toggle-switch ~ .check-toggle::before,
+input[type="checkbox"].check-custom.toggle-switch ~ .check-toggle::after {
+  content: "";
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+
+/* Styles for the ::before pseudo-element (the outer frame) of the toggle switch */
+input[type="checkbox"].check-custom.toggle-switch ~ .check-toggle::before {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.8rem;
+  background: #dbdbdb;
+}
+
+/* Styles for the ::after pseudo-element (the inner slider) of the toggle switch */
+input[type="checkbox"].check-custom.toggle-switch ~ .check-toggle::after {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0.125rem;
+  border-radius: 50%;
+  background: #0f091f;
+}
+
+/* Styles for the ::before pseudo-element of the toggle switch in hover state */
+input[type="checkbox"].check-custom.toggle-switch:hover
+  ~ .check-toggle::before {
+  background: #c4c4c4;
+}
+
+/* Styles for the ::before pseudo-element of the toggle switch in focus state */
+input[type="checkbox"].check-custom.toggle-switch:focus
+  ~ .check-toggle::before {
+  box-shadow: 0 0 0 2px rgba(118, 15, 193, 0.5);
+}
+
+/* Styles for the ::before pseudo-element of the toggle switch in both focus and checked or enabled state */
+input[type="checkbox"].check-custom.toggle-switch:focus:checked
+  ~ .check-toggle::before {
+  box-shadow: 0 0 0 2px rgba(105, 15, 150, 0.5);
+}
+
+/* Styles for the ::before pseudo-element of the toggle switch in checked or enabled state */
+input[type="checkbox"].check-custom.toggle-switch:checked
+  ~ .check-toggle::before {
+  background: #6f00f6;
+}
+
+/* Styles for the ::after pseudo-element of the toggle switch in checked or enabled state */
+input[type="checkbox"].check-custom.toggle-switch:checked
+  ~ .check-toggle::after {
+  left: auto;
+  right: 0;
+}
+
+/* TOOLTIP */
+
+/* Base styles for the element that has a tooltip */
+[data-tooltip],
+.tooltip {
+  position: relative;
+  cursor: pointer;
+}
+
+/* Base styles for the entire tooltip */
+[data-tooltip]:before,
+[data-tooltip]:after,
+.tooltip:before,
+.tooltip:after {
+  position: absolute;
+  visibility: hidden;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+  -webkit-transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out,
+    -webkit-transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+  -moz-transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out,
+    -moz-transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out,
+    transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  pointer-events: none;
+}
+
+/* Show the entire tooltip on hover and focus */
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after,
+[data-tooltip]:focus:before,
+[data-tooltip]:focus:after,
+.tooltip:hover:before,
+.tooltip:hover:after,
+.tooltip:focus:before,
+.tooltip:focus:after {
+  visibility: visible;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
+/* Base styles for the tooltip's directional arrow */
+.tooltip:before,
+[data-tooltip]:before {
+  z-index: 1001;
+  border: 6px solid transparent;
+  background: transparent;
+  content: "";
+}
+
+/* Base styles for the tooltip's content area */
+.tooltip:after,
+[data-tooltip]:after {
+  z-index: 1000;
+  padding: 8px;
+  width: 160px;
+  background-color: #000;
+  background-color: hsla(0, 0%, 20%, 0.9);
+  color: #fff;
+  content: attr(data-tooltip);
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+/* Directions */
+
+/* Top (default) */
+[data-tooltip]:before,
+[data-tooltip]:after,
+.tooltip:before,
+.tooltip:after,
+.tooltip-top:before,
+.tooltip-top:after {
+  bottom: 100%;
+  left: 50%;
+}
+
+[data-tooltip]:before,
+.tooltip:before,
+.tooltip-top:before {
+  margin-left: -6px;
+  margin-bottom: -12px;
+  border-top-color: #000;
+  border-top-color: hsla(0, 0%, 20%, 0.9);
+}
+
+/* Horizontally align top/bottom tooltips */
+[data-tooltip]:after,
+.tooltip:after,
+.tooltip-top:after {
+  margin-left: -80px;
+}
+
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after,
+[data-tooltip]:focus:before,
+[data-tooltip]:focus:after,
+.tooltip:hover:before,
+.tooltip:hover:after,
+.tooltip:focus:before,
+.tooltip:focus:after,
+.tooltip-top:hover:before,
+.tooltip-top:hover:after,
+.tooltip-top:focus:before,
+.tooltip-top:focus:after {
+  -webkit-transform: translateY(-12px);
+  -moz-transform: translateY(-12px);
+  transform: translateY(-12px);
+}
+
+/* Left */
+.tooltip-left:before,
+.tooltip-left:after {
+  right: 100%;
+  bottom: 50%;
+  left: auto;
+}
+
+.tooltip-left:before {
+  margin-left: 0;
+  margin-right: -12px;
+  margin-bottom: 0;
+  border-top-color: transparent;
+  border-left-color: #000;
+  border-left-color: hsla(0, 0%, 20%, 0.9);
+}
+
+.tooltip-left:hover:before,
+.tooltip-left:hover:after,
+.tooltip-left:focus:before,
+.tooltip-left:focus:after {
+  -webkit-transform: translateX(-12px);
+  -moz-transform: translateX(-12px);
+  transform: translateX(-12px);
+}
+
+/* Bottom */
+.tooltip-bottom:before,
+.tooltip-bottom:after {
+  top: 100%;
+  bottom: auto;
+  left: 50%;
+}
+
+.tooltip-bottom:before {
+  margin-top: -12px;
+  margin-bottom: 0;
+  border-top-color: transparent;
+  border-bottom-color: #000;
+  border-bottom-color: hsla(0, 0%, 20%, 0.9);
+}
+
+.tooltip-bottom:hover:before,
+.tooltip-bottom:hover:after,
+.tooltip-bottom:focus:before,
+.tooltip-bottom:focus:after {
+  -webkit-transform: translateY(12px);
+  -moz-transform: translateY(12px);
+  transform: translateY(12px);
+}
+
+/* Right */
+.tooltip-right:before,
+.tooltip-right:after {
+  bottom: 50%;
+  left: 100%;
+}
+
+.tooltip-right:before {
+  margin-bottom: 0;
+  margin-left: -12px;
+  border-top-color: transparent;
+  border-right-color: #000;
+  border-right-color: hsla(0, 0%, 20%, 0.9);
+}
+
+.tooltip-right:hover:before,
+.tooltip-right:hover:after,
+.tooltip-right:focus:before,
+.tooltip-right:focus:after {
+  -webkit-transform: translateX(12px);
+  -moz-transform: translateX(12px);
+  transform: translateX(12px);
+}
+
+/* Move directional arrows down a bit for left/right tooltips */
+.tooltip-left:before,
+.tooltip-right:before {
+  top: 3px;
+}
+
+/* Vertically center tooltip content for left/right tooltips */
+.tooltip-left:after,
+.tooltip-right:after {
+  margin-left: 0;
+  margin-bottom: -16px;
+}
