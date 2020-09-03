@@ -1,10 +1,16 @@
 const { app, BrowserWindow } = require("electron")
+const { ipcMain } = require('electron');
+let KoinosMiner = require('koinos-miner');
+let miner = null;
+let win = null;
 
 function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 1200,
     height: 600,
+    titleBarStyle: "hidden",
+    resizable: false,
     webPreferences: {
       nodeIntegration: true,
     },
@@ -29,6 +35,7 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit()
   }
+  win = null;
 })
 
 app.on("activate", () => {
@@ -39,5 +46,43 @@ app.on("activate", () => {
   }
 })
 
+app.on('before-quit', () => {
+  if ( miner !== null ) {
+    miner.stop();
+    miner = null;
+  }
+  process.kill(0);
+})
+
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+function hashrateCallback(hashrate) {
+  win.send('hashrate-report', hashrate);
+  win.send('hashrate-report-string', KoinosMiner.formatHashrate(hashrate));
+}
+
+ipcMain.handle('toggle-miner', (event, ...args) => {
+  try {
+    if ( miner === null ) {
+      var ethAddress  = args[0];
+      var ooAddress   = args[1];
+      var contract    = args[2];
+      var endpoint    = args[3];
+      var tip         = args[4];
+      var proofPeriod = args[5];
+      miner = new KoinosMiner(ethAddress, ooAddress, contract, endpoint, tip, proofPeriod, hashrateCallback);
+      miner.start();
+      win.send('miner-activated', true);
+    }
+    else {
+      miner.stop();
+      miner = null;
+      win.send('miner-activated', false);
+    }
+  }
+  catch(err) {
+    console.log(err.message);
+  }
+});
+
