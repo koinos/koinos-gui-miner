@@ -52,21 +52,40 @@ body {
 }
 
 .eth-start input {
-  width: 20em;
+  width: 25em;
   border-bottom: 1px #6f00f6 solid;
   padding: 0.67em;
   color: white;
   margin-right: 2em;
+  font-size: 0.8em;
+  text-align: center;
 }
 .eth-start button {
   /* background: #dd003f; */
   background: none;
-  border: 1px #dd003f solid;
   /* padding: 0.4em 1em; */
   padding-top: 0.2em;
   border-radius: 50%;
   width: 50px;
   height: 50px;
+}
+
+/* toggle classes */
+.green {
+  fill: #34dd00;
+}
+.red {
+  fill: #dd003f;
+}
+.greenBorder {
+  border: 1px #34dd00 solid;
+}
+.redBorder {
+  border: 1px #dd003f solid;
+}
+.disabled {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
 }
 
 .tip {
