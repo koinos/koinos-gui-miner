@@ -1,14 +1,17 @@
 const { app, BrowserWindow } = require("electron")
 const { ipcMain } = require('electron');
 let KoinosMiner = require('koinos-miner');
+const path = require('path');
 let miner = null;
 let win = null;
+
 
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
     width: 1200,
     height: 600,
+    icon: path.join(__dirname, 'assets/icons/png/koinos-icon_512.png'),
     titleBarStyle: "hidden",
     resizable: false,
     webPreferences: {
@@ -47,7 +50,7 @@ app.on("activate", () => {
 })
 
 app.on('before-quit', () => {
-  if ( miner !== null ) {
+  if (miner !== null) {
     miner.stop();
     miner = null;
   }
@@ -64,12 +67,12 @@ function hashrateCallback(hashrate) {
 
 ipcMain.handle('toggle-miner', (event, ...args) => {
   try {
-    if ( miner === null ) {
-      var ethAddress  = args[0];
-      var ooAddress   = args[1];
-      var contract    = args[2];
-      var endpoint    = args[3];
-      var tip         = args[4];
+    if (miner === null) {
+      var ethAddress = args[0];
+      var ooAddress = args[1];
+      var contract = args[2];
+      var endpoint = args[3];
+      var tip = args[4];
       var proofPeriod = args[5];
       miner = new KoinosMiner(ethAddress, ooAddress, contract, endpoint, tip, proofPeriod, hashrateCallback);
       miner.start();
@@ -81,7 +84,7 @@ ipcMain.handle('toggle-miner', (event, ...args) => {
       win.send('miner-activated', false);
     }
   }
-  catch(err) {
+  catch (err) {
     console.log(err.message);
   }
 });

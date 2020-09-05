@@ -15,6 +15,7 @@ body {
   background-color: #0f091f;
   color: #eee;
   font-family: space-l;
+  -webkit-app-region: drag;
 }
 
 .grid-container {
@@ -68,6 +69,7 @@ body {
   border-radius: 50%;
   width: 50px;
   height: 50px;
+  -webkit-app-region: no-drag;
 }
 
 /* toggle classes */
@@ -83,9 +85,8 @@ body {
 .redBorder {
   border: 1px #dd003f solid;
 }
-.disabled {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  filter: alpha(opacity=50);
+.grayed {
+  filter: opacity(.4);
 }
 
 .tip {
@@ -176,6 +177,7 @@ input[type="checkbox"].check-custom.toggle-switch ~ .check-toggle {
   display: inline-block;
   vertical-align: middle;
   cursor: pointer;
+  -webkit-app-region: no-drag;
 }
 
 /* Common styles for the ::before and ::after pseudo-elements of the toggle switch */

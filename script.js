@@ -53,8 +53,10 @@ ipcRenderer.on('miner-activated', (event, arg) => {
 
   if (arg) {
     document.getElementById("tip").setAttribute("disabled", "true");
+    document.getElementById("check-toggle").className += " grayed";
   }
   else {
     document.getElementById("tip").removeAttribute("disabled");
+    document.getElementById("check-toggle").classList.remove("grayed");
   }
 });
