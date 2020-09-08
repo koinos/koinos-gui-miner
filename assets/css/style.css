@@ -15,6 +15,7 @@ body {
   background-color: #0f091f;
   color: #eee;
   font-family: space-l;
+  -webkit-app-region: drag;
 }
 
 .grid-container {
@@ -52,21 +53,40 @@ body {
 }
 
 .eth-start input {
-  width: 20em;
+  width: 25em;
   border-bottom: 1px #6f00f6 solid;
   padding: 0.67em;
   color: white;
   margin-right: 2em;
+  font-size: 0.8em;
+  text-align: center;
 }
 .eth-start button {
   /* background: #dd003f; */
   background: none;
-  border: 1px #dd003f solid;
   /* padding: 0.4em 1em; */
   padding-top: 0.2em;
   border-radius: 50%;
   width: 50px;
   height: 50px;
+  -webkit-app-region: no-drag;
+}
+
+/* toggle classes */
+.green {
+  fill: #34dd00;
+}
+.red {
+  fill: #dd003f;
+}
+.greenBorder {
+  border: 1px #34dd00 solid;
+}
+.redBorder {
+  border: 1px #dd003f solid;
+}
+.grayed {
+  filter: opacity(.4);
 }
 
 .tip {
@@ -157,6 +177,7 @@ input[type="checkbox"].check-custom.toggle-switch ~ .check-toggle {
   display: inline-block;
   vertical-align: middle;
   cursor: pointer;
+  -webkit-app-region: no-drag;
 }
 
 /* Common styles for the ::before and ::after pseudo-elements of the toggle switch */
