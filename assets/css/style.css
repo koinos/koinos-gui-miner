@@ -50,6 +50,7 @@ body {
   grid-row: 1;
   justify-self: end;
   padding-right: 3rem;
+  -webkit-app-region: no-drag;
 }
 
 .eth-start input {
@@ -69,7 +70,6 @@ body {
   border-radius: 50%;
   width: 50px;
   height: 50px;
-  -webkit-app-region: no-drag;
 }
 
 /* toggle classes */
@@ -132,9 +132,10 @@ body {
   font-size: 2rem;
 }
 #chart {
-  grid-column: 1 / 7;
-  grid-row: 8;
-  color: #25133c;
+  position: absolute;
+  top: 17em;
+  left: 12em;
+  color: #0F091F;
 }
 .info {
   position: absolute;
@@ -145,9 +146,48 @@ body {
   padding: 2em;
 }
 
+/* glow */
+    .blob {
+      position: absolute;
+      left:40px;
+      top: 40px;
+      background:none;
+      border: 10px solid #2C1856;
+      filter: blur(10px);
+      border-radius: 50%;
+      margin: 10px;
+      height: 16em;
+      width: 16em;
+      box-shadow: 0 0 0 0 rgb(74, 8, 121);
+      transform: scale(1);
+      animation: pulse 4s infinite;
+    }
+
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(74, 8, 121, 0.7);
+      }
+      50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 0 10px rgba(44, 24, 86, 0.6);
+      }
+
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(74, 8, 121, 0);
+      }
+    }
+
 /* input resets */
 *:focus {
   outline: none;
+}
+
+
+.hide {
+  visibility: hidden;
 }
 
 input {
