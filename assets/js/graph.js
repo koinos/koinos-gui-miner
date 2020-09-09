@@ -1,12 +1,12 @@
 
 var n = 40,
   random = d3.randomNormal(0, .2),
-  data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,]
+  data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,]
 var svg = d3.select("#chart"),
   margin = { top: 100, right: 100, bottom: 20, left: 40 },
   width = +svg.attr("width") - margin.left - margin.right,
   height = +svg.attr("height") - margin.top - margin.bottom,
-  g = svg.append("g").attr("transform", "translate(" + 10 + "," + 0 + ")");
+  g = svg.append("g").attr("transform", "translate(" + 0 + "," + 0 + ")");
 
 var x = d3.scaleLinear()
   .domain([0, n])
@@ -19,6 +19,28 @@ var y = d3.scaleLinear()
 var line = d3.line()
   .x(function (d, i) { return x(i); })
   .y(function (d, i) { return y(d); });
+
+// define gradient
+var defs = svg.append("defs");
+
+var gradient = defs.append("linearGradient")
+  .attr("id", "svgGradient")
+  .attr("x1", "0%")
+  .attr("x2", "100%")
+  .attr("y1", "0%")
+  .attr("y2", "100%");
+
+gradient.append("stop")
+  .attr('class', 'start')
+  .attr("offset", "0%")
+  .attr("stop-color", "red")
+  .attr("stop-opacity", .05);
+
+gradient.append("stop")
+  .attr('class', 'end')
+  .attr("offset", "100%")
+  .attr("stop-color", "#6F00F6")
+  .attr("stop-opacity", 1);
 
 g.append("defs").append("clipPath")
   .attr("id", "clip")
@@ -42,9 +64,14 @@ g.append("g")
   .attr("class", "line")
   .transition()
   .duration(2000)
-  .attr("stroke", "yellow")
+  .attr("stroke-width", 7)
+  .attr("stroke", "url(#svgGradient)")
+  .attr("fill", "none")
+  .attr("")
   .ease(d3.easeLinear)
   .on("start", tick);
+
+
 
 function tick() {
   // Push a new data point onto the back.

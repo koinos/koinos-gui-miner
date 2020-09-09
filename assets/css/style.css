@@ -16,6 +16,7 @@ body {
   color: #eee;
   font-family: space-l;
   -webkit-app-region: drag;
+  overflow: hidden;
 }
 
 .grid-container {
@@ -133,8 +134,8 @@ body {
 }
 #chart {
   position: absolute;
-  top: 17em;
-  left: 12em;
+  top: 24em;
+  left: 4em;
   color: #0F091F;
 }
 .info {
