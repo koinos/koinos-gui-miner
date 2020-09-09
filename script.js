@@ -1,7 +1,5 @@
 const { ipcRenderer } = require('electron');
 
-const ooAddress = '0x86c081b9f59c06547a7c0418Aec12a8F46064767';
-const contract = '0x3De8FFbAee570641f0645eA39C7F8DFf91A2f5F5';
 const endpoint = 'http://localhost:8545';
 
 function toggleColor() {
@@ -31,10 +29,17 @@ function toggleMiner() {
     tip = 5;
   }
 
-  ipcRenderer.invoke('toggle-miner', ethAddress, ooAddress, contract, endpoint, tip, 60, null);
-
-
+  ipcRenderer.invoke('toggle-miner', ethAddress, endpoint, tip, 60);
 }
+
+ipcRenderer.on('koin-balance-update', (event, arg) => {
+  let result = (arg / 1000000).toFixed(6).toString();
+  if (arg > 1000000) {
+    let parts = result.split(".");
+    result = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "." + parts[1];
+  }
+  document.getElementById("koin-balance").innerHTML = result;
+});
 
 ipcRenderer.on('hashrate-report-string', (event, arg) => {
   let stuff = arg.split(" ");
@@ -60,3 +65,4 @@ ipcRenderer.on('miner-activated', (event, arg) => {
     document.getElementById("check-toggle").classList.remove("grayed");
   }
 });
+

@@ -1,10 +1,19 @@
 const { app, BrowserWindow } = require("electron")
 const { ipcMain } = require('electron');
-let KoinosMiner = require('koinos-miner');
+const fs = require('fs');
+const KnsToken = JSON.parse(fs.readFileSync('./KnsToken.json', 'utf8'));
 const path = require('path');
+let Web3 = require('web3');
+let KoinosMiner = require('koinos-miner');
 let miner = null;
 let win = null;
+let contract = null;
+let web3 = null;
+let address = null;
 
+const KnsTokenAddress = '0x874de5a98b25093Be96BeD361232e6E326C9751C';
+const OpenOrchardAddress = '0xCd06f2eb4E5424f9681bA07CB3C7487FEc0341EC';
+const KnsTokenMiningAddress = '0x536D49f3a0498A9E38FA3D90Df828Dc5BFc7c7F4';
 
 function createWindow() {
   // Create the browser window.
@@ -65,22 +74,45 @@ function hashrateCallback(hashrate) {
   win.send('hashrate-report-string', KoinosMiner.formatHashrate(hashrate));
 }
 
+function proofCallback(submission) {
+  if (web3 !== null && address !== null && contract !== null) {
+    contract.methods.balanceOf(address).call({from: address}, function(error, result) {
+      win.send('koin-balance-update', result);
+    });
+  }
+}
+
 ipcMain.handle('toggle-miner', (event, ...args) => {
   try {
     if (miner === null) {
       var ethAddress = args[0];
-      var ooAddress = args[1];
-      var contract = args[2];
-      var endpoint = args[3];
-      var tip = args[4];
-      var proofPeriod = args[5];
-      miner = new KoinosMiner(ethAddress, ooAddress, contract, endpoint, tip, proofPeriod, hashrateCallback);
+      var endpoint = args[1];
+      var tip = args[2];
+      var proofPeriod = args[3];
+      address = ethAddress;
+      web3 = new Web3(endpoint);
+      contract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress, {from: ethAddress, gasPrice:'20000000000', gas: 6721975});
+      contract.methods.balanceOf(address).call({from: address}, function(error, result) {
+        win.send('koin-balance-update', result);
+      });
+      miner = new KoinosMiner(
+        ethAddress,
+        OpenOrchardAddress,
+        KnsTokenMiningAddress,
+        endpoint,
+        tip,
+        proofPeriod,
+        hashrateCallback,
+        proofCallback);
       miner.start();
       win.send('miner-activated', true);
     }
     else {
       miner.stop();
+      address = null;
+      web3 = null;
       miner = null;
+      contract = null;
       win.send('miner-activated', false);
     }
   }
