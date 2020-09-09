@@ -31,7 +31,7 @@ function toggleMiner() {
 }
 
 ipcRenderer.on('koin-balance-update', (event, arg) => {
-  const decimalPlaces = 6;
+  const decimalPlaces = 8;
   let result = (arg / (10 ** decimalPlaces)).toString();
   if (arg > (10 ** decimalPlaces)) {
     let parts = result.split(".");
