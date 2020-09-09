@@ -13,8 +13,8 @@ var x = d3.scaleLinear()
   .range([0, 800]);
 
 var y = d3.scaleLinear()
-  .domain([0, 1])
-  .range([200, 0]);
+  .domain([0, 100])
+  .range([100, 0]);
 
 var line = d3.line()
   .x(function (d, i) { return x(i); })
@@ -41,20 +41,36 @@ g.append("g")
   .datum(data)
   .attr("class", "line")
   .transition()
-  .duration(500)
+  .duration(2000)
   .attr("stroke", "yellow")
   .ease(d3.easeLinear)
   .on("start", tick);
 
 function tick() {
-
   // Push a new data point onto the back.
-  data.push(Math.abs(random()));
 
-  // Redraw the line.
-  d3.select(this)
-    .attr("d", line)
-    .attr("transform", null);
+  if (currentHashrate !== null) {
+    data.push(currentHashrate);
+  }
+
+  if (hashrateLow !== null && hashrateHigh !== null) {
+    var x2 = d3.scaleLinear()
+      .domain([0, 40])
+      .range([0, 800]);
+
+    var y2 = d3.scaleLinear()
+      .domain([hashrateLow, hashrateHigh])
+      .range([100, 0]);
+
+    var line2 = d3.line()
+      .x(function (d, i) { return x2(i); })
+      .y(function (d, i) { return y2(d); });
+
+    // Redraw the line.
+    d3.select(this)
+      .attr("d", line2)
+      .attr("transform", null);
+  }
 
   // Slide it to the left.
   d3.active(this)
@@ -64,6 +80,5 @@ function tick() {
 
   // Pop the old data point off the front.
   data.shift();
-  console.log(random())
-
 }
+

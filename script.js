@@ -1,6 +1,9 @@
 const { ipcRenderer } = require('electron');
 
 const endpoint = 'http://localhost:8545';
+var currentHashrate = null;
+var hashrateLow = null;
+var hashrateHigh = null;
 
 function powerButton(state) {
   let btn = document.getElementById("svg-button").classList;
@@ -47,9 +50,19 @@ ipcRenderer.on('hashrate-report-string', (event, arg) => {
 });
 
 ipcRenderer.on('hashrate-report', (event, arg) => {
-  console.log("data:");
-  data.push({ time: Math.round((new Date()).getTime() / 1000), rate: arg });
-  console.log(data);
+  //console.log("data:");
+  //data.push({ time: Math.round((new Date()).getTime() / 1000), rate: arg });
+  console.log("data:" + arg);
+
+  currentHashrate = arg;
+
+  if (hashrateHigh === null || hashrateHigh < currentHashrate) {
+    hashrateHigh = currentHashrate;
+  }
+
+  if (hashrateLow === null || hashrateLow > currentHashrate) {
+    hashrateLow = currentHashrate;
+  }
 });
 
 ipcRenderer.on('miner-activated', (event, state) => {
