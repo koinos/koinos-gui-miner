@@ -25,7 +25,7 @@
     <div class="eth-start">
       <input id="ethAddress" type="text" placeholder="ETH address"
         value="0x26F632333F8346877f58B200f98346F3Db67B506" /><button onClick="toggleMiner();" id="power-button"
-        class="redBorder">
+        class="redBorder" onblur="albert()">
         <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
           <path d="M0 0h24v24H0z" fill="none" />
           <path id="svg-button" class="red"
@@ -44,35 +44,41 @@
         <div class="km-text">1,288,234</div>
         <span class="km-text-label">KOIN</span>
       </div>
-      <div id="chart"></div>
+      <svg width="960" height="500" id="chart"></svg>
+
+
+
     </div>
     <div class="hashrate">
+      <img src="assets/images/glow-circle.svg" alt="" class="circle" />
+      <div class="blob"></div>
+
       <div class="hashrate-text">
         <div id="hashrate-current" class="hashrate-current">0.0</div>
         <span id="hashrate-suffix"></span>
       </div>
-      <img src="assets/images/glow-circle.svg" alt="" />
+    </div>
+    <div class="info">
+      Node:
+      <script>
+        document.write(process.versions.node)
+      </script>
+      , Chrome:
+      <script>
+        document.write(process.versions.chrome)
+      </script>
+      , Electron:
+      <script>
+        document.write(process.versions.electron)
+      </script>
+      .
     </div>
   </div>
   <script src="assets/js/d3.min.js"></script>
   <script src="assets/js/graph.js"></script>
   <script src="script.js"></script>
 
-  <div class="info">
-    Node:
-    <script>
-      document.write(process.versions.node)
-    </script>
-    , Chrome:
-    <script>
-      document.write(process.versions.chrome)
-    </script>
-    , Electron:
-    <script>
-      document.write(process.versions.electron)
-    </script>
-    .
-  </div>
+
 </body>
 
 </html>

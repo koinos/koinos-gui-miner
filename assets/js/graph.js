@@ -1,142 +1,69 @@
-// Fake hashrate data
-let data = [
-  {
-    time: 1,
-    rate: 5,
-  },
-  {
-    time: 2,
-    rate: 6,
-  },
-  {
-    time: 3,
-    rate: 8,
-  },
-  {
-    time: 4,
-    rate: 10,
-  },
-  {
-    time: 5,
-    rate: 10,
-  },
-  {
-    time: 6,
-    rate: 12,
-  },
-  {
-    time: 7,
-    rate: 11,
-  },
-  {
-    time: 8,
-    rate: 12,
-  },
-  {
-    time: 9,
-    rate: 13,
-  },
-  {
-    time: 10,
-    rate: 15,
-  },
-  {
-    time: 11,
-    rate: 16,
-  },
-  {
-    time: 12,
-    rate: 15,
-  },
-  {
-    time: 13,
-    rate: 29,
-  },
-  {
-    time: 14,
-    rate: 30,
-  },
-  {
-    time: 15,
-    rate: 31,
-  },
-  {
-    time: 16,
-    rate: 29,
-  },
-  {
-    time: 17,
-    rate: 31,
-  },
-]
 
-const svg = d3
-  .select("#chart")
-  .append("svg")
-  .attr("height", 200)
-  .attr("width", 600)
-const margin = { top: 0, bottom: 20, left: 30, right: 20 }
-const chart = svg.append("g").attr("transform", `translate(${margin.left},0)`)
-const width = +svg.attr("width") - margin.left - margin.right
-const height = +svg.attr("height") - margin.top - margin.bottom
-const grp = chart
-  .append("g")
-  .attr("transform", `translate(-${margin.left},-${margin.top})`)
+var n = 40,
+  random = d3.randomNormal(0, .2),
+  data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,]
+var svg = d3.select("#chart"),
+  margin = { top: 100, right: 100, bottom: 20, left: 40 },
+  width = +svg.attr("width") - margin.left - margin.right,
+  height = +svg.attr("height") - margin.top - margin.bottom,
+  g = svg.append("g").attr("transform", "translate(" + 10 + "," + 0 + ")");
 
-var defs = svg.append("defs")
+var x = d3.scaleLinear()
+  .domain([0, n])
+  .range([0, 800]);
 
-var gradient = defs
-  .append("linearGradient")
-  .attr("id", "svgGradient")
-  .attr("x1", "0%")
-  .attr("x2", "100%")
-  .attr("y1", "0%")
-  .attr("y2", "100%")
+var y = d3.scaleLinear()
+  .domain([0, 1])
+  .range([200, 0]);
 
-gradient
-  .append("stop")
-  .attr("class", "start")
-  .attr("offset", "0%")
-  .attr("stop-color", "#6F00F6")
-  .attr("stop-opacity", 0.4)
+var line = d3.line()
+  .x(function (d, i) { return x(i); })
+  .y(function (d, i) { return y(d); });
 
-gradient
-  .append("stop")
-  .attr("class", "end")
-  .attr("offset", "100%")
-  .attr("stop-color", "red")
-  .attr("stop-opacity", 1)
+g.append("defs").append("clipPath")
+  .attr("id", "clip")
+  .append("rect")
+  .attr("width", width)
+  .attr("height", height);
 
-const yScale = d3
-  .scaleLinear()
-  .range([height, 0])
-  .domain([0, d3.max(data, (dataPoint) => dataPoint.rate)])
-const xScale = d3
-  .scaleLinear()
-  .range([0, width])
-  .domain(d3.extent(data, (dataPoint) => dataPoint.time))
+g.append("g")
+  .attr("class", "axis axis--x")
+  .attr("transform", "translate(0," + y(0) + ")")
+  .call(d3.axisBottom(x));
 
-const line = d3
-  .line()
-  .x((dataPoint) => xScale(dataPoint.time))
-  .y((dataPoint) => yScale(dataPoint.rate))
+g.append("g")
+  .attr("class", "axis axis--y")
+  .call(d3.axisLeft(y));
 
-grp
+g.append("g")
+  .attr("clip-path", "url(#clip)")
   .append("path")
-  .attr("transform", `translate(${margin.left},0)`)
   .datum(data)
-  .attr("fill", "none")
-  .attr("stroke", "steelblue")
-  .attr("stroke-linejoin", "round")
-  .attr("stroke-linecap", "round")
-  .attr("stroke-width", 2)
-  .attr("d", line)
-  .attr("stroke", "url(#svgGradient)")
-  .attr("fill", "none")
+  .attr("class", "line")
+  .transition()
+  .duration(500)
+  .attr("stroke", "yellow")
+  .ease(d3.easeLinear)
+  .on("start", tick);
 
-chart
-  .append("g")
-  .attr("transform", `translate(0,${height})`)
-  .call(d3.axisBottom(xScale).ticks(data.length))
+function tick() {
 
-chart.append("g").attr("transform", `translate(0, 0)`).call(d3.axisLeft(yScale))
+  // Push a new data point onto the back.
+  data.push(Math.abs(random()));
+
+  // Redraw the line.
+  d3.select(this)
+    .attr("d", line)
+    .attr("transform", null);
+
+  // Slide it to the left.
+  d3.active(this)
+    .attr("transform", "translate(" + x(-1) + ",0)")
+    .transition()
+    .on("start", tick);
+
+  // Pop the old data point off the front.
+  data.shift();
+  console.log(random())
+
+}
