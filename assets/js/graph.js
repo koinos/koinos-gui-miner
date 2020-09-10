@@ -1,17 +1,16 @@
 
 var n = 40,
   random = d3.randomNormal(0, .2),
-  data = Array(35).fill(0);
+  data = Array(n+1).fill(0);
 
 var svg = d3.select("#chart"),
-  margin = { top: 100, right: 40, bottom: 20, left: 40 },
-  width = +svg.attr("width") - margin.left - margin.right,
-  height = +svg.attr("height") - margin.top - margin.bottom,
-  g = svg.append("g").attr("transform", "translate(" + 0 + "," + 0 + ")");
+  width = +svg.attr("width"),
+  height = +svg.attr("height"),
+  g = svg.append("g");
 
 var x = d3.scaleLinear()
   .domain([0, n])
-  .range([0, 800]);
+  .range([0, 600]);
 
 var y = d3.scaleLinear()
   .domain([0, 100])
@@ -50,15 +49,6 @@ g.append("defs").append("clipPath")
   .attr("height", height);
 
 g.append("g")
-  .attr("class", "axis axis--x")
-  .attr("transform", "translate(0," + y(0) + ")")
-  .call(d3.axisBottom(x));
-
-g.append("g")
-  .attr("class", "axis axis--y")
-  .call(d3.axisLeft(y));
-
-g.append("g")
   .attr("clip-path", "url(#clip)")
   .append("path")
   .datum(data)
@@ -88,8 +78,8 @@ function tick() {
   }
 
   let x2 = d3.scaleLinear()
-    .domain([0, 40])
-    .range([0, 800]);
+    .domain([0, n])
+    .range([0, 600]);
 
   const min = 0;
   let max = highestHashrate * 1.1 + 1;
@@ -116,4 +106,3 @@ function tick() {
   // Pop the old data point off the front.
   data.shift();
 }
-
