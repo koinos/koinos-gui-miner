@@ -20,7 +20,6 @@
     <div class="brand">
       <img src="assets/images/koinos-logo.svg" alt="" />
     </div>
-    <span class="version">v0.01</span>
 
     <div class="eth-start">
       <input id="ethAddress" type="text" placeholder="ETH address"
@@ -39,20 +38,24 @@
       </label>
       <div class="thank-you">OpenOrchard thanks you!</div>
     </div>
+
     <div class="koin-mined">
       <div>
         <div id="koin-balance" class="km-text">0.0</div>
         <span class="km-text-label">KOIN</span>
       </div>
       <svg width="600" height="400" id="chart"></svg>
-
-
-
+      <span class="spacer"></span>
     </div>
+
     <div class="hashrate">
       <img src="assets/images/glow-circle.svg" alt="" class="circle" />
       <div class="blob"></div>
-
+      <div class="spinner">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+      </div>
       <div class="hashrate-text">
         <div id="hashrate-current" class="hashrate-current">0.0</div>
         <span id="hashrate-suffix"></span>
@@ -73,6 +76,7 @@
       </script>
       .
     </div>
+    <span class="version">v0.01</span>
   </div>
   <script src="assets/js/d3.min.js"></script>
   <script src="assets/js/graph.js"></script>
