@@ -1,9 +1,10 @@
 
 var n = 40,
   random = d3.randomNormal(0, .2),
-  data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,]
+  data = Array(35).fill(0);
+
 var svg = d3.select("#chart"),
-  margin = { top: 100, right: 100, bottom: 20, left: 40 },
+  margin = { top: 100, right: 40, bottom: 20, left: 40 },
   width = +svg.attr("width") - margin.left - margin.right,
   height = +svg.attr("height") - margin.top - margin.bottom,
   g = svg.append("g").attr("transform", "translate(" + 0 + "," + 0 + ")");
@@ -63,7 +64,7 @@ g.append("g")
   .datum(data)
   .attr("class", "line")
   .transition()
-  .duration(2000)
+  .duration(1000)
   .attr("stroke-width", 7)
   .attr("stroke", "url(#svgGradient)")
   .attr("fill", "none")
@@ -71,33 +72,40 @@ g.append("g")
   .ease(d3.easeLinear)
   .on("start", tick);
 
-
+var highestHashrate = 0;
 
 function tick() {
-  // Push a new data point onto the back.
+  let hashrate = currentHashrate ? currentHashrate : 0;
 
-  if (currentHashrate !== null) {
-    data.push(currentHashrate);
+  data.push(hashrate);
+
+  if (hashrate > highestHashrate) {
+    highestHashrate = hashrate;
   }
 
-  if (hashrateLow !== null && hashrateHigh !== null) {
-    var x2 = d3.scaleLinear()
-      .domain([0, 40])
-      .range([0, 800]);
-
-    var y2 = d3.scaleLinear()
-      .domain([hashrateLow, hashrateHigh])
-      .range([100, 0]);
-
-    var line2 = d3.line()
-      .x(function (d, i) { return x2(i); })
-      .y(function (d, i) { return y2(d); });
-
-    // Redraw the line.
-    d3.select(this)
-      .attr("d", line2)
-      .attr("transform", null);
+  if (highestHashrate * 0.75 > Math.max.apply(Math, data)) {
+    highestHashrate = highestHashrate * 0.75;
   }
+
+  let x2 = d3.scaleLinear()
+    .domain([0, 40])
+    .range([0, 800]);
+
+  const min = 0;
+  let max = highestHashrate * 1.1 + 1;
+
+  let y2 = d3.scaleLinear()
+    .domain([min, max])
+    .range([100, 0]);
+
+  let line2 = d3.line()
+    .x(function (d, i) { return x2(i); })
+    .y(function (d, i) { return y2(d); });
+
+  // Redraw the line.
+  d3.select(this)
+    .attr("d", line2)
+    .attr("transform", null);
 
   // Slide it to the left.
   d3.active(this)

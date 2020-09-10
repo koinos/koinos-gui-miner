@@ -2,8 +2,6 @@ const { ipcRenderer } = require('electron');
 
 const endpoint = 'http://localhost:8545';
 var currentHashrate = null;
-var hashrateLow = null;
-var hashrateHigh = null;
 
 function powerButton(state) {
   let btn = document.getElementById("svg-button").classList;
@@ -18,6 +16,17 @@ function powerButton(state) {
     btn.add('red');
     btnOn.remove('greenBorder');
     btnOn.add('redBorder');
+  }
+}
+
+function hashrateSpinner(state) {
+  if (state) {
+    document.getElementById("hashrate-spinner").style.display = "";
+    document.getElementById("hashrate-current").innerHTML = "";
+    document.getElementById("hashrate-suffix").innerHTML = "";
+  }
+  else {
+    document.getElementById("hashrate-spinner").style.display = "none";
   }
 }
 
@@ -38,31 +47,21 @@ ipcRenderer.on('koin-balance-update', (event, arg) => {
   let result = (arg / (10 ** decimalPlaces)).toString();
   if (arg > (10 ** decimalPlaces)) {
     let parts = result.split(".");
-    result = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "." + parts[1];
+    result = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "." + parts[1].substr(0, 3);
   }
   document.getElementById("koin-balance").innerHTML = result;
 });
 
 ipcRenderer.on('hashrate-report-string', (event, arg) => {
   let stuff = arg.split(" ");
-  document.getElementById("hashrate-current").innerHTML = stuff[0];
+  let rate = parseFloat(stuff[0]).toFixed(2);
+  document.getElementById("hashrate-current").innerHTML = rate.toString();
   document.getElementById("hashrate-suffix").innerHTML = stuff[1];
 });
 
 ipcRenderer.on('hashrate-report', (event, arg) => {
-  //console.log("data:");
-  //data.push({ time: Math.round((new Date()).getTime() / 1000), rate: arg });
-  console.log("data:" + arg);
-
+  hashrateSpinner(false);
   currentHashrate = arg;
-
-  if (hashrateHigh === null || hashrateHigh < currentHashrate) {
-    hashrateHigh = currentHashrate;
-  }
-
-  if (hashrateLow === null || hashrateLow > currentHashrate) {
-    hashrateLow = currentHashrate;
-  }
 });
 
 ipcRenderer.on('miner-activated', (event, state) => {
@@ -71,18 +70,21 @@ ipcRenderer.on('miner-activated', (event, state) => {
   if (state) {
     document.getElementById("tip").setAttribute("disabled", "true");
     document.getElementById("check-toggle").className += " grayed";
-
-    document.getElementById("hashrate-current").innerHTML = "...";
-    document.getElementById("hashrate-suffix").innerHTML = "";
+    document.getElementById("ethAddress").setAttribute("disabled", "true");
+    document.getElementById("ethAddress").className += " grayed";
   }
   else {
     document.getElementById("tip").removeAttribute("disabled");
     document.getElementById("check-toggle").classList.remove("grayed");
+    document.getElementById("ethAddress").removeAttribute("disabled");
+    document.getElementById("ethAddress").classList.remove("grayed");
 
     document.getElementById("hashrate-current").innerHTML = "0.0";
     document.getElementById("hashrate-suffix").innerHTML = "";
+    currentHashrate = 0;
   }
 
+  hashrateSpinner(state);
   powerButton(state);
 });
 

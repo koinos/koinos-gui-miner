@@ -28,7 +28,7 @@
     "electron": "^10.1.0"
   },
   "dependencies": {
-    "koinos-miner": "git@github.com:open-orchard/koinos-miner.git",
+    "koinos-miner": "git@github.com:open-orchard/koinos-miner.git#faster-hash-reporting",
     "web3": "^1.2.11"
   }
 }
