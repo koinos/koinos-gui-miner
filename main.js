@@ -5,6 +5,7 @@ const { keystore, signing } = require('eth-lightwallet');
 const fs = require('fs');
 const KnsToken = JSON.parse(fs.readFileSync('./KnsToken.json', 'utf8'));
 const path = require('path');
+const KoinosState = require('./assets/js/notifications.js');
 let Web3 = require('web3');
 let Tx = require('ethereumjs-tx').Transaction;
 let KoinosMiner = require('koinos-miner');
@@ -16,10 +17,34 @@ let win = null;
 let contract = null;
 let web3 = null;
 let address = null;
+let state = new Map([
+  [KoinosState.MinerActivated, false],
+  [KoinosState.KoinBalanceUpdate, 0]
+]);
 
 const KnsTokenAddress = '0xb09672ad9faAD450D7A50ABEF772F8B8EA38f8d4';
 const OpenOrchardAddress = '0xCd06f2eb4E5424f9681bA07CB3C7487FEc0341EC';
 const KnsTokenMiningAddress = '0xc4e86fB87ddBC4e397cE6B066e16640F433d3592';
+
+function notify(event, args) {
+  state.set(event, args);
+  if (win !== null)
+  {
+    win.send(event, args);
+  }
+}
+
+function readConfiguration() {
+  const filename = "./config.json";
+  let config = {
+    ethAddress: "",
+    developerTip: true
+  };
+  if (fs.existsSync(filename)) {
+    config = JSON.parse(fs.readFileSync(filename, 'utf8'));
+  }
+  return config;
+}
 
 function createWindow() {
   // Create the browser window.
@@ -32,13 +57,20 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
     },
-  })
+    show: false
+  });
 
   // and load the index.html of the app.
-  win.loadFile("index.html")
+  win.loadFile("index.html");
+
+  win.webContents.on('did-finish-load', function() {
+    console.log(state);
+    win.send(KoinosState.RestoreState, state);
+    win.show();
+  });
 
   // Open the DevTools.
-  //win.webContents.openDevTools()
+  win.webContents.openDevTools();
 }
 
 // This method will be called when Electron has finished
@@ -76,14 +108,14 @@ app.on('before-quit', () => {
 // code. You can also put them in separate files and require them here.
 
 function hashrateCallback(hashrate) {
-  win.send('hashrate-report', hashrate);
-  win.send('hashrate-report-string', KoinosMiner.formatHashrate(hashrate));
+  notify(KoinosState.HashrateReport, hashrate);
+  notify(KoinosState.HashrateReportString, KoinosMiner.formatHashrate(hashrate));
 }
 
 function proofCallback(submission) {
   if (web3 !== null && address !== null && contract !== null) {
     contract.methods.balanceOf(address).call({from: address}, function(error, result) {
-      win.send('koin-balance-update', result);
+      notify(KoinosState.KoinBalanceUpdate, result);
     });
   }
 }
@@ -173,7 +205,7 @@ function stopMiner() {
    miner = null;
    contract = null;
    derivedKey = null;
-   win.send('miner-activated', false);
+   state.set(KoinosState.MinerActivated, false);
 }
 
 ipcMain.handle('toggle-miner', (event, ...args) => {
@@ -184,7 +216,7 @@ ipcMain.handle('toggle-miner', (event, ...args) => {
 
     assert (ks !== null);
 
-    if (miner === null) {
+    if (!state.get(KoinosState.MinerActivated)) {
       var ethAddress = args[0];
       var endpoint = args[1];
       var tip = args[2];
@@ -199,7 +231,8 @@ ipcMain.handle('toggle-miner', (event, ...args) => {
       web3 = new Web3(endpoint);
       contract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress, {from: ethAddress, gasPrice:'20000000000', gas: 6721975});
       contract.methods.balanceOf(address).call({from: address}, function(error, result) {
-        win.send('koin-balance-update', result);
+        console.log(result);
+        notify(KoinosState.KoinBalanceUpdate, result);
       });
       miner = new KoinosMiner(
         ethAddress,
@@ -213,11 +246,13 @@ ipcMain.handle('toggle-miner', (event, ...args) => {
         hashrateCallback,
         proofCallback);
       miner.start();
-      win.send('miner-activated', true);
+      state.set(KoinosState.MinerActivated, true);
     }
     else {
       stopMiner();
     }
+
+    notify(KoinosState.MinerActivated, state.get(KoinosState.MinerActivated));
   }
   catch (err) {
     stopMiner();
