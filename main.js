@@ -19,17 +19,36 @@ function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
     width: 1200,
-    height: 600,
+    height: 660,
     icon: path.join(__dirname, 'assets/icons/png/koinos-icon_512.png'),
     titleBarStyle: "hidden",
     resizable: false,
+    maximizable: false,
     webPreferences: {
       nodeIntegration: true,
     },
   })
 
+  // login = new BrowserWindow({
+  //   parent: win,
+  //   modal: true,
+  //   width: 600,
+  //   height: 620,
+  //   titleBarStyle: "hidden",
+  //   frame: false,
+  //   resizable: false,
+  //   maximizable: false,
+
+  //   webPreferences: {
+  //     nodeIntegration: true,
+  //   },
+  // })
+
   // and load the index.html of the app.
   win.loadFile("index.html")
+  // login.loadFile("generate-key.html")
+
+
 
   // Open the DevTools.
   //win.webContents.openDevTools()
@@ -48,6 +67,7 @@ app.on("window-all-closed", () => {
     app.quit()
   }
   win = null;
+  login = null;
 })
 
 app.on("activate", () => {
@@ -76,7 +96,7 @@ function hashrateCallback(hashrate) {
 
 function proofCallback(submission) {
   if (web3 !== null && address !== null && contract !== null) {
-    contract.methods.balanceOf(address).call({from: address}, function(error, result) {
+    contract.methods.balanceOf(address).call({ from: address }, function (error, result) {
       win.send('koin-balance-update', result);
     });
   }
@@ -91,8 +111,8 @@ ipcMain.handle('toggle-miner', (event, ...args) => {
       var proofPeriod = args[3];
       address = ethAddress;
       web3 = new Web3(endpoint);
-      contract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress, {from: ethAddress, gasPrice:'20000000000', gas: 6721975});
-      contract.methods.balanceOf(address).call({from: address}, function(error, result) {
+      contract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress, { from: ethAddress, gasPrice: '20000000000', gas: 6721975 });
+      contract.methods.balanceOf(address).call({ from: address }, function (error, result) {
         win.send('koin-balance-update', result);
       });
       miner = new KoinosMiner(

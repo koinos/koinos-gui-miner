@@ -16,6 +16,45 @@
 </head>
 
 <body>
+  <div class="config">
+    <div>
+      <span>Node Endpoint</span>
+      <div><input type="text" value="value"></div>
+    </div>
+    <div class="proof-period">
+      <span>Proof Period</span>
+      <div>
+        <input type="text" value="value">
+        <label class="pp-select">Day
+          <input type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+        <label class="pp-select">Week
+          <input type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+    </div>
+    <div>
+      <span>Ethereum Balance</span>
+      <div class="eth-balance">
+        0.0002 ETH
+        <div class="sub">Low Balance</div>
+      </div>
+    </div>
+    <div>
+      <div class="tip">
+        <span>Dev Tip (5%)</span>
+        <label>
+          <input id="tip" type="checkbox" class="check-custom toggle-switch disabled" checked /><span id="check-toggle"
+            class="check-toggle">
+
+          </span>
+        </label>
+        <div class="thank-you">OpenOrchard thanks you!</div>
+      </div>
+    </div>
+  </div>
   <div class="grid-container">
     <div class="brand">
       <img src="assets/images/koinos-logo.svg" alt="" />
@@ -32,12 +71,7 @@
         </svg>
       </button>
     </div>
-    <div class="tip">
-      <span>Dev Tip</span><label><input id="tip" type="checkbox" class="check-custom toggle-switch disabled"
-          checked /><span id="check-toggle" class="check-toggle"></span>
-      </label>
-      <div class="thank-you">OpenOrchard thanks you!</div>
-    </div>
+
 
     <div class="koin-mined">
       <div>
@@ -76,7 +110,11 @@
       </script>
       .
     </div>
-    <span class="version">v0.01</span>
+    <span class="version">
+      <a href="https://koinos.io" target="_blank"><img src="assets/images/open_in_new-24px.svg" alt="" class="icon">
+        Documentation</a>
+      v0.01
+    </span>
   </div>
   <script src="assets/js/d3.min.js"></script>
   <script src="assets/js/graph.js"></script>

@@ -46,6 +46,62 @@ body {
   padding: 2em;
 }
 
+a {
+  color: gray;
+  text-decoration: none;
+}
+
+.icon {
+  height: 12px;
+}
+/* app config area */
+.config {
+  color: rgb(220, 220, 220);
+  padding: 40px 40px 20px 40px;
+  background-color: #0a0417;
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.config span {
+  color:#5f30cd;
+  font-family: 'Saira Extra Condensed', sans-serif;
+  font-size: .8em;
+}
+.config input {
+  width: 14em;
+  border-bottom: 1px #6f00f6 solid;
+  padding: 0.67em;
+  color: rgb(196, 196, 196);
+  margin-right: 2em;
+  font-size: 0.8em;
+}
+.proof-period input {
+  width: 4em;
+  border-bottom: 1px #6f00f6 solid;
+  padding: 0.67em;
+  color: rgb(196, 196, 196);
+  margin-right: 2em;
+  font-size: 0.8em;
+}
+.proof-period label {
+  font-size: .7em;
+  margin-right: 10px;
+  padding-top: 4px;
+}
+.eth-balance {
+  padding-top: 5px;
+  text-align: center;
+}
+.sub {
+  font-size: .6em;
+  color: pink;  
+}
+
+
+
+
 .eth-start {
   grid-column: 6 / 10;
   grid-row: 1;
@@ -91,11 +147,12 @@ body {
 }
 
 .tip {
-  grid-column: 8 / 10;
+  /* grid-column: 8 / 10;
   grid-row: 2;
   justify-self: end;
   padding-right: 3em;
-  margin-top: 30px;
+  margin-top: 30px; */
+  font-family: 'Saira Extra Condensed', sans-serif;
   text-align: right;
 }
 .tip span {
@@ -537,3 +594,70 @@ input[type="checkbox"].check-custom.toggle-switch:checked
   }
 }
 
+
+
+/* The pp-select */
+.pp-select {
+  display: inline;
+  position: relative;
+  padding-left: 35px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.pp-select input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #6F00F6;
+}
+
+/* On mouse-over, add a grey background color */
+.pp-select:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.pp-select input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.pp-select input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.pp-select .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
