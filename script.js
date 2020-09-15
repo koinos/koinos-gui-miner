@@ -1,11 +1,14 @@
 const { ipcRenderer } = require('electron');
 const KoinosNotifications = require('./assets/js/notifications.js');
-const endpoint = 'http://localhost:8545';
 var currentHashrate = null;
 
 function onStateRestoration(s) {
   onMinerActivated(s.get(KoinosNotifications.MinerActivated));
   onKoinBalanceUpdate(s.get(KoinosNotifications.KoinBalanceUpdate));
+
+  let config = s.get('koinos-config');
+  document.getElementById("ethAddress").value = config.ethAddress;
+  document.getElementById("tip").checked = config.developerTip;
 }
 
 function onHashrateReportString(s) {
@@ -44,7 +47,6 @@ function onMinerActivated(state) {
 
 function onKoinBalanceUpdate(balance) {
   let result = "0.0";
-  console.log(balance);
   if (balance != 0) {
     const decimalPlaces = 8;
     result = (balance / (10 ** decimalPlaces)).toString();
@@ -85,14 +87,16 @@ function hashrateSpinner(state) {
 
 function toggleMiner() {
   let ethAddress = document.getElementById("ethAddress").value;
-  let enableTip = document.getElementById("tip").checked;
+  let developerTip = document.getElementById("tip").checked;
+  let endpoint = 'http://localhost:8545';
+  let proofPeriod = 60;
   let tip = 0;
 
-  if (enableTip) {
+  if (developerTip) {
     tip = 5;
   }
 
-  ipcRenderer.invoke(KoinosNotifications.ToggleMiner, ethAddress, endpoint, tip, 60);
+  ipcRenderer.invoke(KoinosNotifications.ToggleMiner, ethAddress, endpoint, tip, proofPeriod);
 }
 
 ipcRenderer.on(KoinosNotifications.RestoreState, (event, arg) => {
