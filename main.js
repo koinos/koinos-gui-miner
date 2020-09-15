@@ -1,11 +1,10 @@
 const electron = require('electron');
-const { app, BrowserWindow, ipcMain } = require("electron")
-//const { ipcMain } = require('electron');
+const { app, ipcMain, BrowserWindow } = require("electron");
 const { keystore, signing } = require('eth-lightwallet');
 const fs = require('fs');
 const KnsToken = JSON.parse(fs.readFileSync('./KnsToken.json', 'utf8'));
 const path = require('path');
-const KoinosState = require('./assets/js/notifications.js');
+const KoinosNotifications = require('./assets/js/notifications.js');
 let Web3 = require('web3');
 let Tx = require('ethereumjs-tx').Transaction;
 let KoinosMiner = require('koinos-miner');
@@ -17,10 +16,20 @@ let win = null;
 let contract = null;
 let web3 = null;
 let address = null;
+
+const configFile = './config.json';
+
 let state = new Map([
-  [KoinosState.MinerActivated, false],
-  [KoinosState.KoinBalanceUpdate, 0]
+  [KoinosNotifications.MinerActivated, false],
+  [KoinosNotifications.KoinBalanceUpdate, 0]
 ]);
+
+let config = {
+  ethAddress: "",
+  developerTip: true,
+  endpoint: "http://localhost:8546",
+  proofPeriod: 60
+};
 
 const KnsTokenAddress = '0xb09672ad9faAD450D7A50ABEF772F8B8EA38f8d4';
 const OpenOrchardAddress = '0xCd06f2eb4E5424f9681bA07CB3C7487FEc0341EC';
@@ -35,15 +44,18 @@ function notify(event, args) {
 }
 
 function readConfiguration() {
-  const filename = "./config.json";
-  let config = {
-    ethAddress: "",
-    developerTip: true
-  };
-  if (fs.existsSync(filename)) {
-    config = JSON.parse(fs.readFileSync(filename, 'utf8'));
+  if (fs.existsSync(configFile)) {
+    config = JSON.parse(fs.readFileSync(configFile, 'utf8'));
   }
+
+  openKeystore();
+
   return config;
+}
+
+function writeConfiguration() {
+  fs.writeFileSync(configFile, JSON.stringify(config));
+  saveKeystore();
 }
 
 function createWindow() {
@@ -60,17 +72,18 @@ function createWindow() {
     show: false
   });
 
+  state.set('koinos-config', readConfiguration());
+
   // and load the index.html of the app.
   win.loadFile("index.html");
 
   win.webContents.on('did-finish-load', function() {
-    console.log(state);
-    win.send(KoinosState.RestoreState, state);
+    win.send(KoinosNotifications.RestoreState, state);
     win.show();
   });
 
   // Open the DevTools.
-  win.webContents.openDevTools();
+  //win.webContents.openDevTools();
 }
 
 // This method will be called when Electron has finished
@@ -108,14 +121,14 @@ app.on('before-quit', () => {
 // code. You can also put them in separate files and require them here.
 
 function hashrateCallback(hashrate) {
-  notify(KoinosState.HashrateReport, hashrate);
-  notify(KoinosState.HashrateReportString, KoinosMiner.formatHashrate(hashrate));
+  notify(KoinosNotifications.HashrateReport, hashrate);
+  notify(KoinosNotifications.HashrateReportString, KoinosMiner.formatHashrate(hashrate));
 }
 
 function proofCallback(submission) {
   if (web3 !== null && address !== null && contract !== null) {
     contract.methods.balanceOf(address).call({from: address}, function(error, result) {
-      notify(KoinosState.KoinBalanceUpdate, result);
+      notify(KoinosNotifications.KoinBalanceUpdate, result);
     });
   }
 }
@@ -130,7 +143,7 @@ function enterPassword() {
 
 // Generate a new keystore
 // seedPhrase is optional, but allows for recovery of private key
-function openKeystore(seedPhrase) {
+function openKeystore() {
    const keystorePath = path.join((electron.app || electron.remote.app).getPath('userData'), 'keystore.json');
    if (fs.existsSync(keystorePath)) {
       try {
@@ -139,29 +152,34 @@ function openKeystore(seedPhrase) {
    }
 
    if (ks === null) {
-      let password = createPassword();
-
-      if (!seedPhrase) {
-         seedPhrase = keystore.generateRandomSeed();
-         console.log(seedPhrase);
-      }
-
-      keystore.createVault({
-         password: password,
-         seedPhrase: seedPhrase,
-         hdPathString: "m/44'/60'/0'/0"
-      }, function (err, vault) {
-         if (err) throw err;
-         ks = vault;
-
-         ks.keyFromPassword(password, function (err, pwDerivedKey) {
-            if (err) throw err;
-            ks.generateNewAddress(pwDerivedKey, 1);
-         });
-      });
-
-      //return ks.getSeed(derivedKey);
+      createKeystore();
    }
+}
+
+function createKeystore(seedPhrase) {
+   let password = createPassword();
+
+   if (!seedPhrase) {
+      seedPhrase = keystore.generateRandomSeed();
+      console.log(seedPhrase);
+   }
+
+   keystore.createVault({
+      password: password,
+      seedPhrase: seedPhrase,
+      hdPathString: "m/44'/60'/0'/0"
+   }, function (err, vault) {
+      if (err) throw err;
+      ks = vault;
+
+      ks.keyFromPassword(password, function (err, pwDerivedKey) {
+         if (err) throw err;
+         ks.generateNewAddress(pwDerivedKey, 1);
+         console.log(getAddresses()[0]);
+      });
+   });
+
+   //return ks.getSeed(derivedKey);
 }
 
 function saveKeystore() {
@@ -216,43 +234,44 @@ ipcMain.handle('toggle-miner', (event, ...args) => {
 
     assert (ks !== null);
 
-    if (!state.get(KoinosState.MinerActivated)) {
-      var ethAddress = args[0];
-      var endpoint = args[1];
-      var tip = args[2];
-      var proofPeriod = args[3];
+    if (!state.get(KoinosNotifications.MinerActivated)) {
+      config.ethAddress = args[0];
+      config.endpoint = args[1];
+      config.developerTip = args[2];
+      config.proofPeriod = args[3];
+
       ks.keyFromPassword(enterPassword(), function (err, pwDerivedKey) {
          if (err) throw err;
          assert (ks.isDerivedKeyCorrect(pwDerivedKey));
          derivedKey = pwDerivedKey;
       });
 
-      address = ethAddress;
-      web3 = new Web3(endpoint);
-      contract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress, {from: ethAddress, gasPrice:'20000000000', gas: 6721975});
+      address = config.ethAddress;
+      web3 = new Web3(config.endpoint);
+      contract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress, {from: config.ethAddress, gasPrice:'20000000000', gas: 6721975});
       contract.methods.balanceOf(address).call({from: address}, function(error, result) {
-        console.log(result);
-        notify(KoinosState.KoinBalanceUpdate, result);
+        notify(KoinosNotifications.KoinBalanceUpdate, result);
       });
       miner = new KoinosMiner(
-        ethAddress,
+        config.ethAddress,
         OpenOrchardAddress,
         getAddresses()[0],
         KnsTokenMiningAddress,
-        endpoint,
-        tip,
-        proofPeriod,
+        config.endpoint,
+        config.developerTip,
+        config.proofPeriod,
         signCallback,
         hashrateCallback,
         proofCallback);
       miner.start();
-      state.set(KoinosState.MinerActivated, true);
+      state.set(KoinosNotifications.MinerActivated, true);
+      writeConfiguration();
     }
     else {
       stopMiner();
     }
 
-    notify(KoinosState.MinerActivated, state.get(KoinosState.MinerActivated));
+    notify(KoinosNotifications.MinerActivated, state.get(KoinosNotifications.MinerActivated));
   }
   catch (err) {
     stopMiner();
