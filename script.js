@@ -88,7 +88,7 @@ function hashrateSpinner(state) {
 function toggleMiner() {
   let ethAddress = document.getElementById("ethAddress").value;
   let developerTip = document.getElementById("tip").checked;
-  let endpoint = 'http://localhost:8546';
+  let endpoint = 'http://localhost:8545';
   let proofPeriod = 60;
   let tip = 0;
 

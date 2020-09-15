@@ -27,7 +27,7 @@ let state = new Map([
 let config = {
   ethAddress: "",
   developerTip: true,
-  endpoint: "http://localhost:8546",
+  endpoint: "http://localhost:8545",
   proofPeriod: 60
 };
 
@@ -195,9 +195,11 @@ function getAddresses() {
 
 async function signCallback(web3, txData) {
    assert (ks !== null && derivedKey !== null)
+   txData.nonce = await web3.eth.getTransactionCount(
+      txData.from
+   );
+
    let rawTx = new Tx(txData);
-   console.log(txData);
-   console.log(rawTx.serialize());
    return signing.signTx(ks, derivedKey, rawTx.serialize(), txData.from);
 }
 
@@ -223,7 +225,7 @@ function stopMiner() {
    miner = null;
    contract = null;
    derivedKey = null;
-   state.set(KoinosState.MinerActivated, false);
+   state.set(KoinosNotifications.MinerActivated, false);
 }
 
 ipcMain.handle('toggle-miner', (event, ...args) => {
