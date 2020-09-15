@@ -28,7 +28,8 @@
     "electron": "^10.1.0"
   },
   "dependencies": {
-    "koinos-miner": "git@github.com:open-orchard/koinos-miner.git",
+    "eth-lightwallet": "^4.0.0",
+    "koinos-miner": "git@github.com:open-orchard/koinos-miner.git#26-tx-signing",
     "web3": "^1.2.11"
   }
 }
