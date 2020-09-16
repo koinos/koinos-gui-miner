@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Koinos Miner!</title>
+  <title>Koinos Miner</title>
   <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
   <link rel="stylesheet" href="assets/css/normalize.css" />
   <link rel="stylesheet" href="assets/css/style.css" />
@@ -19,26 +19,26 @@
   <div class="config">
     <div>
       <span>Ethereum Endpoint</span>
-      <div><input type="text" value="value"></div>
+      <div><input id="eth-endpoint" type="text" value=""></div>
     </div>
     <div class="proof-period">
       <span>Proof Frequency</span>
       <div>
-        <input type="text" value="6">
+        <input id="proof-period" type="text" value="">
       </div>
     </div>
     <div class="periods">
       <div class="per">Per</div>
       <div>
-        <span id="checkDay" class="toggle checked" onclick="ppToggle('day')">Day</span><span id="checkWeek"
-          class="toggle" onclick="ppToggle('week')">Week</span>
+        <span id="checkDay" class="toggle checked" onclick="toggleProofPeriod('day')">Day</span><span id="checkWeek"
+          class="toggle" onclick="toggleProofPeriod('week')">Week</span>
       </div>
     </div>
     <div>
       <span>Ether Balance</span>
       <div class="eth-balance">
-        0.0002 ETH
-        <div class="sub">Low Balance</div>
+        <div id="eth-balance">0.0 ETH</div>
+        <div id="eth-balance-sub" class="sub"></div>
       </div>
     </div>
     <div>
@@ -115,7 +115,7 @@
     </span>
     <div class="errors">
       <!-- <img src="assets/images/error_outline-24px.svg" alt=""> -->
-      <span class="error-message">
+      <span id="error-message" class="error-message">
         This is an error, very likely that it's Steve's fault.
       </span>
     </div>
@@ -123,21 +123,6 @@
   <script src="assets/js/d3.min.js"></script>
   <script src="assets/js/graph.js"></script>
   <script src="script.js"></script>
-  <script>
-    function ppToggle(which) {
-      var day = document.getElementById("checkDay");
-      var week = document.getElementById("checkWeek");
-      if (which === 'day') {
-        week.classList.remove("checked");
-        day.classList.add("checked");
-      } else {
-        day.classList.remove("checked");
-        week.classList.add("checked");
-      }
-      console.log(which);
-    }
-  </script>
-
 
 </body>
 

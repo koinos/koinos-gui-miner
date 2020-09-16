@@ -9,6 +9,20 @@ function onStateRestoration(s) {
   let config = s.get(Koinos.StateKey.Configuration);
   document.getElementById("ethAddress").value = config.ethAddress;
   document.getElementById("tip").checked = config.developerTip;
+  document.getElementById("eth-endpoint").value = config.endpoint;
+  document.getElementById("proof-period").value = config.proofPeriod;
+}
+
+function toggleProofPeriod(which) {
+  var day = document.getElementById("checkDay");
+  var week = document.getElementById("checkWeek");
+  if (which === 'day') {
+    week.classList.remove("checked");
+    day.classList.add("checked");
+  } else {
+    day.classList.remove("checked");
+    week.classList.add("checked");
+  }
 }
 
 function onErrorReport(e) {
@@ -16,7 +30,7 @@ function onErrorReport(e) {
 }
 
 function onEthBalanceUpdate(b) {
-  console.log(b + " ETH");
+  document.getElementById("eth-balance").innerHTML = b + " ETH";
 }
 
 function onHashrateReportString(s) {
@@ -96,7 +110,7 @@ function hashrateSpinner(state) {
 function toggleMiner() {
   let ethAddress = document.getElementById("ethAddress").value;
   let developerTip = document.getElementById("tip").checked;
-  let endpoint = 'http://localhost:8545';
+  let endpoint = document.getElementById("eth-endpoint").value;
   let proofPeriod = 60;
   let tip = 0;
 
