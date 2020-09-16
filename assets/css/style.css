@@ -18,9 +18,13 @@ body {
   -webkit-app-region: drag;
   overflow: hidden;
 }
+.top-grid {
+  display: grid;
+  padding: 1em 2em 0 2em;
+}
 
 .grid-container {
-  padding: 2em;
+  padding: 1em 2em 2em 2em;
   align-items: center;
   display: -ms-grid;
   display: grid;
@@ -34,9 +38,7 @@ body {
 }
 
 .brand {
-  grid-column: 1 / 2;
-  grid-row: 1;
-  grid-row-end: auto;
+  width: 10em;
 }
 .version {
   position: absolute;
@@ -70,25 +72,41 @@ a {
   font-size: .8em;
 }
 .config input {
-  width: 14em;
+  width: 18em;
   border-bottom: 1px #6f00f6 solid;
   padding: 0.67em;
   color: rgb(196, 196, 196);
   margin-right: 2em;
   font-size: 0.8em;
 }
+.proof-period {
+  margin-left: -70px;
+}
 .proof-period input {
-  width: 4em;
+  width: 6em;
   border-bottom: 1px #6f00f6 solid;
   padding: 0.67em;
   color: rgb(196, 196, 196);
   margin-right: 2em;
   font-size: 0.8em;
+  text-align: center;
 }
 .proof-period label {
   font-size: .7em;
   margin-right: 10px;
   padding-top: 4px;
+}
+.per {
+  font-family: 'Saira Extra Condensed', sans-serif;
+  width: 85px;
+  padding-right: 8px;
+  text-align: center;
+  margin: 2px 0px 10px 0;
+  color: #6f00f6;
+  font-size: .7em;
+}
+.periods {
+  margin-left: -130px;
 }
 .eth-balance {
   padding-top: 5px;
@@ -98,9 +116,6 @@ a {
   font-size: .6em;
   color: pink;  
 }
-
-
-
 
 .eth-start {
   grid-column: 6 / 10;
@@ -146,12 +161,16 @@ a {
   filter: opacity(.4);
 }
 
+.key-managment {
+  border: 1px solid #5f30cd;
+  color: #5f30cd;
+  padding: 5px 15px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+
 .tip {
-  /* grid-column: 8 / 10;
-  grid-row: 2;
-  justify-self: end;
-  padding-right: 3em;
-  margin-top: 30px; */
   font-family: 'Saira Extra Condensed', sans-serif;
   text-align: right;
 }
@@ -213,18 +232,19 @@ a {
   padding: 2em;
 }
 
+
 /* glow */
     .blob {
       position: absolute;
-      left:40px;
-      top: 40px;
+      left:50px;
+      top: 50px;
       background:none;
       border: 10px solid #2C1856;
       filter: blur(10px);
       border-radius: 50%;
       margin: 10px;
-      height: 16em;
-      width: 16em;
+      height: 18em;
+      width: 18em;
       box-shadow: 0 0 0 0 rgb(74, 8, 121);
       transform: scale(1);
       animation: pulse 4s infinite;
@@ -246,6 +266,22 @@ a {
         box-shadow: 0 0 0 0 rgba(74, 8, 121, 0);
       }
     }
+
+
+.errors {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: red;
+  padding: 2em;
+  padding-left: 5em;
+  visibility: hidden;
+}
+.error-message img {
+  height: 50px;
+}
+
 
 /* input resets */
 *:focus {
@@ -607,6 +643,7 @@ input[type="checkbox"].check-custom.toggle-switch:checked
   border: 1px #6F00F6 solid;
   border-top-left-radius: 2em;
   border-bottom-left-radius: 2em;
+  cursor: pointer; 
 }
 #checkWeek {
   padding: 8px;
@@ -615,6 +652,7 @@ input[type="checkbox"].check-custom.toggle-switch:checked
   border: 1px #6F00F6 solid;
   border-top-right-radius: 2em;
   border-bottom-right-radius: 2em;
+  cursor: pointer; 
 }
 
 

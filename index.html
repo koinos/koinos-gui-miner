@@ -18,18 +18,24 @@
 <body>
   <div class="config">
     <div>
-      <span>Node Endpoint</span>
+      <span>Ethereum Endpoint</span>
       <div><input type="text" value="value"></div>
     </div>
     <div class="proof-period">
-      <span>Proof Period</span>
+      <span>Proof Frequency</span>
       <div>
-        <input type="text" value="value">
-        <span id="checkDay" class="checked">Day</span><span id="checkWeek" class="">Week</span>
+        <input type="text" value="6">
+      </div>
+    </div>
+    <div class="periods">
+      <div class="per">Per</div>
+      <div>
+        <span id="checkDay" class="toggle checked" onclick="ppToggle('day')">Day</span><span id="checkWeek"
+          class="toggle" onclick="ppToggle('week')">Week</span>
       </div>
     </div>
     <div>
-      <span>Ethereum Balance</span>
+      <span>Ether Balance</span>
       <div class="eth-balance">
         0.0002 ETH
         <div class="sub">Low Balance</div>
@@ -41,19 +47,18 @@
         <label>
           <input id="tip" type="checkbox" class="check-custom toggle-switch disabled" checked /><span id="check-toggle"
             class="check-toggle">
-
           </span>
         </label>
         <div class="thank-you">OpenOrchard thanks you!</div>
       </div>
     </div>
   </div>
-  <div class="grid-container">
+  <div class="top-grid">
     <div class="brand">
       <img src="assets/images/koinos-logo.svg" alt="" />
     </div>
-
     <div class="eth-start">
+      <span class="key-managment" onclick="manageKeys()">Keys</span>
       <input id="ethAddress" type="text" placeholder="ETH address"
         value="0x26F632333F8346877f58B200f98346F3Db67B506" /><button onClick="toggleMiner();" id="power-button"
         class="redBorder" onblur="">
@@ -64,8 +69,8 @@
         </svg>
       </button>
     </div>
-
-
+  </div>
+  <div class="grid-container">
     <div class="koin-mined">
       <div>
         <div id="koin-balance" class="km-text">0.0</div>
@@ -108,12 +113,29 @@
         Documentation</a>
       v0.01
     </span>
+    <div class="errors">
+      <!-- <img src="assets/images/error_outline-24px.svg" alt=""> -->
+      <span class="error-message">
+        This is an error, very likely that it's Steve's fault.
+      </span>
+    </div>
   </div>
   <script src="assets/js/d3.min.js"></script>
   <script src="assets/js/graph.js"></script>
   <script src="script.js"></script>
   <script>
-
+    function ppToggle(which) {
+      var day = document.getElementById("checkDay");
+      var week = document.getElementById("checkWeek");
+      if (which === 'day') {
+        week.classList.remove("checked");
+        day.classList.add("checked");
+      } else {
+        day.classList.remove("checked");
+        week.classList.add("checked");
+      }
+      console.log(which);
+    }
   </script>
 
 

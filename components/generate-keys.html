@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    /*
+      Colors:
+      Green: 34DD00
+      Red: DD003F
+      Light Purple: 6F00F6
+      Very Deep Purple: 0F091F
+    */
+    body {
+      color: white;
+      -webkit-app-region: no-drag;
+    }
+
+    input {
+      width: 25em;
+      border-bottom: 1px #6f00f6 solid;
+      padding: 0.67em;
+      color: white;
+      font-size: 1em;
+      text-align: center;
+      background-color: none;
+    }
+
+    #generateButton {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background-color: #6F00F6;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      font-size: 1em;
+      margin-top: 1em;
+      cursor: pointer;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      align-items: center;
+      padding: 1.4em;
+    }
+
+    .input-area {
+      width: 400px;
+    }
+
+    .message {
+      margin-top: 50px;
+    }
+
+    p {
+      font-size: .8em;
+    }
+  </style>
+  <title>Create</title>
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="input-area">
+      <h2>Create Private Key</h2>
+      <p></p>
+      <form action="">
+        <input type="text" placeholder="Password">
+        <input type="text" placeholder="Confirm Password">
+        <span id="generateButton" onclick="closeKeyss()">Generate Keys</span>
+      </form>
+      <div class="message">
+        <h2>Read Carefully!</h2>
+        <p>We cannot recover your password! If you lose your password the only way to recover your account is with your
+          12
+          word phrase. THERE IS NO WAY TO RECOVER THE 12 WORD PHRASE! It is most advisable to write down your 12 word
+          phrase and store it somewhwere safe. Also make sure someone you trust has a copy in case you die in the
+          upcoming civil war, riots, corona virus, wild fires, hurricanes etc.
+        </p>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+  <script>
+    function closeKeyss() {
+      console.log('clicked')
+    }
+  </script>
+</body>
+
+</html>
