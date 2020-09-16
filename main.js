@@ -62,10 +62,11 @@ function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
     width: 1200,
-    height: 600,
+    height: 660,
     icon: path.join(__dirname, 'assets/icons/png/koinos-icon_512.png'),
     titleBarStyle: "hidden",
     resizable: false,
+    maximizable: false,
     webPreferences: {
       nodeIntegration: true,
     },
@@ -74,13 +75,35 @@ function createWindow() {
 
   state.set('koinos-config', readConfiguration());
 
+  // login = new BrowserWindow({
+  //   parent: win,
+  //   modal: true,
+  //   width: 600,
+  //   height: 620,
+  //   titleBarStyle: "hidden",
+  //   frame: false,
+  //   resizable: false,
+  //   maximizable: false,
+
+  //   webPreferences: {
+  //     nodeIntegration: true,
+  //   },
+  // })
+
   // and load the index.html of the app.
+<<<<<<< HEAD
   win.loadFile("index.html");
 
   win.webContents.on('did-finish-load', function() {
     win.send(KoinosNotifications.RestoreState, state);
     win.show();
   });
+=======
+  win.loadFile("index.html")
+  // login.loadFile("generate-key.html")
+
+
+>>>>>>> 21-finish-design-of-gui-miner
 
   // Open the DevTools.
   //win.webContents.openDevTools();
@@ -99,6 +122,7 @@ app.on("window-all-closed", () => {
     app.quit()
   }
   win = null;
+  login = null;
 })
 
 app.on("activate", () => {
@@ -230,6 +254,7 @@ function stopMiner() {
 
 ipcMain.handle('toggle-miner', (event, ...args) => {
   try {
+<<<<<<< HEAD
     if (ks === null ) {
        openKeystore();
     }
@@ -253,6 +278,18 @@ ipcMain.handle('toggle-miner', (event, ...args) => {
       contract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress, {from: config.ethAddress, gasPrice:'20000000000', gas: 6721975});
       contract.methods.balanceOf(address).call({from: address}, function(error, result) {
         notify(KoinosNotifications.KoinBalanceUpdate, result);
+=======
+    if (miner === null) {
+      var ethAddress = args[0];
+      var endpoint = args[1];
+      var tip = args[2];
+      var proofPeriod = args[3];
+      address = ethAddress;
+      web3 = new Web3(endpoint);
+      contract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress, { from: ethAddress, gasPrice: '20000000000', gas: 6721975 });
+      contract.methods.balanceOf(address).call({ from: address }, function (error, result) {
+        win.send('koin-balance-update', result);
+>>>>>>> 21-finish-design-of-gui-miner
       });
       miner = new KoinosMiner(
         config.ethAddress,
