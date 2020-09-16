@@ -4,7 +4,7 @@ const { keystore, signing } = require('eth-lightwallet');
 const fs = require('fs');
 const KnsToken = JSON.parse(fs.readFileSync('./KnsToken.json', 'utf8'));
 const path = require('path');
-const KoinosNotifications = require('./assets/js/notifications.js');
+const Koinos = require('./assets/js/constants.js');
 let Web3 = require('web3');
 let Tx = require('ethereumjs-tx').Transaction;
 let KoinosMiner = require('koinos-miner');
@@ -15,13 +15,12 @@ let derivedKey = null;
 let win = null;
 let contract = null;
 let web3 = null;
-let address = null;
 
 const configFile = './config.json';
 
 let state = new Map([
-  [KoinosNotifications.MinerActivated, false],
-  [KoinosNotifications.KoinBalanceUpdate, 0]
+  [Koinos.StateKey.MinerActivated, false],
+  [Koinos.StateKey.KoinBalanceUpdate, 0]
 ]);
 
 let config = {
@@ -73,29 +72,17 @@ function createWindow() {
     show: false
   });
 
-  state.set('koinos-config', readConfiguration());
-
-  // login = new BrowserWindow({
-  //   parent: win,
-  //   modal: true,
-  //   width: 600,
-  //   height: 620,
-  //   titleBarStyle: "hidden",
-  //   frame: false,
-  //   resizable: false,
-  //   maximizable: false,
-
-  //   webPreferences: {
-  //     nodeIntegration: true,
-  //   },
-  // })
+  state.set(Koinos.StateKey.Configuration, readConfiguration());
 
   // and load the index.html of the app.
   win.loadFile("index.html");
 
   win.webContents.on('did-finish-load', function() {
-    win.send(KoinosNotifications.RestoreState, state);
-    win.show();
+    win.send(Koinos.Notifications.RestoreState, state);
+  });
+
+  win.once('ready-to-show', () => {
+    win.show()
   });
 
   // Open the DevTools.
@@ -122,7 +109,7 @@ app.on("activate", () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow()
+    createWindow();
   }
 })
 
@@ -138,14 +125,23 @@ app.on('before-quit', () => {
 // code. You can also put them in separate files and require them here.
 
 function hashrateCallback(hashrate) {
-  notify(KoinosNotifications.HashrateReport, hashrate);
-  notify(KoinosNotifications.HashrateReportString, KoinosMiner.formatHashrate(hashrate));
+  notify(Koinos.Notifications.HashrateReport, hashrate);
+  notify(Koinos.Notifications.HashrateReportString, KoinosMiner.formatHashrate(hashrate));
 }
 
 function proofCallback(submission) {
-  if (web3 !== null && address !== null && contract !== null) {
-    contract.methods.balanceOf(address).call({from: address}, function(error, result) {
-      notify(KoinosNotifications.KoinBalanceUpdate, result);
+  if (web3 !== null && contract !== null) {
+    contract.methods.balanceOf(config.ethAddress).call({from: config.ethAddress}, function(error, result) {
+      notify(Koinos.Notifications.KoinBalanceUpdate, result);
+    });
+
+    web3.eth.getBalance(getAddresses()[0], function(err, result) {
+      if (err) {
+        notify(Koinos.Notifications.ErrorReport, err);
+      } else {
+        let ether = web3.utils.fromWei(result, "ether");
+        notify(Koinos.Notifications.EthBalanceUpdate, ether);
+      }
     });
   }
 }
@@ -237,15 +233,14 @@ function stopMiner() {
       miner.stop();
    }
 
-   address = null;
    web3 = null;
    miner = null;
    contract = null;
    derivedKey = null;
-   state.set(KoinosNotifications.MinerActivated, false);
+   state.set(Koinos.StateKey.MinerActivated, false);
 }
 
-ipcMain.handle('toggle-miner', (event, ...args) => {
+ipcMain.handle(Koinos.Notifications.ToggleMiner, (event, ...args) => {
   try {
     if (ks === null ) {
        openKeystore();
@@ -253,7 +248,7 @@ ipcMain.handle('toggle-miner', (event, ...args) => {
 
     assert (ks !== null);
 
-    if (!state.get(KoinosNotifications.MinerActivated)) {
+    if (!state.get(Koinos.StateKey.MinerActivated)) {
       config.ethAddress = args[0];
       config.endpoint = args[1];
       config.developerTip = args[2];
@@ -264,12 +259,24 @@ ipcMain.handle('toggle-miner', (event, ...args) => {
          assert (ks.isDerivedKeyCorrect(pwDerivedKey));
          derivedKey = pwDerivedKey;
       });
-
-      address = config.ethAddress;
+      console.log(getAddresses()[0]);
       web3 = new Web3(config.endpoint);
       contract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress, {from: config.ethAddress, gasPrice:'20000000000', gas: 6721975});
-      contract.methods.balanceOf(address).call({from: address}, function(error, result) {
-        notify(KoinosNotifications.KoinBalanceUpdate, result);
+      contract.methods.balanceOf(config.ethAddress).call({from: config.ethAddress}, function(err, result) {
+        if (err) {
+          notify(Koinos.Notifications.ErrorReport, err);
+        }
+        else {
+          notify(Koinos.Notifications.KoinBalanceUpdate, result);
+        }
+      });
+      web3.eth.getBalance(getAddresses()[0], function(err, result) {
+        if (err) {
+          notify(Koinos.Notifications.ErrorReport, err);
+        } else {
+          let ether = web3.utils.fromWei(result, "ether");
+          notify(Koinos.Notifications.EthBalanceUpdate, ether);
+        }
       });
       miner = new KoinosMiner(
         config.ethAddress,
@@ -283,17 +290,17 @@ ipcMain.handle('toggle-miner', (event, ...args) => {
         hashrateCallback,
         proofCallback);
       miner.start();
-      state.set(KoinosNotifications.MinerActivated, true);
+      state.set(Koinos.StateKey.MinerActivated, true);
       writeConfiguration();
     }
     else {
       stopMiner();
     }
 
-    notify(KoinosNotifications.MinerActivated, state.get(KoinosNotifications.MinerActivated));
+    notify(Koinos.Notifications.MinerActivated, state.get(Koinos.StateKey.MinerActivated));
   }
   catch (err) {
     stopMiner();
-    console.log(err.message);
+    notify(Koinos.Notifications.ErrorReport, err);
   }
 });

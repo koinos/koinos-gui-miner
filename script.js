@@ -1,14 +1,22 @@
 const { ipcRenderer } = require('electron');
-const KoinosNotifications = require('./assets/js/notifications.js');
+const Koinos = require('./assets/js/constants.js');
 var currentHashrate = null;
 
 function onStateRestoration(s) {
-  onMinerActivated(s.get(KoinosNotifications.MinerActivated));
-  onKoinBalanceUpdate(s.get(KoinosNotifications.KoinBalanceUpdate));
+  onMinerActivated(s.get(Koinos.StateKey.MinerActivated));
+  onKoinBalanceUpdate(s.get(Koinos.StateKey.KoinBalanceUpdate));
 
-  let config = s.get('koinos-config');
+  let config = s.get(Koinos.StateKey.Configuration);
   document.getElementById("ethAddress").value = config.ethAddress;
   document.getElementById("tip").checked = config.developerTip;
+}
+
+function onErrorReport(e) {
+  console.log("Error: " + e);
+}
+
+function onEthBalanceUpdate(b) {
+  console.log(b + " ETH");
 }
 
 function onHashrateReportString(s) {
@@ -96,25 +104,33 @@ function toggleMiner() {
     tip = 5;
   }
 
-  ipcRenderer.invoke(KoinosNotifications.ToggleMiner, ethAddress, endpoint, tip, proofPeriod);
+  ipcRenderer.invoke(Koinos.Notifications.ToggleMiner, ethAddress, endpoint, tip, proofPeriod);
 }
 
-ipcRenderer.on(KoinosNotifications.RestoreState, (event, arg) => {
+ipcRenderer.on(Koinos.Notifications.RestoreState, (event, arg) => {
   onStateRestoration(arg);
 });
 
-ipcRenderer.on(KoinosNotifications.KoinBalanceUpdate, (event, arg) => {
+ipcRenderer.on(Koinos.Notifications.KoinBalanceUpdate, (event, arg) => {
   onKoinBalanceUpdate(arg);
 });
 
-ipcRenderer.on(KoinosNotifications.HashrateReportString, (event, arg) => {
+ipcRenderer.on(Koinos.Notifications.HashrateReportString, (event, arg) => {
   onHashrateReportString(arg);
 });
 
-ipcRenderer.on(KoinosNotifications.HashrateReport, (event, arg) => {
+ipcRenderer.on(Koinos.Notifications.HashrateReport, (event, arg) => {
   onHashrateReport(arg);
 });
 
-ipcRenderer.on(KoinosNotifications.MinerActivated, (event, state) => {
+ipcRenderer.on(Koinos.Notifications.MinerActivated, (event, state) => {
   onMinerActivated(state);
+});
+
+ipcRenderer.on(Koinos.Notifications.EthBalanceUpdate, (event, arg) => {
+  onEthBalanceUpdate(arg);
+});
+
+ipcRenderer.on(Koinos.Notifications.ErrorReport, (event, arg) => {
+  onErrorReport(arg);
 });
