@@ -1,4 +1,4 @@
-language: cpp
+language: c
 
 node_js:
   - "12"
