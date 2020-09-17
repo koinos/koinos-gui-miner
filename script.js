@@ -48,7 +48,18 @@ function onErrorReport(e) {
 }
 
 function onEthBalanceUpdate(b) {
-  document.getElementById(Koinos.Field.EthBalance).innerHTML = b + " ETH";
+  let wei = b[0];
+  let cost = b[1];
+
+  if (cost > 0) {
+    let numProofs = Math.floor(wei/cost);
+    document.getElementById(Koinos.Field.EthBalanceSub).innerHTML = "Approx. <br/>" + numProofs + " Proofs Left"; 
+  }
+  else {
+    document.getElementById(Koinos.Field.EthBalanceSub).innerHTML = ""; 
+  }
+
+  document.getElementById(Koinos.Field.EthBalance).innerHTML = (wei/Koinos.Ether.WeiPerEth).toFixed(4) + " ETH";
 }
 
 function onHashrateReportString(s) {

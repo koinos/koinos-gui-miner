@@ -21,7 +21,7 @@ const configFile = path.join((electron.app || electron.remote.app).getPath('user
 let state = new Map([
   [Koinos.StateKey.MinerActivated, false],
   [Koinos.StateKey.KoinBalanceUpdate, 0],
-  [Koinos.StateKey.EthBalanceUpdate, 0]
+  [Koinos.StateKey.EthBalanceUpdate, [0,0]]
 ]);
 
 let config = {
@@ -141,8 +141,12 @@ function proofCallback(submission) {
       if (err) {
         notify(Koinos.StateKey.ErrorReport, err);
       } else {
-        let ether = web3.utils.fromWei(result, "ether");
-        notify(Koinos.StateKey.EthBalanceUpdate, ether);
+        let lastEthBalance = state.get(Koinos.StateKey.EthBalanceUpdate)[0];
+        let lastProofCost = state.get(Koinos.StateKey.EthBalanceUpdate)[1];
+        if (lastEthBalance > 0 && lastEthBalance != result) {
+          lastProofCost = lastEthBalance - result;
+        }
+        notify(Koinos.StateKey.EthBalanceUpdate, [result, lastProofCost]);
       }
     });
   }
@@ -277,8 +281,7 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, (event, ...args) => {
         if (err) {
           notify(Koinos.StateKey.ErrorReport, err);
         } else {
-          let ether = web3.utils.fromWei(result, "ether");
-          notify(Koinos.StateKey.EthBalanceUpdate, ether);
+          notify(Koinos.StateKey.EthBalanceUpdate, [result, 0]);
         }
       });
 

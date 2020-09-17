@@ -14,6 +14,9 @@ module.exports = {
     SecondsPerDay: 86400,
     SecondsPerWeek: 86400 * 7
   },
+  Ether: {
+    WeiPerEth: 1000000000000000000
+  },
   Field: {
     Tip: "tip",
     CheckToggle: "check-toggle",
@@ -22,6 +25,7 @@ module.exports = {
     ProofFrequency: "proof-frequency",
     KoinBalance: "koin-balance",
     EthBalance: "eth-balance",
+    EthBalanceSub: "eth-balance-sub",
     CheckDay: "check-day",
     CheckWeek: "check-week",
     HashrateCurrent: "hashrate-current",
