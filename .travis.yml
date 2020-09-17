@@ -1,12 +1,15 @@
-language: c
+language: node_js
 
 node_js:
   - "12"
-  
-compiler: gcc
 
 os:
   - windows
+  
+env:
+  - TRAVIS_COMPILER="gcc"
+  - CC="${CC:-gcc}"
+  - CC_FOR_BUILD="${CC_FOR_BUILD:-gcc}"
 
 before_install:
   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then choco upgrade chocolatey; fi
