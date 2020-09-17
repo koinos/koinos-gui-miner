@@ -636,7 +636,7 @@ input[type="checkbox"].check-custom.toggle-switch:checked
   color: #0F091F !important;
 }
 
-#checkDay {
+#check-day {
   padding: 8px;
   font-size: .6em;
   padding-left: 15px;
@@ -645,7 +645,7 @@ input[type="checkbox"].check-custom.toggle-switch:checked
   border-bottom-left-radius: 2em;
   cursor: pointer; 
 }
-#checkWeek {
+#check-week {
   padding: 8px;
   padding-right: 15px;
   font-size: .6em;

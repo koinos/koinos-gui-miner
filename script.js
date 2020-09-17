@@ -1,21 +1,29 @@
 const { ipcRenderer } = require('electron');
 const Koinos = require('./assets/js/constants.js');
+let minerIsRunning = false;
 var currentHashrate = null;
 
 function onStateRestoration(s) {
   onMinerActivated(s.get(Koinos.StateKey.MinerActivated));
   onKoinBalanceUpdate(s.get(Koinos.StateKey.KoinBalanceUpdate));
+  onEthBalanceUpdate(s.get(Koinos.StateKey.EthBalanceUpdate));
 
   let config = s.get(Koinos.StateKey.Configuration);
-  document.getElementById("ethAddress").value = config.ethAddress;
-  document.getElementById("tip").checked = config.developerTip;
-  document.getElementById("eth-endpoint").value = config.endpoint;
-  document.getElementById("proof-period").value = config.proofPeriod;
+  document.getElementById(Koinos.Field.EthAddress).value = config.ethAddress;
+  document.getElementById(Koinos.Field.Tip).checked = config.developerTip;
+  document.getElementById(Koinos.Field.EthEndpoint).value = config.endpoint;
+  document.getElementById(Koinos.Field.ProofFrequency).value = config.proofFrequency;
+  toggleProofPeriod(config.proofPer);
 }
 
 function toggleProofPeriod(which) {
-  var day = document.getElementById("checkDay");
-  var week = document.getElementById("checkWeek");
+  // Do not change toggle when mining
+  if (minerIsRunning) {
+    return;
+  }
+
+  var day = document.getElementById(Koinos.Field.CheckDay);
+  var week = document.getElementById(Koinos.Field.CheckWeek);
   if (which === 'day') {
     week.classList.remove("checked");
     day.classList.add("checked");
@@ -25,19 +33,29 @@ function toggleProofPeriod(which) {
   }
 }
 
+function getProofPer() {
+  var day = document.getElementById(Koinos.Field.CheckDay);
+  if (day.classList.contains("checked")) {
+    return "day";
+  }
+  else {
+    return "week";
+  }
+}
+
 function onErrorReport(e) {
   console.log("Error: " + e);
 }
 
 function onEthBalanceUpdate(b) {
-  document.getElementById("eth-balance").innerHTML = b + " ETH";
+  document.getElementById(Koinos.Field.EthBalance).innerHTML = b + " ETH";
 }
 
 function onHashrateReportString(s) {
   let stuff = s.split(" ");
   let rate = parseFloat(stuff[0]).toFixed(2);
-  document.getElementById("hashrate-current").innerHTML = rate.toString();
-  document.getElementById("hashrate-suffix").innerHTML = stuff[1];
+  document.getElementById(Koinos.Field.HashrateCurrent).innerHTML = rate.toString();
+  document.getElementById(Koinos.Field.HashrateSuffix).innerHTML = stuff[1];
 }
 
 function onHashrateReport(s) {
@@ -47,24 +65,37 @@ function onHashrateReport(s) {
 
 function onMinerActivated(state) {
   if (state) {
-    document.getElementById("tip").setAttribute("disabled", "true");
-    document.getElementById("check-toggle").className += " grayed";
-    document.getElementById("ethAddress").setAttribute("disabled", "true");
-    document.getElementById("ethAddress").className += " grayed";
+    document.getElementById(Koinos.Field.Tip).setAttribute("disabled", "true");
+    document.getElementById(Koinos.Field.CheckToggle).className += " grayed";
+    document.getElementById(Koinos.Field.EthAddress).setAttribute("disabled", "true");
+    document.getElementById(Koinos.Field.EthAddress).className += " grayed";
+    document.getElementById(Koinos.Field.EthEndpoint).setAttribute("disabled", "true");
+    document.getElementById(Koinos.Field.EthEndpoint).className += " grayed";
+    document.getElementById(Koinos.Field.ProofFrequency).setAttribute("disabled", "true");
+    document.getElementById(Koinos.Field.ProofFrequency).className += " grayed";
+    document.getElementById(Koinos.Field.CheckDay).className += " grayed";
+    document.getElementById(Koinos.Field.CheckWeek).className += " grayed";
   }
   else {
-    document.getElementById("tip").removeAttribute("disabled");
-    document.getElementById("check-toggle").classList.remove("grayed");
-    document.getElementById("ethAddress").removeAttribute("disabled");
-    document.getElementById("ethAddress").classList.remove("grayed");
+    document.getElementById(Koinos.Field.Tip).removeAttribute("disabled");
+    document.getElementById(Koinos.Field.CheckToggle).classList.remove("grayed");
+    document.getElementById(Koinos.Field.EthAddress).removeAttribute("disabled");
+    document.getElementById(Koinos.Field.EthAddress).classList.remove("grayed");
+    document.getElementById(Koinos.Field.EthEndpoint).removeAttribute("disabled");
+    document.getElementById(Koinos.Field.EthEndpoint).classList.remove("grayed");
+    document.getElementById(Koinos.Field.ProofFrequency).removeAttribute("disabled");
+    document.getElementById(Koinos.Field.ProofFrequency).classList.remove("grayed");
+    document.getElementById(Koinos.Field.CheckDay).classList.remove("grayed");
+    document.getElementById(Koinos.Field.CheckWeek).classList.remove("grayed");
 
-    document.getElementById("hashrate-current").innerHTML = "0.0";
-    document.getElementById("hashrate-suffix").innerHTML = "";
+    document.getElementById(Koinos.Field.HashrateCurrent).innerHTML = "0.0";
+    document.getElementById(Koinos.Field.HashrateSuffix).innerHTML = "";
     currentHashrate = 0;
   }
 
   hashrateSpinner(state);
   powerButton(state);
+  minerIsRunning = state;
 }
 
 function onKoinBalanceUpdate(balance) {
@@ -77,12 +108,12 @@ function onKoinBalanceUpdate(balance) {
       result = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "." + parts[1].substr(0, 3);
     }
   }
-  document.getElementById("koin-balance").innerHTML = result;
+  document.getElementById(Koinos.Field.KoinBalance).innerHTML = result;
 }
 
 function powerButton(state) {
-  let btn = document.getElementById("svg-button").classList;
-  let btnOn = document.getElementById("power-button").classList;
+  let btn = document.getElementById(Koinos.Field.SvgButton).classList;
+  let btnOn = document.getElementById(Koinos.Field.PowerButton).classList;
   if (state) {
     btn.remove('red');
     btn.add('green');
@@ -98,53 +129,49 @@ function powerButton(state) {
 
 function hashrateSpinner(state) {
   if (state) {
-    document.getElementById("hashrate-spinner").style.display = "";
-    document.getElementById("hashrate-current").innerHTML = "";
-    document.getElementById("hashrate-suffix").innerHTML = "";
+    document.getElementById(Koinos.Field.HashrateSpinner).style.display = "";
+    document.getElementById(Koinos.Field.HashrateCurrent).innerHTML = "";
+    document.getElementById(Koinos.Field.HashrateSuffix).innerHTML = "";
   }
   else {
-    document.getElementById("hashrate-spinner").style.display = "none";
+    document.getElementById(Koinos.Field.HashrateSpinner).style.display = "none";
   }
 }
 
 function toggleMiner() {
-  let ethAddress = document.getElementById("ethAddress").value;
-  let developerTip = document.getElementById("tip").checked;
-  let endpoint = document.getElementById("eth-endpoint").value;
-  let proofPeriod = 60;
-  let tip = 0;
+  let ethAddress = document.getElementById(Koinos.Field.EthAddress).value;
+  let developerTip = document.getElementById(Koinos.Field.Tip).checked;
+  let endpoint = document.getElementById(Koinos.Field.EthEndpoint).value;
+  let proofPeriod = document.getElementById(Koinos.Field.ProofFrequency).value;
+  let proofPer = getProofPer();
 
-  if (developerTip) {
-    tip = 5;
-  }
-
-  ipcRenderer.invoke(Koinos.Notifications.ToggleMiner, ethAddress, endpoint, tip, proofPeriod);
+  ipcRenderer.invoke(Koinos.StateKey.ToggleMiner, ethAddress, endpoint, developerTip, proofPeriod, proofPer);
 }
 
-ipcRenderer.on(Koinos.Notifications.RestoreState, (event, arg) => {
+ipcRenderer.on(Koinos.StateKey.RestoreState, (event, arg) => {
   onStateRestoration(arg);
 });
 
-ipcRenderer.on(Koinos.Notifications.KoinBalanceUpdate, (event, arg) => {
+ipcRenderer.on(Koinos.StateKey.KoinBalanceUpdate, (event, arg) => {
   onKoinBalanceUpdate(arg);
 });
 
-ipcRenderer.on(Koinos.Notifications.HashrateReportString, (event, arg) => {
+ipcRenderer.on(Koinos.StateKey.HashrateReportString, (event, arg) => {
   onHashrateReportString(arg);
 });
 
-ipcRenderer.on(Koinos.Notifications.HashrateReport, (event, arg) => {
+ipcRenderer.on(Koinos.StateKey.HashrateReport, (event, arg) => {
   onHashrateReport(arg);
 });
 
-ipcRenderer.on(Koinos.Notifications.MinerActivated, (event, state) => {
+ipcRenderer.on(Koinos.StateKey.MinerActivated, (event, state) => {
   onMinerActivated(state);
 });
 
-ipcRenderer.on(Koinos.Notifications.EthBalanceUpdate, (event, arg) => {
+ipcRenderer.on(Koinos.StateKey.EthBalanceUpdate, (event, arg) => {
   onEthBalanceUpdate(arg);
 });
 
-ipcRenderer.on(Koinos.Notifications.ErrorReport, (event, arg) => {
+ipcRenderer.on(Koinos.StateKey.ErrorReport, (event, arg) => {
   onErrorReport(arg);
 });
