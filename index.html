@@ -17,11 +17,11 @@
 
 <body>
   <div class="config">
-    <div>
+    <div class="no-drag">
       <span>Ethereum Endpoint</span>
       <div><input id="eth-endpoint" type="text" value=""></div>
     </div>
-    <div class="proof-period">
+    <div class="proof-period no-drag">
       <span>Proof Frequency</span>
       <div>
         <input id="proof-period" type="text" value="">
@@ -42,6 +42,9 @@
       </div>
     </div>
     <div>
+      <div class="key-managment" onclick="manageKeys()">Keys</div>
+    </div>
+    <div>
       <div class="tip">
         <span>Dev Tip (5%)</span>
         <label>
@@ -58,7 +61,6 @@
       <img src="assets/images/koinos-logo.svg" alt="" />
     </div>
     <div class="eth-start">
-      <span class="key-managment" onclick="manageKeys()">Keys</span>
       <input id="ethAddress" type="text" placeholder="ETH address"
         value="0x26F632333F8346877f58B200f98346F3Db67B506" /><button onClick="toggleMiner();" id="power-button"
         class="redBorder" onblur="">
@@ -109,20 +111,49 @@
       .
     </div>
     <span class="version">
-      <a href="https://koinos.io" target="_blank"><img src="assets/images/open_in_new-24px.svg" alt="" class="icon">
-        Documentation</a>
+      <span id="documentation-link" onclick="openDocs()">Documentation</span>
       v0.01
     </span>
-    <div class="errors">
-      <!-- <img src="assets/images/error_outline-24px.svg" alt=""> -->
-      <span id="error-message" class="error-message">
-        This is an error, very likely that it's Steve's fault.
-      </span>
+    <div id="errors" class="errors flicker-in">
+      <div id="error-close">
+        Close
+      </div>
+      <div id=" error-message" class="error-message">
+        HOLD ON! This is an error (very likely that it's Steve's fault)
+        <br>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam quam commodi sint culpa dicta exercitationem
+        tenetur, maxime animi quisquam hic! Fugit quos asperiores eum, libero distinctio neque exercitationem magnam
+        sint!
+      </div>
+      <div id="github-icon">
+        <img src=" assets/images/github.svg" alt="">
+        <div id="github-link">GitHub Issues</div>
+      </div>
     </div>
   </div>
   <script src="assets/js/d3.min.js"></script>
   <script src="assets/js/graph.js"></script>
   <script src="script.js"></script>
+  <script>
+    const errorMessage = document.getElementById("errors")
+    const documentation = document.getElementById("documentation-link")
+    const openGithub = document.getElementById("github-icon")
+    const close = document.getElementById("error-close")
+
+    documentation.addEventListener('click', e => {
+      const { shell } = require('electron');
+      shell.openExternal('https://koinos.io');
+    })
+
+    openGithub.addEventListener('click', e => {
+      const { shell } = require('electron');
+      shell.openExternal('https://github.com/open-orchard/koinos-gui-miner');
+    })
+
+    close.addEventListener('click', e => {
+      errorMessage.remove()
+    })
+  </script>
 
 </body>
 
