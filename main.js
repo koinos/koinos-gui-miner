@@ -32,9 +32,9 @@ let config = {
   proofPer: "day"
 };
 
-const KnsTokenAddress = '0x874de5a98b25093Be96BeD361232e6E326C9751C';
-const OpenOrchardAddress = '0x672c3D283aEc2104918aC541a2b279c291CbD51f';
-const KnsTokenMiningAddress = '0x536D49f3a0498A9E38FA3D90Df828Dc5BFc7c7F4';
+const KnsTokenAddress = '0x50294550A127570587a2d4871874E69D7F8115D5';
+const OpenOrchardAddress = '0xC07d28f95FC1486088590a0667257b14d695a93b';
+const KnsTokenMiningAddress = '0xD5dD4afc0f9611FBC86f710943a503c374567d00';
 
 function notify(event, args) {
   state.set(event, args);
