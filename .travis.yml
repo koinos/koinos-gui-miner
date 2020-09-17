@@ -8,18 +8,13 @@ os:
   - linux
 
 before_install:
-  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then
-      choco upgrade chocolatey;
-    else
-      sudo apt update;
-    fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then choco upgrade chocolatey; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get update -qq; fi
 
 install:
-  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then
-      ci/install.bat;
-    fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then ci/install.bat; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ci/install_linux.sh; fi
 
 script:
-  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then
-      ci/build.bat;
-    fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then ci/build.bat; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ci/build_linux.sh; fi
