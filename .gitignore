@@ -1,9 +1,3 @@
-bin
-build
-Testing
-libraries/pack/gen
-config.json
-
 # Mac files
 .DS_Store
 

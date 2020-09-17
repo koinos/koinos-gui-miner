@@ -16,18 +16,20 @@ let win = null;
 let contract = null;
 let web3 = null;
 
-const configFile = './config.json';
+const configFile = path.join((electron.app || electron.remote.app).getPath('userData'), 'config.json');
 
 let state = new Map([
   [Koinos.StateKey.MinerActivated, false],
-  [Koinos.StateKey.KoinBalanceUpdate, 0]
+  [Koinos.StateKey.KoinBalanceUpdate, 0],
+  [Koinos.StateKey.EthBalanceUpdate, 0]
 ]);
 
 let config = {
   ethAddress: "",
   developerTip: true,
   endpoint: "http://localhost:8545",
-  proofPeriod: 60
+  proofFrequency: 60,
+  proofPer: "day"
 };
 
 const KnsTokenAddress = '0x874de5a98b25093Be96BeD361232e6E326C9751C';
@@ -78,7 +80,7 @@ function createWindow() {
   win.loadFile("index.html");
 
   win.webContents.on('did-finish-load', function() {
-    win.send(Koinos.Notifications.RestoreState, state);
+    win.send(Koinos.StateKey.RestoreState, state);
   });
 
   win.once('ready-to-show', () => {
@@ -125,22 +127,22 @@ app.on('before-quit', () => {
 // code. You can also put them in separate files and require them here.
 
 function hashrateCallback(hashrate) {
-  notify(Koinos.Notifications.HashrateReport, hashrate);
-  notify(Koinos.Notifications.HashrateReportString, KoinosMiner.formatHashrate(hashrate));
+  notify(Koinos.StateKey.HashrateReport, hashrate);
+  notify(Koinos.StateKey.HashrateReportString, KoinosMiner.formatHashrate(hashrate));
 }
 
 function proofCallback(submission) {
   if (web3 !== null && contract !== null) {
     contract.methods.balanceOf(config.ethAddress).call({from: config.ethAddress}, function(error, result) {
-      notify(Koinos.Notifications.KoinBalanceUpdate, result);
+      notify(Koinos.StateKey.KoinBalanceUpdate, result);
     });
 
     web3.eth.getBalance(getAddresses()[0], function(err, result) {
       if (err) {
-        notify(Koinos.Notifications.ErrorReport, err);
+        notify(Koinos.StateKey.ErrorReport, err);
       } else {
         let ether = web3.utils.fromWei(result, "ether");
-        notify(Koinos.Notifications.EthBalanceUpdate, ether);
+        notify(Koinos.StateKey.EthBalanceUpdate, ether);
       }
     });
   }
@@ -240,7 +242,7 @@ function stopMiner() {
    state.set(Koinos.StateKey.MinerActivated, false);
 }
 
-ipcMain.handle(Koinos.Notifications.ToggleMiner, (event, ...args) => {
+ipcMain.handle(Koinos.StateKey.ToggleMiner, (event, ...args) => {
   try {
     if (ks === null ) {
        openKeystore();
@@ -252,7 +254,8 @@ ipcMain.handle(Koinos.Notifications.ToggleMiner, (event, ...args) => {
       config.ethAddress = args[0];
       config.endpoint = args[1];
       config.developerTip = args[2];
-      config.proofPeriod = args[3];
+      config.proofFrequency = args[3];
+      config.proofPer = args[4];
 
       ks.keyFromPassword(enterPassword(), function (err, pwDerivedKey) {
          if (err) throw err;
@@ -264,28 +267,32 @@ ipcMain.handle(Koinos.Notifications.ToggleMiner, (event, ...args) => {
       contract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress, {from: config.ethAddress, gasPrice:'20000000000', gas: 6721975});
       contract.methods.balanceOf(config.ethAddress).call({from: config.ethAddress}, function(err, result) {
         if (err) {
-          notify(Koinos.Notifications.ErrorReport, err);
+          notify(Koinos.StateKey.ErrorReport, err);
         }
         else {
-          notify(Koinos.Notifications.KoinBalanceUpdate, result);
+          notify(Koinos.StateKey.KoinBalanceUpdate, result);
         }
       });
       web3.eth.getBalance(getAddresses()[0], function(err, result) {
         if (err) {
-          notify(Koinos.Notifications.ErrorReport, err);
+          notify(Koinos.StateKey.ErrorReport, err);
         } else {
           let ether = web3.utils.fromWei(result, "ether");
-          notify(Koinos.Notifications.EthBalanceUpdate, ether);
+          notify(Koinos.StateKey.EthBalanceUpdate, ether);
         }
       });
+
+      let proofPeriod = config.proofPer === "day" ? Koinos.TimeSpan.SecondsPerDay : Koinos.TimeSpan.SecondsPerWeek;
+      proofPeriod /= config.proofFrequency;
+
       miner = new KoinosMiner(
         config.ethAddress,
         OpenOrchardAddress,
         getAddresses()[0],
         KnsTokenMiningAddress,
         config.endpoint,
-        config.developerTip,
-        config.proofPeriod,
+        config.developerTip ? 5 : 0,
+        proofPeriod,
         signCallback,
         hashrateCallback,
         proofCallback);
@@ -297,10 +304,10 @@ ipcMain.handle(Koinos.Notifications.ToggleMiner, (event, ...args) => {
       stopMiner();
     }
 
-    notify(Koinos.Notifications.MinerActivated, state.get(Koinos.StateKey.MinerActivated));
+    notify(Koinos.StateKey.MinerActivated, state.get(Koinos.StateKey.MinerActivated));
   }
   catch (err) {
     stopMiner();
-    notify(Koinos.Notifications.ErrorReport, err);
+    notify(Koinos.StateKey.ErrorReport, err);
   }
 });
