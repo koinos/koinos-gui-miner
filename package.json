@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/open-orchard/koinos-gui-miner.git#msvc"
+    "url": "git+https://github.com/open-orchard/koinos-gui-miner.git"
   },
   "keywords": [
     "koinos",
@@ -28,7 +28,7 @@
     "electron": "^10.1.0"
   },
   "dependencies": {
-    "koinos-miner": "git@github.com:open-orchard/koinos-miner.git",
+    "koinos-miner": "git@github.com:open-orchard/koinos-miner.git#msvc",
     "web3": "^1.2.11"
   }
 }
