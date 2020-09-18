@@ -1,3 +1,6 @@
 #!/bin/bash
 
 electron-packager . KoinosGUIMiner
+cp KnsToken.json dist/koinos-gui-miner-osx-darwin-x64/
+electron-installer-dmg dist/koinos-gui-miner-osx-darwin-x64/ koinos-gui-miner --out dist/installer/ --title "Koinos GUI Miner"
+
