@@ -241,7 +241,7 @@ async function signCallback(web3, txData) {
    );
 
    let rawTx = new Tx(txData);
-   return signing.signTx(ks, derivedKey, rawTx.serialize(), txData.from);
+   return '0x' + signing.signTx(ks, derivedKey, rawTx.serialize(), txData.from);
 }
 
 async function exportKey() {
