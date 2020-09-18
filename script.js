@@ -1,19 +1,40 @@
 const { ipcRenderer } = require('electron');
+const { shell } = require('electron');
 const Koinos = require('./assets/js/constants.js');
 let minerIsRunning = false;
 var currentHashrate = null;
 
 function onStateRestoration(s) {
+  // Restore state
   onMinerActivated(s.get(Koinos.StateKey.MinerActivated));
   onKoinBalanceUpdate(s.get(Koinos.StateKey.KoinBalanceUpdate));
   onEthBalanceUpdate(s.get(Koinos.StateKey.EthBalanceUpdate));
 
+  // Restore configuration
   let config = s.get(Koinos.StateKey.Configuration);
   document.getElementById(Koinos.Field.EthAddress).value = config.ethAddress;
   document.getElementById(Koinos.Field.Tip).checked = config.developerTip;
   document.getElementById(Koinos.Field.EthEndpoint).value = config.endpoint;
   document.getElementById(Koinos.Field.ProofFrequency).value = config.proofFrequency;
   toggleProofPeriod(config.proofPer);
+
+  // Attach callbacks
+  const errorMessage = document.getElementById(Koinos.Field.Errors);
+  const documentation = document.getElementById(Koinos.Field.DocumentationLink);
+  const openGithub = document.getElementById(Koinos.Field.GitHubIcon);
+  const close = document.getElementById(Koinos.Field.ErrorClose);
+
+  documentation.addEventListener('click', e => {
+    shell.openExternal('https://koinos.io');
+  });
+
+  openGithub.addEventListener('click', e => {
+    shell.openExternal('https://github.com/open-orchard/koinos-gui-miner');
+  });
+
+  close.addEventListener('click', e => {
+    errorMessage.remove()
+  });
 }
 
 function toggleProofPeriod(which) {

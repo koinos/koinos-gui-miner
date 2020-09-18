@@ -134,26 +134,6 @@
   <script src="assets/js/d3.min.js"></script>
   <script src="assets/js/graph.js"></script>
   <script src="script.js"></script>
-  <script>
-    const errorMessage = document.getElementById("errors")
-    const documentation = document.getElementById("documentation-link")
-    const openGithub = document.getElementById("github-icon")
-    const close = document.getElementById("error-close")
-
-    documentation.addEventListener('click', e => {
-      const { shell } = require('electron');
-      shell.openExternal('https://koinos.io');
-    })
-
-    openGithub.addEventListener('click', e => {
-      const { shell } = require('electron');
-      shell.openExternal('https://github.com/open-orchard/koinos-gui-miner');
-    })
-
-    close.addEventListener('click', e => {
-      errorMessage.remove()
-    })
-  </script>
 
 </body>
 

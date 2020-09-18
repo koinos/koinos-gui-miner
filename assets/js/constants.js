@@ -32,6 +32,10 @@ module.exports = {
     HashrateSuffix: "hashrate-suffix",
     HashrateSpinner: "hashrate-spinner",
     SvgButton: "svg-button",
-    PowerButton: "power-button"
+    PowerButton: "power-button",
+    Errors: "errors",
+    DocumentationLink: "documentation-link",
+    GitHubIcon: "github-icon",
+    ErrorClose: "error-close"
   }
 };
