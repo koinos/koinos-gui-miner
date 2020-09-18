@@ -1,4 +1,4 @@
 #!/bin/bash
 
-brew install gcc@10
+brew upgrade gcc@10
 
