@@ -7,6 +7,7 @@ module.exports = {
     ErrorReport: 'error-report',
     MinerActivated: 'miner-activated',
     ToggleMiner: 'toggle-miner',
+    StopMiner: 'stop-miner',
     RestoreState: 'restore-state',
     Configuration: 'koinos-config'
   },
@@ -34,6 +35,7 @@ module.exports = {
     SvgButton: "svg-button",
     PowerButton: "power-button",
     Errors: "errors",
+    ErrorMessage: "error-message",
     DocumentationLink: "documentation-link",
     GitHubIcon: "github-icon",
     ErrorClose: "error-close"

@@ -33,7 +33,7 @@ function onStateRestoration(s) {
   });
 
   close.addEventListener('click', e => {
-    errorMessage.remove()
+    errorMessage.style.display = "none";
   });
 }
 
@@ -65,7 +65,13 @@ function getProofPer() {
 }
 
 function onErrorReport(e) {
-  console.log("Error: " + e);
+  if (e.kMessage !== undefined) {
+    const errors = document.getElementById(Koinos.Field.Errors);
+    const errorMessage = document.getElementById(Koinos.Field.ErrorMessage);
+    errorMessage.innerHTML = e.kMessage;
+    errors.style.display = "flex";
+    ipcRenderer.invoke(Koinos.StateKey.StopMiner);
+  }
 }
 
 function onEthBalanceUpdate(b) {
@@ -170,12 +176,35 @@ function hashrateSpinner(state) {
   }
 }
 
+function isValidEndpoint(endpoint) {
+  return (/^(http|https|ws):\/\/[-a-zA-Z0-9.:]+$/i.test(endpoint));
+}
+
+function isEthereumAddress(address) {
+  return (/^(0x){1}[0-9a-fA-F]{40}$/i.test(address));
+};
+
 function toggleMiner() {
   let ethAddress = document.getElementById(Koinos.Field.EthAddress).value;
   let developerTip = document.getElementById(Koinos.Field.Tip).checked;
   let endpoint = document.getElementById(Koinos.Field.EthEndpoint).value;
   let proofPeriod = document.getElementById(Koinos.Field.ProofFrequency).value;
   let proofPer = getProofPer();
+
+  if (!isEthereumAddress(ethAddress)) {
+    onErrorReport({kMessage: "Please provide a valid Ethereum recipient address."});
+    return;
+  }
+
+  if (!isValidEndpoint(endpoint)) {
+    onErrorReport({kMessage: "Please provide a valid endpoint."});
+    return;
+  }
+
+  if (proofPeriod <= 0) {
+    onErrorReport({kMessage: "Please provide a valid proof frequency."});
+    return;
+  }
 
   ipcRenderer.invoke(Koinos.StateKey.ToggleMiner, ethAddress, endpoint, developerTip, proofPeriod, proofPer);
 }

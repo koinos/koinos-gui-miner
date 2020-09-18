@@ -272,9 +272,14 @@ function stopMiner() {
    contract = null;
    derivedKey = null;
    state.set(Koinos.StateKey.MinerActivated, false);
+   notify(Koinos.StateKey.MinerActivated, state.get(Koinos.StateKey.MinerActivated));
 }
 
-ipcMain.handle(Koinos.StateKey.ToggleMiner, (event, ...args) => {
+ipcMain.handle(Koinos.StateKey.StopMiner, (event, ...args) => {
+  stopMiner();
+});
+
+ipcMain.handle(Koinos.StateKey.ToggleMiner, async (event, ...args) => {
   try {
     if (ks === null ) {
        openKeystore();
@@ -302,6 +307,18 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, (event, ...args) => {
       });
       console.log(getAddresses()[0]);
       web3 = new Web3(config.endpoint);
+
+      try {
+        await web3.eth.net.isListening();
+      }
+      catch(e) {
+        notify(Koinos.StateKey.ErrorReport, {
+          kMessage: "The provided Ethereum endpoint is not valid.",
+          exception: e
+        });
+        return;
+      }
+
       contract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress, {from: config.ethAddress, gasPrice:'20000000000', gas: 6721975});
       contract.methods.balanceOf(config.ethAddress).call({from: config.ethAddress}, function(err, result) {
         if (err) {
@@ -344,12 +361,11 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, (event, ...args) => {
       miner.start();
       state.set(Koinos.StateKey.MinerActivated, true);
       writeConfiguration();
+      notify(Koinos.StateKey.MinerActivated, state.get(Koinos.StateKey.MinerActivated));
     }
     else {
       stopMiner();
     }
-
-    notify(Koinos.StateKey.MinerActivated, state.get(Koinos.StateKey.MinerActivated));
   }
   catch (err) {
     stopMiner();
