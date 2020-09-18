@@ -139,7 +139,11 @@ function proofCallback(submission) {
 
     web3.eth.getBalance(getAddresses()[0], function(err, result) {
       if (err) {
-        notify(Koinos.StateKey.ErrorReport, err);
+        let error = {
+          kMessage: "Could not retrieve remaining Ether balance from the sender address.",
+          exception: err
+        }
+        notify(Koinos.StateKey.ErrorReport, error);
       } else {
         let lastEthBalance = state.get(Koinos.StateKey.EthBalanceUpdate)[0];
         let lastProofCost = state.get(Koinos.StateKey.EthBalanceUpdate)[1];
@@ -167,7 +171,13 @@ function openKeystore() {
    if (fs.existsSync(keystorePath)) {
       try {
          ks = keystore.deserialize(fs.readFileSync(keystorePath));
-      } catch (error) {}
+      } catch (err) {
+        let error = {
+          kMessage: "There was a problem deserializing the keystore.",
+          error: err
+        };
+        notify(Koinos.StateKey.ErrorReport, error);
+      }
    }
 
    if (ks === null) {
@@ -188,11 +198,23 @@ function createKeystore(seedPhrase) {
       seedPhrase: seedPhrase,
       hdPathString: "m/44'/60'/0'/0"
    }, function (err, vault) {
-      if (err) throw err;
+      if (err) {
+        let error = {
+          kMessage: "There was a problem creating the keystore.",
+          error: err
+        };
+        notify(Koinos.StateKey.ErrorReport, error);
+      }
       ks = vault;
 
       ks.keyFromPassword(password, function (err, pwDerivedKey) {
-         if (err) throw err;
+         if (err) {
+          let error = {
+            kMessage: "There was a problem unlocking the keystore.",
+            error: err
+          };
+          notify(Koinos.StateKey.ErrorReport, error);
+         }
          ks.generateNewAddress(pwDerivedKey, 1);
          console.log(getAddresses()[0]);
       });
@@ -227,7 +249,13 @@ async function exportKey() {
 
    let privKey;
    ks.keyFromPassword(enterPassword(), function (err, pwDerivedKey) {
-      if (err) throw err;
+      if (err) {
+        let error = {
+          kMessage: "There was a problem unlocking the keystore.",
+          error: err
+        };
+        notify(Koinos.StateKey.ErrorReport, error);
+      }
       privKey = ks.exportPrivateKey(ks.getAddresses()[0], pwDerivedKey);
    });
 
@@ -262,7 +290,13 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, (event, ...args) => {
       config.proofPer = args[4];
 
       ks.keyFromPassword(enterPassword(), function (err, pwDerivedKey) {
-         if (err) throw err;
+         if (err) {
+          let error = {
+            kMessage: "There was a problem unlocking the keystore.",
+            error: err
+          };
+          notify(Koinos.StateKey.ErrorReport, error);
+         }
          assert (ks.isDerivedKeyCorrect(pwDerivedKey));
          derivedKey = pwDerivedKey;
       });
@@ -271,7 +305,11 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, (event, ...args) => {
       contract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress, {from: config.ethAddress, gasPrice:'20000000000', gas: 6721975});
       contract.methods.balanceOf(config.ethAddress).call({from: config.ethAddress}, function(err, result) {
         if (err) {
-          notify(Koinos.StateKey.ErrorReport, err);
+          let error = {
+            kMessage: "There was a problem retrieving the KOIN balance.",
+            error: err
+          };
+          notify(Koinos.StateKey.ErrorReport, error);
         }
         else {
           notify(Koinos.StateKey.KoinBalanceUpdate, result);
@@ -279,7 +317,11 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, (event, ...args) => {
       });
       web3.eth.getBalance(getAddresses()[0], function(err, result) {
         if (err) {
-          notify(Koinos.StateKey.ErrorReport, err);
+          let error = {
+            kMessage: "There was a problem retrieving the Ether balance.",
+            error: err
+          };
+          notify(Koinos.StateKey.ErrorReport, error);
         } else {
           notify(Koinos.StateKey.EthBalanceUpdate, [result, 0]);
         }
