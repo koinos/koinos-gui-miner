@@ -1,4 +1,5 @@
 #!/bin/bash
 
 npm install electron-packager -g
-sudo apt install -y openssl
+npm install electron-installer-debian -g
+sudo apt install -y openssl fakeroot dpkg
