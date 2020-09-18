@@ -1,2 +1,2 @@
-npm install electron-packager -g
-choco install openssl
+call npm install electron-packager -g
+call choco install openssl
