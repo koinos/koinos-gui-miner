@@ -701,6 +701,12 @@ input[type="checkbox"].check-custom.toggle-switch:checked
   color: #0F091F !important;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 #check-day {
   padding: 8px;
   font-size: .6em;
@@ -710,6 +716,7 @@ input[type="checkbox"].check-custom.toggle-switch:checked
   border-bottom-left-radius: 2em;
   cursor: pointer; 
 }
+
 #check-week {
   padding: 8px;
   padding-right: 15px;

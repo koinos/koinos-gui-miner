@@ -1,19 +1,40 @@
 const { ipcRenderer } = require('electron');
+const { shell } = require('electron');
 const Koinos = require('./assets/js/constants.js');
 let minerIsRunning = false;
 var currentHashrate = null;
 
 function onStateRestoration(s) {
+  // Restore state
   onMinerActivated(s.get(Koinos.StateKey.MinerActivated));
   onKoinBalanceUpdate(s.get(Koinos.StateKey.KoinBalanceUpdate));
   onEthBalanceUpdate(s.get(Koinos.StateKey.EthBalanceUpdate));
 
+  // Restore configuration
   let config = s.get(Koinos.StateKey.Configuration);
   document.getElementById(Koinos.Field.EthAddress).value = config.ethAddress;
   document.getElementById(Koinos.Field.Tip).checked = config.developerTip;
   document.getElementById(Koinos.Field.EthEndpoint).value = config.endpoint;
   document.getElementById(Koinos.Field.ProofFrequency).value = config.proofFrequency;
   toggleProofPeriod(config.proofPer);
+
+  // Attach callbacks
+  const errorMessage = document.getElementById(Koinos.Field.Errors);
+  const documentation = document.getElementById(Koinos.Field.DocumentationLink);
+  const openGithub = document.getElementById(Koinos.Field.GitHubIcon);
+  const close = document.getElementById(Koinos.Field.ErrorClose);
+
+  documentation.addEventListener('click', e => {
+    shell.openExternal('https://koinos.io');
+  });
+
+  openGithub.addEventListener('click', e => {
+    shell.openExternal('https://github.com/open-orchard/koinos-gui-miner');
+  });
+
+  close.addEventListener('click', e => {
+    errorMessage.style.display = "none";
+  });
 }
 
 function toggleProofPeriod(which) {
@@ -44,7 +65,13 @@ function getProofPer() {
 }
 
 function onErrorReport(e) {
-  console.log("Error: " + e);
+  if (e.kMessage !== undefined) {
+    const errors = document.getElementById(Koinos.Field.Errors);
+    const errorMessage = document.getElementById(Koinos.Field.ErrorMessage);
+    errorMessage.innerHTML = e.kMessage;
+    errors.style.display = "flex";
+    ipcRenderer.invoke(Koinos.StateKey.StopMiner);
+  }
 }
 
 function onEthBalanceUpdate(b) {
@@ -149,12 +176,35 @@ function hashrateSpinner(state) {
   }
 }
 
+function isValidEndpoint(endpoint) {
+  return (/^(http|https|ws):\/\/[-a-zA-Z0-9.:]+$/i.test(endpoint));
+}
+
+function isEthereumAddress(address) {
+  return (/^(0x){1}[0-9a-fA-F]{40}$/i.test(address));
+};
+
 function toggleMiner() {
   let ethAddress = document.getElementById(Koinos.Field.EthAddress).value;
   let developerTip = document.getElementById(Koinos.Field.Tip).checked;
   let endpoint = document.getElementById(Koinos.Field.EthEndpoint).value;
   let proofPeriod = document.getElementById(Koinos.Field.ProofFrequency).value;
   let proofPer = getProofPer();
+
+  if (!isEthereumAddress(ethAddress)) {
+    onErrorReport({kMessage: "Please provide a valid Ethereum recipient address."});
+    return;
+  }
+
+  if (!isValidEndpoint(endpoint)) {
+    onErrorReport({kMessage: "Please provide a valid endpoint."});
+    return;
+  }
+
+  if (proofPeriod <= 0) {
+    onErrorReport({kMessage: "Please provide a valid proof frequency."});
+    return;
+  }
 
   ipcRenderer.invoke(Koinos.StateKey.ToggleMiner, ethAddress, endpoint, developerTip, proofPeriod, proofPer);
 }

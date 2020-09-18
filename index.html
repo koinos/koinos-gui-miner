@@ -19,12 +19,12 @@
   <div class="config">
     <div class="no-drag">
       <span>Ethereum Endpoint</span>
-      <div><input id="eth-endpoint" type="text" value=""></div>
+      <div><input id="eth-endpoint" type="text" value="1"></div>
     </div>
     <div class="proof-period no-drag">
       <span>Proof Frequency</span>
       <div>
-        <input id="proof-frequency" type="text" value="">
+        <input id="proof-frequency" type="number" value="" min="1">
       </div>
     </div>
     <div class="periods">
@@ -114,19 +114,14 @@
       <span id="documentation-link" onclick="openDocs()">Documentation</span>
       v0.01
     </span>
-    <div id="errors" class="errors flicker-in">
+    <div id="errors" class="errors flicker-in" style="display:none;">
       <div id="error-close">
         Close
       </div>
-      <div id=" error-message" class="error-message">
-        HOLD ON! This is an error (very likely that it's Steve's fault)
-        <br>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam quam commodi sint culpa dicta exercitationem
-        tenetur, maxime animi quisquam hic! Fugit quos asperiores eum, libero distinctio neque exercitationem magnam
-        sint!
+      <div id="error-message" class="error-message">
       </div>
       <div id="github-icon">
-        <img src=" assets/images/github.svg" alt="">
+        <img src="assets/images/github.svg" alt="">
         <div id="github-link">GitHub Issues</div>
       </div>
     </div>
@@ -134,26 +129,6 @@
   <script src="assets/js/d3.min.js"></script>
   <script src="assets/js/graph.js"></script>
   <script src="script.js"></script>
-  <script>
-    const errorMessage = document.getElementById("errors")
-    const documentation = document.getElementById("documentation-link")
-    const openGithub = document.getElementById("github-icon")
-    const close = document.getElementById("error-close")
-
-    documentation.addEventListener('click', e => {
-      const { shell } = require('electron');
-      shell.openExternal('https://koinos.io');
-    })
-
-    openGithub.addEventListener('click', e => {
-      const { shell } = require('electron');
-      shell.openExternal('https://github.com/open-orchard/koinos-gui-miner');
-    })
-
-    close.addEventListener('click', e => {
-      errorMessage.remove()
-    })
-  </script>
 
 </body>
 
