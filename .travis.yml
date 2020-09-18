@@ -6,6 +6,7 @@ node_js:
 os:
   - windows
   - linux
+  - osx
 
 before_install:
   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then choco upgrade chocolatey; fi
@@ -14,7 +15,9 @@ before_install:
 install:
   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then ci/install.bat; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ci/install_linux.sh; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then ci/install_osx.sh; fi
 
 script:
   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then ci/build.bat; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ci/build_linux.sh; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then ci/build_osx.sh; fi
