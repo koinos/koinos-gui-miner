@@ -19,12 +19,12 @@
   <div class="config">
     <div class="no-drag">
       <span>Ethereum Endpoint</span>
-      <div><input id="eth-endpoint" type="text" value="1"></div>
+      <div><input id="eth-endpoint" type="text" value="" placeholder="ETH Endpoint"></div>
     </div>
     <div class="proof-period no-drag">
       <span>Proof Frequency</span>
       <div>
-        <input id="proof-frequency" type="number" value="" min="1">
+        <input id="proof-frequency" type="number" value="1" min="1">
       </div>
     </div>
     <div class="periods">
@@ -61,7 +61,7 @@
       <img src="assets/images/koinos-logo.svg" alt="" />
     </div>
     <div class="eth-start">
-      <input id="eth-address" type="text" placeholder="ETH address"
+      <input id="eth-address" type="text" placeholder="ETH Address"
         value="0x26F632333F8346877f58B200f98346F3Db67B506" /><button onClick="toggleMiner();" id="power-button"
         class="redBorder" onblur="">
         <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
