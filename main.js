@@ -217,6 +217,7 @@ function createKeystore(seedPhrase) {
          }
          ks.generateNewAddress(pwDerivedKey, 1);
          console.log(getAddresses()[0]);
+         saveKeystore();
       });
    });
 
