@@ -205,20 +205,24 @@ function createKeystore(seedPhrase) {
         };
         notify(Koinos.StateKey.ErrorReport, error);
       }
-      ks = vault;
+      else {
+         ks = vault;
 
-      ks.keyFromPassword(password, function (err, pwDerivedKey) {
-         if (err) {
-          let error = {
-            kMessage: "There was a problem unlocking the keystore.",
-            error: err
-          };
-          notify(Koinos.StateKey.ErrorReport, error);
-         }
-         ks.generateNewAddress(pwDerivedKey, 1);
-         console.log(getAddresses()[0]);
-         saveKeystore();
+         ks.keyFromPassword(password, function (err, pwDerivedKey) {
+            if (err) {
+             let error = {
+               kMessage: "There was a problem unlocking the keystore.",
+               error: err
+             };
+             notify(Koinos.StateKey.ErrorReport, error);
+            }
+            else {
+               ks.generateNewAddress(pwDerivedKey, 1);
+               console.log(getAddresses()[0]);
+               saveKeystore();
+            }
       });
+      }
    });
 
    //return ks.getSeed(derivedKey);
@@ -257,7 +261,9 @@ async function exportKey() {
         };
         notify(Koinos.StateKey.ErrorReport, error);
       }
-      privKey = ks.exportPrivateKey(ks.getAddresses()[0], pwDerivedKey);
+      else {
+         privKey = ks.exportPrivateKey(ks.getAddresses()[0], pwDerivedKey);
+      }
    });
 
    return privKey;
