@@ -133,7 +133,7 @@ function hashrateCallback(hashrate) {
 
 function proofCallback(submission) {
   if (web3 !== null && contract !== null) {
-    contract.methods.balanceOf(config.ethAddress).call({from: config.ethAddress}, function(error, result) {
+    contract.methods.balanceOf(config.ethAddress).call({}, function(error, result) {
       notify(Koinos.StateKey.KoinBalanceUpdate, result);
     });
 
@@ -326,13 +326,14 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, async (event, ...args) => {
         return;
       }
 
-      contract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress, {from: config.ethAddress, gasPrice:'20000000000', gas: 6721975});
-      contract.methods.balanceOf(config.ethAddress).call({from: config.ethAddress}, function(err, result) {
+      contract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress);
+      contract.methods.balanceOf(config.ethAddress).call({}, function(err, result) {
         if (err) {
           let error = {
             kMessage: "There was a problem retrieving the KOIN balance.",
             error: err
           };
+          console.log(err);
           notify(Koinos.StateKey.ErrorReport, error);
         }
         else {
