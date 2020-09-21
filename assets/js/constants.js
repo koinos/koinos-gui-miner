@@ -7,6 +7,7 @@ module.exports = {
     ErrorReport: 'error-report',
     MinerActivated: 'miner-activated',
     ToggleMiner: 'toggle-miner',
+    ManageKeys: 'manage-keys',
     RestoreState: 'restore-state',
     Configuration: 'koinos-config'
   },
@@ -34,4 +35,5 @@ module.exports = {
     SvgButton: "svg-button",
     PowerButton: "power-button"
   }
+
 };

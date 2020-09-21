@@ -42,7 +42,7 @@
       </div>
     </div>
     <div>
-      <div class="key-managment" onclick="manageKeys()">Keys</div>
+      <div id="key-managment" onclick="launchWindow()"><img src="./assets/images/key.svg" alt=""> Key</div>
     </div>
     <div>
       <div class="tip">
@@ -139,6 +139,8 @@
     const documentation = document.getElementById("documentation-link")
     const openGithub = document.getElementById("github-icon")
     const close = document.getElementById("error-close")
+    const keys = document.getElementById("key-managment")
+
 
     documentation.addEventListener('click', e => {
       const { shell } = require('electron');
@@ -151,8 +153,16 @@
     })
 
     close.addEventListener('click', e => {
-      errorMessage.remove()
+      errorMessage.classList.add("bounceOutDown");
+      setTimeout(() => { errorMessage.remove() }, 1000)
     })
+
+    let win
+    let launchWindow = () => {
+      const { ipcRenderer } = require("electron");
+      ipcRenderer.invoke('manage-keys');
+    }
+
   </script>
 
 </body>

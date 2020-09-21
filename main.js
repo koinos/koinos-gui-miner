@@ -21,7 +21,7 @@ const configFile = path.join((electron.app || electron.remote.app).getPath('user
 let state = new Map([
   [Koinos.StateKey.MinerActivated, false],
   [Koinos.StateKey.KoinBalanceUpdate, 0],
-  [Koinos.StateKey.EthBalanceUpdate, [0,0]]
+  [Koinos.StateKey.EthBalanceUpdate, [0, 0]]
 ]);
 
 let config = {
@@ -38,8 +38,7 @@ const KnsTokenMiningAddress = '0x536D49f3a0498A9E38FA3D90Df828Dc5BFc7c7F4';
 
 function notify(event, args) {
   state.set(event, args);
-  if (win !== null)
-  {
+  if (win !== null) {
     win.send(event, args);
   }
 }
@@ -79,7 +78,8 @@ function createWindow() {
   // and load the index.html of the app.
   win.loadFile("index.html");
 
-  win.webContents.on('did-finish-load', function() {
+
+  win.webContents.on('did-finish-load', function () {
     win.send(Koinos.StateKey.RestoreState, state);
   });
 
@@ -133,11 +133,11 @@ function hashrateCallback(hashrate) {
 
 function proofCallback(submission) {
   if (web3 !== null && contract !== null) {
-    contract.methods.balanceOf(config.ethAddress).call({from: config.ethAddress}, function(error, result) {
+    contract.methods.balanceOf(config.ethAddress).call({ from: config.ethAddress }, function (error, result) {
       notify(Koinos.StateKey.KoinBalanceUpdate, result);
     });
 
-    web3.eth.getBalance(getAddresses()[0], function(err, result) {
+    web3.eth.getBalance(getAddresses()[0], function (err, result) {
       if (err) {
         notify(Koinos.StateKey.ErrorReport, err);
       } else {
@@ -153,106 +153,106 @@ function proofCallback(submission) {
 }
 
 function createPassword() {
-   return 'password';
+  return 'password';
 }
 
 function enterPassword() {
-   return 'password';
+  return 'password';
 }
 
 // Generate a new keystore
 // seedPhrase is optional, but allows for recovery of private key
 function openKeystore() {
-   const keystorePath = path.join((electron.app || electron.remote.app).getPath('userData'), 'keystore.json');
-   if (fs.existsSync(keystorePath)) {
-      try {
-         ks = keystore.deserialize(fs.readFileSync(keystorePath));
-      } catch (error) {}
-   }
+  const keystorePath = path.join((electron.app || electron.remote.app).getPath('userData'), 'keystore.json');
+  if (fs.existsSync(keystorePath)) {
+    try {
+      ks = keystore.deserialize(fs.readFileSync(keystorePath));
+    } catch (error) { }
+  }
 
-   if (ks === null) {
-      createKeystore();
-   }
+  if (ks === null) {
+    createKeystore();
+  }
 }
 
 function createKeystore(seedPhrase) {
-   let password = createPassword();
+  let password = createPassword();
 
-   if (!seedPhrase) {
-      seedPhrase = keystore.generateRandomSeed();
-      console.log(seedPhrase);
-   }
+  if (!seedPhrase) {
+    seedPhrase = keystore.generateRandomSeed();
+    console.log(seedPhrase);
+  }
 
-   keystore.createVault({
-      password: password,
-      seedPhrase: seedPhrase,
-      hdPathString: "m/44'/60'/0'/0"
-   }, function (err, vault) {
+  keystore.createVault({
+    password: password,
+    seedPhrase: seedPhrase,
+    hdPathString: "m/44'/60'/0'/0"
+  }, function (err, vault) {
+    if (err) throw err;
+    ks = vault;
+
+    ks.keyFromPassword(password, function (err, pwDerivedKey) {
       if (err) throw err;
-      ks = vault;
+      ks.generateNewAddress(pwDerivedKey, 1);
+      console.log(getAddresses()[0]);
+    });
+  });
 
-      ks.keyFromPassword(password, function (err, pwDerivedKey) {
-         if (err) throw err;
-         ks.generateNewAddress(pwDerivedKey, 1);
-         console.log(getAddresses()[0]);
-      });
-   });
-
-   //return ks.getSeed(derivedKey);
+  //return ks.getSeed(derivedKey);
 }
 
 function saveKeystore() {
-   assert (ks !== null)
-   const keystorePath = path.join((electron.app || electron.remote.app).getPath('userData'), 'keystore.json');
-   fs.writeFileSync(keystorePath, ks.serialize());
+  assert(ks !== null)
+  const keystorePath = path.join((electron.app || electron.remote.app).getPath('userData'), 'keystore.json');
+  fs.writeFileSync(keystorePath, ks.serialize());
 }
 
 function getAddresses() {
-   assert (ks !== null)
-   return ks.getAddresses();
+  assert(ks !== null)
+  return ks.getAddresses();
 }
 
 async function signCallback(web3, txData) {
-   assert (ks !== null && derivedKey !== null)
-   txData.nonce = await web3.eth.getTransactionCount(
-      txData.from
-   );
+  assert(ks !== null && derivedKey !== null)
+  txData.nonce = await web3.eth.getTransactionCount(
+    txData.from
+  );
 
-   let rawTx = new Tx(txData);
-   return signing.signTx(ks, derivedKey, rawTx.serialize(), txData.from);
+  let rawTx = new Tx(txData);
+  return signing.signTx(ks, derivedKey, rawTx.serialize(), txData.from);
 }
 
 async function exportKey() {
-   assert (ks !== null)
+  assert(ks !== null)
 
-   let privKey;
-   ks.keyFromPassword(enterPassword(), function (err, pwDerivedKey) {
-      if (err) throw err;
-      privKey = ks.exportPrivateKey(ks.getAddresses()[0], pwDerivedKey);
-   });
+  let privKey;
+  ks.keyFromPassword(enterPassword(), function (err, pwDerivedKey) {
+    if (err) throw err;
+    privKey = ks.exportPrivateKey(ks.getAddresses()[0], pwDerivedKey);
+  });
 
-   return privKey;
+  return privKey;
 }
 
 function stopMiner() {
-   if (miner !== null) {
-      miner.stop();
-   }
+  if (miner !== null) {
+    miner.stop();
+  }
 
-   web3 = null;
-   miner = null;
-   contract = null;
-   derivedKey = null;
-   state.set(Koinos.StateKey.MinerActivated, false);
+  web3 = null;
+  miner = null;
+  contract = null;
+  derivedKey = null;
+  state.set(Koinos.StateKey.MinerActivated, false);
 }
 
 ipcMain.handle(Koinos.StateKey.ToggleMiner, (event, ...args) => {
   try {
-    if (ks === null ) {
-       openKeystore();
+    if (ks === null) {
+      openKeystore();
     }
 
-    assert (ks !== null);
+    assert(ks !== null);
 
     if (!state.get(Koinos.StateKey.MinerActivated)) {
       config.ethAddress = args[0];
@@ -262,14 +262,14 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, (event, ...args) => {
       config.proofPer = args[4];
 
       ks.keyFromPassword(enterPassword(), function (err, pwDerivedKey) {
-         if (err) throw err;
-         assert (ks.isDerivedKeyCorrect(pwDerivedKey));
-         derivedKey = pwDerivedKey;
+        if (err) throw err;
+        assert(ks.isDerivedKeyCorrect(pwDerivedKey));
+        derivedKey = pwDerivedKey;
       });
       console.log(getAddresses()[0]);
       web3 = new Web3(config.endpoint);
-      contract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress, {from: config.ethAddress, gasPrice:'20000000000', gas: 6721975});
-      contract.methods.balanceOf(config.ethAddress).call({from: config.ethAddress}, function(err, result) {
+      contract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress, { from: config.ethAddress, gasPrice: '20000000000', gas: 6721975 });
+      contract.methods.balanceOf(config.ethAddress).call({ from: config.ethAddress }, function (err, result) {
         if (err) {
           notify(Koinos.StateKey.ErrorReport, err);
         }
@@ -277,7 +277,7 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, (event, ...args) => {
           notify(Koinos.StateKey.KoinBalanceUpdate, result);
         }
       });
-      web3.eth.getBalance(getAddresses()[0], function(err, result) {
+      web3.eth.getBalance(getAddresses()[0], function (err, result) {
         if (err) {
           notify(Koinos.StateKey.ErrorReport, err);
         } else {
@@ -314,3 +314,25 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, (event, ...args) => {
     notify(Koinos.StateKey.ErrorReport, err);
   }
 });
+
+ipcMain.handle(Koinos.StateKey.ManageKeys, (event, ...args) => {
+  // create new window
+  let keysWindow = new BrowserWindow({
+    width: 900,
+    height: 600,
+    titleBarStyle: "hidden",
+    resizable: false,
+    maximizable: false,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+    show: false
+  })
+
+  keysWindow.loadFile("components/manage-keys.html");
+  keysWindow.once('ready-to-show', () => {
+    keysWindow.show();
+  });
+})
+
+

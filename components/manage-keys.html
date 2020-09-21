@@ -29,7 +29,26 @@
       background-color: none;
     }
 
-    #generateButton {
+    #public-key {
+      margin-bottom: 50px;
+    }
+
+    #key {
+      background: #6F00F6;
+      width: 100vw;
+      font-size: 1.2em;
+      padding: 20px;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      text-transform: uppercase;
+    }
+
+    #key div {
+      margin: 10px 30px;
+    }
+
+    #exportButton {
       position: relative;
       background-color: #6F00F6;
       color: white;
@@ -43,7 +62,19 @@
 
     #recoverButton {
       position: absolute;
-      background-color: #f62d00;
+      color: #6F00F6;
+      padding: 10px 20px;
+      border: 1px #6F00F6 solid;
+      font-size: 1em;
+      margin-top: 1em;
+      cursor: pointer;
+    }
+
+    #close-button {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background-color: #dd003f;
       color: white;
       padding: 10px 20px;
       border: none;
@@ -51,6 +82,7 @@
       margin-top: 1em;
       cursor: pointer;
     }
+
 
     .container {
       display: flex;
@@ -84,37 +116,39 @@
 
 <body>
   <div class="container">
+    <div id="public-key">
+      <div id="key">
+        <div>Key:</div>
+        <div id="key-text">6879206e6f74206d653f</div>
+        <div><img src="../assets/images/content_copy-24px.svg" alt="copy key icon" id="copy"></div>
+      </div>
+
+    </div>
     <div class="input-area">
-      <h2></h2>
-      <p></p>
-      <form action="">
+      <div>
         <input type="text" placeholder="Password">
-        <span id="generateButton" onclick="closeKeyss()">Manage Keys</span>
-      </form>
+        <span id="exportButton">Export Key</span>
+      </div>
       <div class="message">
-        <h2>Read Carefully!</h2>
+        <h2>Forgot your password?</h2>
         <div>We cannot recover your password! If you lost your password the only way to recover your account is with
-          your
-          12word phrase.
+          your 12 word phrase.
         </div>
-
-        <div id="recoverButton" onclick="recoverKeys()">12 Word Key Recovery</div>
-
-        <div class="warning">THERE IS NO WAY TO RECOVER THE 12 WORD PHRASE! It is most advisable to write down your
-          12
-          word
-          phrase and store it somewhwere safe. Also make sure someone you trust has a copy in case you die in the
-          upcoming civil war, riots, corona virus, wild fires, hurricanes etc.
-        </div>
-
+        <div id="recoverButton" onclick="recoverKeys()">Recover with phrase</div>
       </div>
     </div>
+    <span id="close-button" onclick="closeThis()">Close</span>
   </div>
   <script src="../script.js"></script>
   <script>
-    function closeKeyss() {
-      console.log('clicked')
+    function copy() {
+      var copyText = document.querySelector("#key-text");
+      copyText.select();
+      document.execCommand("copy");
+      console.log(copyText);
     }
+
+    document.querySelector("#copy").addEventListener("click", copy);
   </script>
 </body>
 

@@ -52,14 +52,14 @@ function onEthBalanceUpdate(b) {
   let cost = b[1];
 
   if (cost > 0) {
-    let numProofs = Math.floor(wei/cost);
-    document.getElementById(Koinos.Field.EthBalanceSub).innerHTML = "Approx. <br/>" + numProofs + " Proofs Left"; 
+    let numProofs = Math.floor(wei / cost);
+    document.getElementById(Koinos.Field.EthBalanceSub).innerHTML = "Approx. <br/>" + numProofs + " Proofs Left";
   }
   else {
-    document.getElementById(Koinos.Field.EthBalanceSub).innerHTML = ""; 
+    document.getElementById(Koinos.Field.EthBalanceSub).innerHTML = "";
   }
 
-  document.getElementById(Koinos.Field.EthBalance).innerHTML = (wei/Koinos.Ether.WeiPerEth).toFixed(4) + " ETH";
+  document.getElementById(Koinos.Field.EthBalance).innerHTML = (wei / Koinos.Ether.WeiPerEth).toFixed(4) + " ETH";
 }
 
 function onHashrateReportString(s) {
@@ -186,3 +186,4 @@ ipcRenderer.on(Koinos.StateKey.EthBalanceUpdate, (event, arg) => {
 ipcRenderer.on(Koinos.StateKey.ErrorReport, (event, arg) => {
   onErrorReport(arg);
 });
+
