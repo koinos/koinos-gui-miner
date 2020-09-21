@@ -335,4 +335,26 @@ ipcMain.handle(Koinos.StateKey.ManageKeys, (event, ...args) => {
   });
 })
 
+ipcMain.handle(Koinos.StateKey.PasswordModal, (event, ...args) => {
+  // create new window
+  let passwordModalWindow = new BrowserWindow({
+    width: 600,
+    height: 400,
+    frame: false,
+    titleBarStyle: "hidden",
+    resizable: false,
+    maximizable: false,
+    modal: true,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+    show: false
+  })
+
+  passwordModalWindow.loadFile("components/password-modal.html");
+  passwordModalWindow.once('ready-to-show', () => {
+    passwordModalWindow.show();
+  });
+})
+
 

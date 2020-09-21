@@ -141,6 +141,15 @@ a {
   cursor: pointer;
 }
 
+.close-button {
+  color: #dd003f;
+  padding: 10px 20px;
+  border: 1px solid #dd003f;
+  font-size: 1em;
+  margin-top: 1em;
+  cursor: pointer;
+}
+
 /* toggle classes */
 .green {
   fill: #34dd00;

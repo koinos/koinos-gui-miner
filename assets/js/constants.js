@@ -8,6 +8,7 @@ module.exports = {
     MinerActivated: 'miner-activated',
     ToggleMiner: 'toggle-miner',
     ManageKeys: 'manage-keys',
+    PasswordModal: 'password-modal',
     RestoreState: 'restore-state',
     Configuration: 'koinos-config'
   },

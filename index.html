@@ -12,10 +12,25 @@
       text-align: center;
       margin-top: 40px;
     }
+
+    #titlebar {
+      display: block;
+      position: fixed;
+      height: 22px;
+      width: calc(100% - 2px);
+      padding: 10px;
+      right: 20px;
+      text-align: right;
+      color: #6F00F6;
+      font-size: .7em;
+    }
   </style>
 </head>
 
 <body>
+  <header id="titlebar">
+    Miner v 0.10
+  </header>
   <div class="config">
     <div class="no-drag">
       <span>Ethereum Endpoint</span>
@@ -111,8 +126,7 @@
       .
     </div>
     <span class="version">
-      <span id="documentation-link" onclick="openDocs()">Documentation</span>
-      v0.01
+      <span id="documentation-link" onclick="launchModal()">Documentation</span>
     </span>
     <div id="errors" class="errors flicker-in">
       <div id="error-close">
@@ -158,9 +172,16 @@
     })
 
     let win
+
     let launchWindow = () => {
       const { ipcRenderer } = require("electron");
       ipcRenderer.invoke('manage-keys');
+    }
+
+    let launchModal = () => {
+      const { ipcRenderer } = require("electron");
+      ipcRenderer.invoke('password-modal');
+      console.log('password modal');
     }
 
   </script>
