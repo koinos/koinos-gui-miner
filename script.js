@@ -80,10 +80,10 @@ function onEthBalanceUpdate(b) {
 
   if (cost > 0) {
     let numProofs = Math.floor(wei/cost);
-    document.getElementById(Koinos.Field.EthBalanceSub).innerHTML = "Approx. <br/>" + numProofs + " Proofs Left"; 
+    document.getElementById(Koinos.Field.EthBalanceSub).innerHTML = "Approx. <br/>" + numProofs + " Proofs Left";
   }
   else {
-    document.getElementById(Koinos.Field.EthBalanceSub).innerHTML = ""; 
+    document.getElementById(Koinos.Field.EthBalanceSub).innerHTML = "";
   }
 
   document.getElementById(Koinos.Field.EthBalance).innerHTML = (wei/Koinos.Ether.WeiPerEth).toFixed(4) + " ETH";
