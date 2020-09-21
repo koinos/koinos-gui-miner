@@ -29,7 +29,9 @@ let config = {
   developerTip: true,
   endpoint: "http://localhost:8545",
   proofFrequency: 60,
-  proofPer: "day"
+  proofPer: "day",
+  gasMultiplier: 1,
+  gasPriceLimit: 1000000000000
 };
 
 const KnsTokenAddress = '0x50294550A127570587a2d4871874E69D7F8115D5';
@@ -46,7 +48,11 @@ function notify(event, args) {
 
 function readConfiguration() {
   if (fs.existsSync(configFile)) {
-    config = JSON.parse(fs.readFileSync(configFile, 'utf8'));
+    let userConfig = JSON.parse(fs.readFileSync(configFile, 'utf8'));
+    let keys = Object.keys(userConfig);
+    for (let i = 0; i < keys.length; i++) {
+      config[keys[i]] = userConfig[keys[i]];
+    }
   }
 
   openKeystore();
@@ -171,6 +177,10 @@ function proofCallback(submission) {
       }
     });
   }
+}
+
+function errorCallback(error) {
+  notify(Koinos.StateKey.ErrorReport, error);
 }
 
 function createPassword() {
@@ -368,9 +378,12 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, async (event, ...args) => {
         config.endpoint,
         config.developerTip ? 5 : 0,
         proofPeriod,
+        config.gasMultiplier,
+        config.gasPriceLimit,
         signCallback,
         hashrateCallback,
-        proofCallback);
+        proofCallback,
+        errorCallback);
       miner.start();
       state.set(Koinos.StateKey.MinerActivated, true);
       writeConfiguration();
