@@ -15,6 +15,7 @@ let derivedKey = null;
 let win = null;
 let contract = null;
 let web3 = null;
+var keyManagementWindow = null;
 
 const configFile = path.join((electron.app || electron.remote.app).getPath('userData'), 'config.json');
 
@@ -54,7 +55,7 @@ function readConfiguration() {
     }
   }
 
-  openKeystore();
+  //openKeystore();
 
   return config;
 }
@@ -206,15 +207,9 @@ function openKeystore() {
         notify(Koinos.StateKey.ErrorReport, error);
       }
    }
-
-   if (ks === null) {
-      createKeystore();
-   }
 }
 
-function createKeystore(seedPhrase) {
-   let password = createPassword();
-
+function createKeystore(password, seedPhrase) {
    if (!seedPhrase) {
       seedPhrase = keystore.generateRandomSeed();
       console.log(seedPhrase);
@@ -252,7 +247,7 @@ function createKeystore(seedPhrase) {
       }
    });
 
-  //return ks.getSeed(derivedKey);
+  return seedPhrase;
 }
 
 function saveKeystore() {
@@ -399,24 +394,40 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, async (event, ...args) => {
   }
 });
 
-ipcMain.handle(Koinos.StateKey.ManageKeys, (event, ...args) => {
-  // create new window
-  let keysWindow = new BrowserWindow({
-    width: 900,
-    height: 600,
-    titleBarStyle: "hidden",
-    resizable: false,
-    maximizable: false,
-    webPreferences: {
-      nodeIntegration: true,
-    },
-    show: false
-  })
+ipcMain.handle(Koinos.StateKey.GenerateKeys, (event, args) => {
+  if (keyManagementWindow !== null) {
+    let seedPhrase = createKeystore(args, null);
+    keyManagementWindow.send(Koinos.StateKey.SeedPhrase, seedPhrase);
+  }
+});
 
-  keysWindow.loadFile("components/generate-keys.html");
-  keysWindow.once('ready-to-show', () => {
-    keysWindow.show();
-  });
+ipcMain.handle(Koinos.StateKey.ManageKeys, (event, ...args) => {
+  if (keyManagementWindow !== null) {
+    keyManagementWindow.close();
+    keyManagementWindow = null;
+  }
+  else {
+    keyManagementWindow = new BrowserWindow({
+      width: 900,
+      height: 600,
+      titleBarStyle: "hidden",
+      resizable: false,
+      maximizable: false,
+      webPreferences: {
+        nodeIntegration: true,
+      },
+      show: false
+    })
+
+    keyManagementWindow.on('close', function() {
+      keyManagementWindow = null;
+    });
+
+    keyManagementWindow.loadFile("components/generate-keys.html");
+    keyManagementWindow.once('ready-to-show', () => {
+      keyManagementWindow.show();
+    });
+  }
 })
 
 ipcMain.handle(Koinos.StateKey.PasswordModal, (event, ...args) => {

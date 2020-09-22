@@ -36,15 +36,17 @@
       background-color: none;
     }
 
-    #message {
+    #password-feedback {
       padding: 10px 40px;
       width: 50%;
       color: #ffffff;
       margin-left: 20px;
-      background: hsl(0deg 89% 64% / 90%);
       border-radius: 5px;
       text-align: center;
       visibility: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     #generate-button {
@@ -94,6 +96,10 @@
       width: 70%;
       padding: 10px 20px;
     }
+
+    #twelve-words {
+      visibility: hidden;
+    }
   </style>
   <title>Create</title>
 
@@ -105,13 +111,12 @@
       <h2>Create Private Key</h2>
       <div class="form-area">
         <form action="">
-          <input id="password" type="password" placeholder="Password">
-          <input id="password-confirm" type="password" placeholder="Confirm Password">
-          <span id="generate-button" onclick="generateKey()">Generate Key</span>
-          <span id="close-button" onclick="closeThis()">Close</span>
+          <input id="password" type="password" placeholder="Password" onkeyup="onPasswordKeyUp()">
+          <input id="password-confirm" type="password" placeholder="Confirm Password" onkeyup="onPasswordKeyUp()">
+          <span id="generate-button" onclick="generateKeys()">Generate Key</span>
+          <span id="close-button" onclick="closeWindow()">Close</span>
         </form>
-        <div id="message">
-          Sorry, the passwords dont match!
+        <div id="password-feedback">
         </div>
       </div>
       <div class="warning">
@@ -128,42 +133,31 @@
         <table>
           <tbody>
             <tr>
-              <td id="word1">somelongword!</td>
-              <td id="word2">somelongword!!</td>
-              <td id="word3">word!</td>
+              <td id="word1"></td>
+              <td id="word2"></td>
+              <td id="word3"></td>
             </tr>
             <tr>
-              <td id="word5">word!</td>
-              <td id="word6">word!</td>
-              <td id="word7">somelongword!!</td>
+              <td id="word4"></td>
+              <td id="word5"></td>
+              <td id="word6"></td>
             </tr>
             <tr>
-              <td id="word9">word!</td>
-              <td id="word10">word!</td>
-              <td id="word11">somelongword!!</td>
+              <td id="word7"></td>
+              <td id="word8"></td>
+              <td id="word9"></td>
             </tr>
             <tr>
-              <td id="word9">word!</td>
-              <td id="word10">word!</td>
-              <td id="word11">somelongword!!</td>
+              <td id="word10"></td>
+              <td id="word11"></td>
+              <td id="word12"></td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
   </div>
-  <script src="../script.js"></script>
-  <script>
-    function closeThis() {
-      console.log('clicked')
-    }
-
-    function passwordValidation() {
-      let pass = document.getElementById("password");
-      let passConfirm = document.getElementById("password-confirm");
-      let message = document.getElementById("message");
-    }
-  </script>
+  <script src="../assets/js/generate-keys.js"></script>
 </body>
 
 </html>

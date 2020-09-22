@@ -165,6 +165,10 @@ function powerButton(state) {
   }
 }
 
+function onKeyManagementClick() {
+  ipcRenderer.invoke(Koinos.StateKey.ManageKeys);
+}
+
 function hashrateSpinner(state) {
   if (state) {
     document.getElementById(Koinos.Field.HashrateSpinner).style.display = "";

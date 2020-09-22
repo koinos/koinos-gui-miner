@@ -9,6 +9,8 @@ module.exports = {
     ToggleMiner: 'toggle-miner',
     StopMiner: 'stop-miner',
     ManageKeys: 'manage-keys',
+    GenerateKeys: 'generate-keys',
+    SeedPhrase: 'seed-phrase',
     PasswordModal: 'password-modal',
     RestoreState: 'restore-state',
     Configuration: 'koinos-config'
@@ -40,7 +42,24 @@ module.exports = {
     ErrorMessage: "error-message",
     DocumentationLink: "documentation-link",
     GitHubIcon: "github-icon",
-    ErrorClose: "error-close"
+    ErrorClose: "error-close",
+    Password: "password",
+    PasswordConfirm: "password-confirm",
+    PasswordFeedback: "password-feedback",
+    TwelveWords: "twelve-words",
+    Word1: "word1",
+    Word2: "word2",
+    Word3: "word3",
+    Word4: "word4",
+    Word5: "word5",
+    Word6: "word6",
+    Word7: "word7",
+    Word8: "word8",
+    Word9: "word9",
+    Word10: "word10",
+    Word11: "word11",
+    Word12: "word12",
+    GenerateButton: "generate-button"
   }
 
 };
