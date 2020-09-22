@@ -86,7 +86,7 @@ function onEthBalanceUpdate(b) {
     document.getElementById(Koinos.Field.EthBalanceSub).innerHTML = "";
   }
 
-  document.getElementById(Koinos.Field.EthBalance).innerHTML = (wei/Koinos.Ether.WeiPerEth).toFixed(4) + " ETH";
+  document.getElementById(Koinos.Field.EthBalance).innerHTML = (wei / Koinos.Ether.WeiPerEth).toFixed(4) + " ETH";
 }
 
 function onHashrateReportString(s) {
@@ -236,3 +236,4 @@ ipcRenderer.on(Koinos.StateKey.EthBalanceUpdate, (event, arg) => {
 ipcRenderer.on(Koinos.StateKey.ErrorReport, (event, arg) => {
   onErrorReport(arg);
 });
+

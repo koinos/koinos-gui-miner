@@ -8,6 +8,8 @@ module.exports = {
     MinerActivated: 'miner-activated',
     ToggleMiner: 'toggle-miner',
     StopMiner: 'stop-miner',
+    ManageKeys: 'manage-keys',
+    PasswordModal: 'password-modal',
     RestoreState: 'restore-state',
     Configuration: 'koinos-config'
   },
@@ -40,4 +42,5 @@ module.exports = {
     GitHubIcon: "github-icon",
     ErrorClose: "error-close"
   }
+
 };

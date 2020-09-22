@@ -21,7 +21,7 @@ const configFile = path.join((electron.app || electron.remote.app).getPath('user
 let state = new Map([
   [Koinos.StateKey.MinerActivated, false],
   [Koinos.StateKey.KoinBalanceUpdate, 0],
-  [Koinos.StateKey.EthBalanceUpdate, [0,0]]
+  [Koinos.StateKey.EthBalanceUpdate, [0, 0]]
 ]);
 
 let config = {
@@ -40,8 +40,7 @@ const KnsTokenMiningAddress = '0xD5dD4afc0f9611FBC86f710943a503c374567d00';
 
 function notify(event, args) {
   state.set(event, args);
-  if (win !== null)
-  {
+  if (win !== null) {
     win.send(event, args);
   }
 }
@@ -85,7 +84,8 @@ function createWindow() {
   // and load the index.html of the app.
   win.loadFile("index.html");
 
-  win.webContents.on('did-finish-load', function() {
+
+  win.webContents.on('did-finish-load', function () {
     win.send(Koinos.StateKey.RestoreState, state);
   });
 
@@ -160,7 +160,7 @@ function proofCallback(submission) {
   if (web3 !== null && contract !== null) {
     updateTokenBalance();
 
-    web3.eth.getBalance(getAddresses()[0], function(err, result) {
+    web3.eth.getBalance(getAddresses()[0], function (err, result) {
       if (err) {
         let error = {
           kMessage: "Could not retrieve remaining Ether balance from the sender address.",
@@ -184,11 +184,11 @@ function errorCallback(error) {
 }
 
 function createPassword() {
-   return 'password';
+  return 'password';
 }
 
 function enterPassword() {
-   return 'password';
+  return 'password';
 }
 
 // Generate a new keystore
@@ -252,32 +252,32 @@ function createKeystore(seedPhrase) {
       }
    });
 
-   //return ks.getSeed(derivedKey);
+  //return ks.getSeed(derivedKey);
 }
 
 function saveKeystore() {
-   assert (ks !== null)
-   const keystorePath = path.join((electron.app || electron.remote.app).getPath('userData'), 'keystore.json');
-   fs.writeFileSync(keystorePath, ks.serialize());
+  assert(ks !== null)
+  const keystorePath = path.join((electron.app || electron.remote.app).getPath('userData'), 'keystore.json');
+  fs.writeFileSync(keystorePath, ks.serialize());
 }
 
 function getAddresses() {
-   assert (ks !== null)
-   return ks.getAddresses();
+  assert(ks !== null)
+  return ks.getAddresses();
 }
 
 async function signCallback(web3, txData) {
-   assert (ks !== null && derivedKey !== null)
-   txData.nonce = await web3.eth.getTransactionCount(
-      txData.from
-   );
+  assert(ks !== null && derivedKey !== null)
+  txData.nonce = await web3.eth.getTransactionCount(
+    txData.from
+  );
 
    let rawTx = new Tx(txData);
    return '0x' + signing.signTx(ks, derivedKey, rawTx.serialize(), txData.from);
 }
 
 async function exportKey() {
-   assert (ks !== null)
+  assert(ks !== null)
 
    let privKey;
    ks.keyFromPassword(enterPassword(), function (err, pwDerivedKey) {
@@ -293,7 +293,7 @@ async function exportKey() {
       }
    });
 
-   return privKey;
+  return privKey;
 }
 
 function stopMiner() {
@@ -315,11 +315,11 @@ ipcMain.handle(Koinos.StateKey.StopMiner, (event, ...args) => {
 
 ipcMain.handle(Koinos.StateKey.ToggleMiner, async (event, ...args) => {
   try {
-    if (ks === null ) {
-       openKeystore();
+    if (ks === null) {
+      openKeystore();
     }
 
-    assert (ks !== null);
+    assert(ks !== null);
 
     if (!state.get(Koinos.StateKey.MinerActivated)) {
       config.ethAddress = args[0];
@@ -398,3 +398,47 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, async (event, ...args) => {
     notify(Koinos.StateKey.ErrorReport, err);
   }
 });
+
+ipcMain.handle(Koinos.StateKey.ManageKeys, (event, ...args) => {
+  // create new window
+  let keysWindow = new BrowserWindow({
+    width: 900,
+    height: 600,
+    titleBarStyle: "hidden",
+    resizable: false,
+    maximizable: false,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+    show: false
+  })
+
+  keysWindow.loadFile("components/generate-keys.html");
+  keysWindow.once('ready-to-show', () => {
+    keysWindow.show();
+  });
+})
+
+ipcMain.handle(Koinos.StateKey.PasswordModal, (event, ...args) => {
+  // create new window
+  let passwordModalWindow = new BrowserWindow({
+    width: 600,
+    height: 400,
+    frame: false,
+    titleBarStyle: "hidden",
+    resizable: false,
+    maximizable: false,
+    modal: true,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+    show: false
+  })
+
+  passwordModalWindow.loadFile("components/password-modal.html");
+  passwordModalWindow.once('ready-to-show', () => {
+    passwordModalWindow.show();
+  });
+})
+
+
