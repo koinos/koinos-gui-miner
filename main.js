@@ -29,7 +29,9 @@ let config = {
   developerTip: true,
   endpoint: "http://localhost:8545",
   proofFrequency: 60,
-  proofPer: "day"
+  proofPer: "day",
+  gasMultiplier: 1,
+  gasPriceLimit: 1000000000000
 };
 
 const KnsTokenAddress = '0x50294550A127570587a2d4871874E69D7F8115D5';
@@ -46,7 +48,11 @@ function notify(event, args) {
 
 function readConfiguration() {
   if (fs.existsSync(configFile)) {
-    config = JSON.parse(fs.readFileSync(configFile, 'utf8'));
+    let userConfig = JSON.parse(fs.readFileSync(configFile, 'utf8'));
+    let keys = Object.keys(userConfig);
+    for (let i = 0; i < keys.length; i++) {
+      config[keys[i]] = userConfig[keys[i]];
+    }
   }
 
   openKeystore();
@@ -131,11 +137,28 @@ function hashrateCallback(hashrate) {
   notify(Koinos.StateKey.HashrateReportString, KoinosMiner.formatHashrate(hashrate));
 }
 
+function updateTokenBalance() {
+   if (web3 === null || contract === null)
+      return;
+
+   contract.methods.balanceOf(config.ethAddress).call({}, function(err, result) {
+      if (err) {
+         let error = {
+            kMessage: "There was a problem retrieving the KOIN balance.",
+            error: err
+         };
+         console.log(err);
+         notify(Koinos.StateKey.ErrorReport, error);
+      }
+      else {
+         notify(Koinos.StateKey.KoinBalanceUpdate, result);
+      }
+   });
+}
+
 function proofCallback(submission) {
   if (web3 !== null && contract !== null) {
-    contract.methods.balanceOf(config.ethAddress).call({from: config.ethAddress}, function(error, result) {
-      notify(Koinos.StateKey.KoinBalanceUpdate, result);
-    });
+    updateTokenBalance();
 
     web3.eth.getBalance(getAddresses()[0], function(err, result) {
       if (err) {
@@ -154,6 +177,10 @@ function proofCallback(submission) {
       }
     });
   }
+}
+
+function errorCallback(error) {
+  notify(Koinos.StateKey.ErrorReport, error);
 }
 
 function createPassword() {
@@ -205,20 +232,24 @@ function createKeystore(seedPhrase) {
         };
         notify(Koinos.StateKey.ErrorReport, error);
       }
-      ks = vault;
+      else {
+         ks = vault;
 
-      ks.keyFromPassword(password, function (err, pwDerivedKey) {
-         if (err) {
-          let error = {
-            kMessage: "There was a problem unlocking the keystore.",
-            error: err
-          };
-          notify(Koinos.StateKey.ErrorReport, error);
-         }
-         ks.generateNewAddress(pwDerivedKey, 1);
-         console.log(getAddresses()[0]);
-         saveKeystore();
+         ks.keyFromPassword(password, function (err, pwDerivedKey) {
+            if (err) {
+             let error = {
+               kMessage: "There was a problem unlocking the keystore.",
+               error: err
+             };
+             notify(Koinos.StateKey.ErrorReport, error);
+            }
+            else {
+               ks.generateNewAddress(pwDerivedKey, 1);
+               console.log(getAddresses()[0]);
+               saveKeystore();
+            }
       });
+      }
    });
 
    //return ks.getSeed(derivedKey);
@@ -257,7 +288,9 @@ async function exportKey() {
         };
         notify(Koinos.StateKey.ErrorReport, error);
       }
-      privKey = ks.exportPrivateKey(ks.getAddresses()[0], pwDerivedKey);
+      else {
+         privKey = ks.exportPrivateKey(ks.getAddresses()[0], pwDerivedKey);
+      }
    });
 
    return privKey;
@@ -320,19 +353,8 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, async (event, ...args) => {
         return;
       }
 
-      contract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress, {from: config.ethAddress, gasPrice:'20000000000', gas: 6721975});
-      contract.methods.balanceOf(config.ethAddress).call({from: config.ethAddress}, function(err, result) {
-        if (err) {
-          let error = {
-            kMessage: "There was a problem retrieving the KOIN balance.",
-            error: err
-          };
-          notify(Koinos.StateKey.ErrorReport, error);
-        }
-        else {
-          notify(Koinos.StateKey.KoinBalanceUpdate, result);
-        }
-      });
+      contract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress);
+      updateTokenBalance();
       web3.eth.getBalance(getAddresses()[0], function(err, result) {
         if (err) {
           let error = {
@@ -356,9 +378,12 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, async (event, ...args) => {
         config.endpoint,
         config.developerTip ? 5 : 0,
         proofPeriod,
+        config.gasMultiplier,
+        config.gasPriceLimit,
         signCallback,
         hashrateCallback,
-        proofCallback);
+        proofCallback,
+        errorCallback);
       miner.start();
       state.set(Koinos.StateKey.MinerActivated, true);
       writeConfiguration();
