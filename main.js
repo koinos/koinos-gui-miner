@@ -329,7 +329,7 @@ ipcMain.handle(Koinos.StateKey.ManageKeys, (event, ...args) => {
     show: false
   })
 
-  keysWindow.loadFile("components/manage-keys.html");
+  keysWindow.loadFile("components/generate-keys.html");
   keysWindow.once('ready-to-show', () => {
     keysWindow.show();
   });

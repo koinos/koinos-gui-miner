@@ -83,6 +83,9 @@
       cursor: pointer;
     }
 
+    #copy {
+      cursor: pointer;
+    }
 
     .container {
       display: flex;
@@ -117,10 +120,10 @@
 <body>
   <div class="container">
     <div id="public-key">
+
       <div id="key">
         <div>Key:</div>
-        <div id="key-text">6879206e6f74206d653f</div>
-        <div><img src="../assets/images/content_copy-24px.svg" alt="copy key icon" id="copy"></div>
+        <div id="key-text" onClick='copyText(this)'>6879206e6f74206d653f</div>
       </div>
 
     </div>
@@ -141,14 +144,29 @@
   </div>
   <script src="../script.js"></script>
   <script>
-    function copy() {
-      var copyText = document.querySelector("#key-text");
-      copyText.select();
-      document.execCommand("copy");
-      console.log(copyText);
-    }
+    function copyText(element) {
+      console.log(element)
+      var range, selection, worked;
 
-    document.querySelector("#copy").addEventListener("click", copy);
+      if (document.body.createTextRange) {
+        range = document.body.createTextRange();
+        range.moveToElementText(element);
+        range.select();
+      } else if (window.getSelection) {
+        selection = window.getSelection();
+        range = document.createRange();
+        range.selectNodeContents(element);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+
+      try {
+        document.execCommand('copy');
+      }
+      catch (err) {
+        alert('unable to copy text');
+      }
+    }
   </script>
 </body>
 
