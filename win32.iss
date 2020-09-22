@@ -22,10 +22,11 @@ DefaultDirName={autopf}\{#MyAppName}
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
-OutputBaseFilename=mysetup
+OutputBaseFilename=KoinosGUIMiner
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
+OUTputDir="{#SourcePath}\dist\installer"
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -34,8 +35,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "{#SourcePath}\Koinos Miner-win32-x64\Koinos Miner.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourcePath}\Koinos Miner-win32-x64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#SourcePath}\dist\Koinos Miner-win32-x64\Koinos Miner.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourcePath}\dist\Koinos Miner-win32-x64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

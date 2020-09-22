@@ -1,7 +1,7 @@
 {
   "name": "koinos-gui-miner",
   "version": "0.1.0",
-  "productName": "koinos-gui-miner",
+  "productName": "Koinos Miner",
   "description": "The official Koinos GUI mining application.",
   "main": "main.js",
   "scripts": {
