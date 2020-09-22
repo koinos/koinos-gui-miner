@@ -26,3 +26,12 @@ after_success:
   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then ci/after_success_win.bat; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ci/after_success_linux.sh; fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then ci/after_success_osx.sh; fi
+
+deploy:
+  provider: releases
+  api-key: "$GITHUB_TOKEN"
+  file_glob: true
+  file: dist/installer/*.*
+  skip_cleanup: true
+  on:
+    tags: true
