@@ -31,7 +31,8 @@ let config = {
   proofFrequency: 60,
   proofPer: "day",
   gasMultiplier: 1,
-  gasPriceLimit: 1000000000000
+  gasPriceLimit: 1000000000000,
+  tipPercent: 5
 };
 
 const KnsTokenAddress = '0x50294550A127570587a2d4871874E69D7F8115D5';
@@ -376,7 +377,7 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, async (event, ...args) => {
         getAddresses()[0],
         KnsTokenMiningAddress,
         config.endpoint,
-        config.developerTip ? 5 : 0,
+        config.developerTip ? config.tipPercent : 0,
         proofPeriod,
         config.gasMultiplier,
         config.gasPriceLimit,
