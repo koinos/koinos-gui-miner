@@ -1,7 +1,7 @@
 {
   "name": "koinos-gui-miner",
   "version": "0.1.0",
-  "productName": "koinos-gui-miner",
+  "productName": "Koinos Miner",
   "description": "The official Koinos GUI mining application.",
   "main": "main.js",
   "scripts": {
@@ -30,6 +30,7 @@
   "dependencies": {
     "eth-lightwallet": "^4.0.0",
     "koinos-miner": "git@github.com:open-orchard/koinos-miner.git",
-    "web3": "^1.2.11"
+    "web3": "^1.2.11",
+    "ethereumjs-tx": "^2.1.2"
   }
 }
