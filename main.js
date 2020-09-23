@@ -236,7 +236,6 @@ function openKeystore() {
 function createKeystore(password, seedPhrase) {
    if (!seedPhrase) {
       seedPhrase = keystore.generateRandomSeed();
-      console.log(seedPhrase);
    }
 
    keystore.createVault({
@@ -295,24 +294,11 @@ async function signCallback(web3, txData) {
    return '0x' + signing.signTx(ks, derivedKey, rawTx.serialize(), txData.from);
 }
 
-async function exportKey() {
+function exportKey(password, callback) {
   assert(ks !== null)
 
-   let privKey;
-   ks.keyFromPassword(enterPassword(), function (err, pwDerivedKey) {
-      if (err) {
-        let error = {
-          kMessage: "There was a problem unlocking the keystore.",
-          error: err
-        };
-        notify(Koinos.StateKey.ErrorReport, error);
-      }
-      else {
-         privKey = ks.exportPrivateKey(ks.getAddresses()[0], pwDerivedKey);
-      }
-   });
-
-  return privKey;
+  let privKey;
+  ks.keyFromPassword(password, callback);
 }
 
 function stopMiner() {
@@ -391,12 +377,21 @@ ipcMain.handle(Koinos.StateKey.ManageKeys, (event, ...args) => {
       keyManagementWindow = null;
     });
 
-    keyManagementWindow.loadFile("components/generate-keys.html");
+    if (ks !== null) {
+      keyManagementWindow.loadFile("components/manage-keys.html");
+    }
+    else {
+      keyManagementWindow.loadFile("components/generate-keys.html");
+    }
+
     keyManagementWindow.once('ready-to-show', () => {
+      if (ks !== null ) {
+        keyManagementWindow.send(Koinos.StateKey.SigningAddress, getAddresses()[0]);
+      }
       keyManagementWindow.show();
     });
   }
-})
+});
 
 ipcMain.on(Koinos.StateKey.ClosePasswordPrompt, async (event, password) => {
   if (password.length === 0)
@@ -491,4 +486,30 @@ function promptPassword() {
   });
 }
 
+ipcMain.handle(Koinos.StateKey.ExportKey, (event, arg) => {
+  exportKey(arg, function (err, pwDerivedKey) {
+    if (err) {
+      let error = {
+        kMessage: "There was a problem unlocking the keystore.",
+        error: err
+      };
 
+      if (keyManagementWindow !== null) {
+        keyManagementWindow.close();
+        keyManagementWindow = null;
+      }
+
+      console.log(err);
+      notify(Koinos.StateKey.ErrorReport, error);
+    }
+    else {
+      if (ks.isDerivedKeyCorrect(pwDerivedKey)) {
+        let key = ks.exportPrivateKey(ks.getAddresses()[0], pwDerivedKey);
+        keyManagementWindow.send(Koinos.StateKey.PrivateKey, ks.exportPrivateKey(ks.getAddresses()[0], pwDerivedKey));
+      }
+      else {
+         keyManagementWindow.send(Koinos.StateKey.ExportKeyError, "Password is incorrect.");
+      }
+    }
+  });
+});

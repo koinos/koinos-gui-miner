@@ -15,7 +15,11 @@ module.exports = {
     ClosePasswordPrompt: 'close-password-prompt',
     RestoreState: 'restore-state',
     Configuration: 'koinos-config',
-    HasKeystore: 'has-keystore'
+    HasKeystore: 'has-keystore',
+    SigningAddress: 'signing-address',
+    ExportKey: 'export-key',
+    PrivateKey: 'private-key',
+    ExportKeyError: 'export-key-error'
   },
   TimeSpan: {
     SecondsPerDay: 86400,
@@ -62,7 +66,10 @@ module.exports = {
     Word11: "word11",
     Word12: "word12",
     GenerateButton: "generate-button",
-    EnterButton: "enter-button"
+    EnterButton: "enter-button",
+    SigningAddress: "address-text",
+    PrivateKey: "private-key",
+    ExportKeyError: "export-key-error"
   }
 
 };
