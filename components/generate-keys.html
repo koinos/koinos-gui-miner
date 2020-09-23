@@ -14,7 +14,7 @@
       Very Deep Purple: 0F091F
     */
     body {
-      -webkit-app-region: no-drag;
+      -webkit-app-region: drag;
     }
 
     .form-area {
@@ -49,11 +49,11 @@
       align-items: center;
     }
 
-    #generate-button {
+    #close-button {
       position: absolute;
       bottom: 20px;
-      right: 20px;
-      background-color: #6F00F6;
+      right: 180px;
+      background-color: #dd003f;
       color: white;
       padding: 10px 20px;
       border: none;
@@ -62,11 +62,11 @@
       cursor: pointer;
     }
 
-    #close-button {
+    #generate-button {
       position: absolute;
       bottom: 20px;
-      right: 180px;
-      background-color: #dd003f;
+      right: 20px;
+      background-color: #6F00F6;
       color: white;
       padding: 10px 20px;
       border: none;
@@ -111,7 +111,7 @@
       <h2>Create Private Key</h2>
       <div class="form-area">
         <form action="">
-          <input id="password" type="password" placeholder="Password" onkeyup="onPasswordKeyUp()">
+          <input id="password" type="password" placeholder="Password" onkeyup="onPasswordKeyUp()" autofocus>
           <input id="password-confirm" type="password" placeholder="Confirm Password" onkeyup="onPasswordKeyUp()">
           <span id="generate-button" onclick="generateKeys()">Generate Key</span>
           <span id="close-button" onclick="closeWindow()">Close</span>
