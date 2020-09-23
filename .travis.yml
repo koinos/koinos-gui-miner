@@ -4,9 +4,9 @@ node_js:
   - "12"
 
 os:
-  - windows
-  - linux
   - osx
+  - linux
+  - windows
 
 before_install:
   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then choco upgrade chocolatey; fi
