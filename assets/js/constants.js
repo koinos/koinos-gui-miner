@@ -12,8 +12,10 @@ module.exports = {
     GenerateKeys: 'generate-keys',
     SeedPhrase: 'seed-phrase',
     PasswordModal: 'password-modal',
+    ClosePasswordPrompt: 'close-password-prompt',
     RestoreState: 'restore-state',
-    Configuration: 'koinos-config'
+    Configuration: 'koinos-config',
+    HasKeystore: 'has-keystore'
   },
   TimeSpan: {
     SecondsPerDay: 86400,
@@ -59,7 +61,8 @@ module.exports = {
     Word10: "word10",
     Word11: "word11",
     Word12: "word12",
-    GenerateButton: "generate-button"
+    GenerateButton: "generate-button",
+    EnterButton: "enter-button"
   }
 
 };

@@ -3,7 +3,7 @@ const Koinos = require('../assets/js/constants.js');
 let generated = false;
 
 function closeWindow() {
-  ipcRenderer.invoke(Koinos.StateKey.ManageKeys);
+  this.close();
 }
 
 function passwordsMatch(a,b) {
@@ -59,18 +59,18 @@ function generateKeys() {
 ipcRenderer.on(Koinos.StateKey.SeedPhrase, (event, arg) => {
   let words = arg.split(" ");
 
-  document.getElementById(Koinos.Field.Word1).innerHTML = words[0];
-  document.getElementById(Koinos.Field.Word2).innerHTML = words[1];
-  document.getElementById(Koinos.Field.Word3).innerHTML = words[2];
-  document.getElementById(Koinos.Field.Word4).innerHTML = words[3];
-  document.getElementById(Koinos.Field.Word5).innerHTML = words[4];
-  document.getElementById(Koinos.Field.Word6).innerHTML = words[5];
-  document.getElementById(Koinos.Field.Word7).innerHTML = words[6];
-  document.getElementById(Koinos.Field.Word8).innerHTML = words[7];
-  document.getElementById(Koinos.Field.Word9).innerHTML = words[8];
-  document.getElementById(Koinos.Field.Word10).innerHTML = words[9];
-  document.getElementById(Koinos.Field.Word11).innerHTML = words[10];
-  document.getElementById(Koinos.Field.Word12).innerHTML = words[11];
+  document.getElementById(Koinos.Field.Word1).innerHTML = "1. " + words[0];
+  document.getElementById(Koinos.Field.Word2).innerHTML = "2. " + words[1];
+  document.getElementById(Koinos.Field.Word3).innerHTML = "3. " + words[2];
+  document.getElementById(Koinos.Field.Word4).innerHTML = "4. " + words[3];
+  document.getElementById(Koinos.Field.Word5).innerHTML = "5. " + words[4];
+  document.getElementById(Koinos.Field.Word6).innerHTML = "6. " + words[5];
+  document.getElementById(Koinos.Field.Word7).innerHTML = "7. " + words[6];
+  document.getElementById(Koinos.Field.Word8).innerHTML = "8. " + words[7];
+  document.getElementById(Koinos.Field.Word9).innerHTML = "9. " + words[8];
+  document.getElementById(Koinos.Field.Word10).innerHTML = "10. " + words[9];
+  document.getElementById(Koinos.Field.Word11).innerHTML = "11. " + words[10];
+  document.getElementById(Koinos.Field.Word12).innerHTML = "12. " + words[11];
 
   document.getElementById(Koinos.Field.TwelveWords).style.visibility = "visible";
   generated = true;
