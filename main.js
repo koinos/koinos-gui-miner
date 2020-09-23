@@ -34,7 +34,8 @@ let config = {
   proofFrequency: 60,
   proofPer: "day",
   gasMultiplier: 1,
-  gasPriceLimit: 1000000000000
+  gasPriceLimit: 1000000000000,
+  tipPercent: 5
 };
 
 const KnsTokenAddress = '0x50294550A127570587a2d4871874E69D7F8115D5';
