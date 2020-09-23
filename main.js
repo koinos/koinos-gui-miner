@@ -419,7 +419,7 @@ ipcMain.on(Koinos.StateKey.ClosePasswordPrompt, async (event, password) => {
     }
     if (!ks.isDerivedKeyCorrect(pwDerivedKey)) {
       let error = {
-        kMessage: "The derived key is incorrect."
+        kMessage: "The password is incorrect."
       };
       notify(Koinos.StateKey.ErrorReport, error);
       return;
