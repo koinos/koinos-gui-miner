@@ -478,3 +478,29 @@ ipcMain.handle(Koinos.StateKey.ExportKey, (event, arg) => {
     }
   });
 });
+
+ipcMain.handle(Koinos.StateKey.ExportConfirmationModal, (event, ...args) => {
+  let exportKeyConfirmationModal = new BrowserWindow({
+    parent: keyManagementWindow,
+    width: 300,
+    height: 200,
+    frame: false,
+    titleBarStyle: "hidden",
+    resizable: false,
+    maximizable: false,
+    modal: true,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+    show: false
+  });
+
+  exportKeyConfirmationModal.loadFile("components/export-confirmation.html");
+  exportKeyConfirmationModal.once('ready-to-show', () => {
+    exportKeyConfirmationModal.show();
+  });
+});
+
+ipcMain.handle(Koinos.StateKey.ConfirmExportKey, (event, ...args) => {
+  keyManagementWindow.send(Koinos.StateKey.ConfirmExportKey);
+});

@@ -17,7 +17,9 @@ module.exports = {
     SigningAddress: 'signing-address',
     ExportKey: 'export-key',
     PrivateKey: 'private-key',
-    ExportKeyError: 'export-key-error'
+    ExportKeyError: 'export-key-error',
+    ExportConfirmationModal: 'export-confirmation-modal',
+    ConfirmExportKey: 'confirm-export-key'
   },
   TimeSpan: {
     SecondsPerDay: 86400,
