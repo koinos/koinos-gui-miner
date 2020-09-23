@@ -12,10 +12,25 @@
       text-align: center;
       margin-top: 40px;
     }
+
+    #titlebar {
+      display: block;
+      position: fixed;
+      height: 22px;
+      width: calc(100% - 2px);
+      padding: 10px;
+      right: 20px;
+      text-align: right;
+      color: #6F00F6;
+      font-size: .7em;
+    }
   </style>
 </head>
 
 <body>
+  <header id="titlebar">
+    <!--Koinos Miner v0.1.0-->
+  </header>
   <div class="config">
     <div class="no-drag">
       <span>Ethereum Endpoint</span>
@@ -42,7 +57,7 @@
       </div>
     </div>
     <div>
-      <div class="key-managment" onclick="manageKeys()">Keys</div>
+      <div id="key-managment" onclick="onKeyManagementClick()"><img src="./assets/images/key.svg" alt=""> Key</div>
     </div>
     <div>
       <div class="tip">
@@ -111,8 +126,7 @@
       .
     </div>
     <span class="version">
-      <span id="documentation-link" onclick="openDocs()">Documentation</span>
-      v0.01
+      <span id="documentation-link" onclick="launchModal()">Documentation</span>
     </span>
     <div id="errors" class="errors flicker-in" style="display:none;">
       <div id="error-close">

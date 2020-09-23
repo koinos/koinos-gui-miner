@@ -1,0 +1,88 @@
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="../assets/css/style.css">
+   <style>
+     /*
+       Colors:
+       Green: 34DD00
+       Red: DD003F
+       Light Purple: 6F00F6
+       Very Deep Purple: 0F091F
+     */
+     body {
+       color: white;
+       -webkit-app-region: no-drag;
+       background-color: #0F091F;
+     }
+
+     #export-warning {
+       color: red;
+       font-size: 0.8em;
+       text-align: center;
+     }
+
+     #close-button {
+       position: absolute;
+       bottom: 20px;
+       right: 20px;
+       background-color: #dd003f;
+       color: white;
+       padding: 10px 20px;
+       border: none;
+       font-size: 1em;
+       margin-top: 1em;
+       cursor: pointer;
+     }
+
+     #confirm-button {
+       position: relative;
+       background-color: #6F00F6;
+       color: white;
+       padding: 10px 20px;
+       border: none;
+       font-size: 1em;
+       margin-top: 1em;
+       cursor: pointer;
+       float: right;
+     }
+
+     .container {
+       display: flex;
+       flex-direction: column;
+       align-content: center;
+       align-items: center;
+       padding: 1.4em;
+       margin-top: 3em;
+     }
+
+     .input-area {
+       width: 400px;
+     }
+
+     .message {
+       margin-top: 100px;
+     }
+
+     p {
+       font-size: .8em;
+     }
+
+     .warning {
+       position: relative;
+       top: 100px;
+     }
+   </style>
+
+ </head>
+
+ <body>
+   <div class="container">
+     <div id="export-warning">Are you sure you want to export your key?</div>
+     <span id="confirm-button" onClick="confirm()">Yes</span>
+     <span id="close-button" onclick="closeWindow()">No</span>
+   </div>
+   <script src="../assets/js/export-confirmation.js"></script>
+ </body>
+
+ </html>

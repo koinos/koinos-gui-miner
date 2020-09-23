@@ -15,13 +15,16 @@ let derivedKey = null;
 let win = null;
 let contract = null;
 let web3 = null;
+var keyManagementWindow = null;
 
 const configFile = path.join((electron.app || electron.remote.app).getPath('userData'), 'config.json');
+const keystoreFile = path.join((electron.app || electron.remote.app).getPath('userData'), 'keystore.json');
 
 let state = new Map([
   [Koinos.StateKey.MinerActivated, false],
   [Koinos.StateKey.KoinBalanceUpdate, 0],
-  [Koinos.StateKey.EthBalanceUpdate, [0,0]]
+  [Koinos.StateKey.EthBalanceUpdate, [0, 0]],
+  [Koinos.StateKey.HasKeystore, false]
 ]);
 
 let config = {
@@ -63,8 +66,7 @@ const TipAddresses = [
 
 function notify(event, args) {
   state.set(event, args);
-  if (win !== null)
-  {
+  if (win !== null) {
     win.send(event, args);
   }
 }
@@ -89,6 +91,8 @@ function writeConfiguration() {
 }
 
 function createWindow() {
+  console.log(configFile);
+  console.log(keystoreFile);
   // Create the browser window.
   win = new BrowserWindow({
     width: 1200,
@@ -105,10 +109,14 @@ function createWindow() {
 
   state.set(Koinos.StateKey.Configuration, readConfiguration());
 
+  if (fs.existsSync(keystoreFile)) {
+    state.set(Koinos.StateKey.HasKeystore, true);
+  }
+
   // and load the index.html of the app.
   win.loadFile("index.html");
 
-  win.webContents.on('did-finish-load', function() {
+  win.webContents.on('did-finish-load', function () {
     win.send(Koinos.StateKey.RestoreState, state);
   });
 
@@ -179,11 +187,28 @@ function updateTokenBalance() {
    });
 }
 
+function updateEtherBalance() {
+  if (web3 === null || getAddresses()[0] === null)
+    return;
+
+  web3.eth.getBalance(getAddresses()[0], function(err, result) {
+    if (err) {
+      let error = {
+        kMessage: "There was a problem retrieving the Ether balance.",
+        error: err
+      };
+      notify(Koinos.StateKey.ErrorReport, error);
+    } else {
+      notify(Koinos.StateKey.EthBalanceUpdate, [result, 0]);
+    }
+  });
+}
+
 function proofCallback(submission) {
   if (web3 !== null && contract !== null) {
     updateTokenBalance();
 
-    web3.eth.getBalance(getAddresses()[0], function(err, result) {
+    web3.eth.getBalance(getAddresses()[0], function (err, result) {
       if (err) {
         let error = {
           kMessage: "Could not retrieve remaining Ether balance from the sender address.",
@@ -207,11 +232,11 @@ function errorCallback(error) {
 }
 
 function createPassword() {
-   return 'password';
+  return 'password';
 }
 
 function enterPassword() {
-   return 'password';
+  return 'password';
 }
 
 // Generate a new keystore
@@ -229,18 +254,11 @@ function openKeystore() {
         notify(Koinos.StateKey.ErrorReport, error);
       }
    }
-
-   if (ks === null) {
-      createKeystore();
-   }
 }
 
-function createKeystore(seedPhrase) {
-   let password = createPassword();
-
+function createKeystore(password, seedPhrase) {
    if (!seedPhrase) {
       seedPhrase = keystore.generateRandomSeed();
-      console.log(seedPhrase);
    }
 
    keystore.createVault({
@@ -270,53 +288,40 @@ function createKeystore(seedPhrase) {
                ks.generateNewAddress(pwDerivedKey, 1);
                console.log(getAddresses()[0]);
                saveKeystore();
+               state.set(Koinos.StateKey.HasKeystore, true);
             }
       });
       }
    });
 
-   //return ks.getSeed(derivedKey);
+  return seedPhrase;
 }
 
 function saveKeystore() {
-   assert (ks !== null)
-   const keystorePath = path.join((electron.app || electron.remote.app).getPath('userData'), 'keystore.json');
-   fs.writeFileSync(keystorePath, ks.serialize());
+  assert(ks !== null)
+  fs.writeFileSync(keystoreFile, ks.serialize());
 }
 
 function getAddresses() {
-   assert (ks !== null)
-   return ks.getAddresses();
+  assert(ks !== null)
+  return ks.getAddresses();
 }
 
 async function signCallback(web3, txData) {
-   assert (ks !== null && derivedKey !== null)
-   txData.nonce = await web3.eth.getTransactionCount(
-      txData.from
-   );
+  assert(ks !== null && derivedKey !== null)
+  txData.nonce = await web3.eth.getTransactionCount(
+    txData.from
+  );
 
    let rawTx = new Tx(txData);
    return '0x' + signing.signTx(ks, derivedKey, rawTx.serialize(), txData.from);
 }
 
-async function exportKey() {
-   assert (ks !== null)
+function exportKey(password, callback) {
+  assert(ks !== null)
 
-   let privKey;
-   ks.keyFromPassword(enterPassword(), function (err, pwDerivedKey) {
-      if (err) {
-        let error = {
-          kMessage: "There was a problem unlocking the keystore.",
-          error: err
-        };
-        notify(Koinos.StateKey.ErrorReport, error);
-      }
-      else {
-         privKey = ks.exportPrivateKey(ks.getAddresses()[0], pwDerivedKey);
-      }
-   });
-
-   return privKey;
+  let privKey;
+  ks.keyFromPassword(password, callback);
 }
 
 function stopMiner() {
@@ -338,79 +343,23 @@ ipcMain.handle(Koinos.StateKey.StopMiner, (event, ...args) => {
 
 ipcMain.handle(Koinos.StateKey.ToggleMiner, async (event, ...args) => {
   try {
-    if (ks === null ) {
-       openKeystore();
-    }
-
-    assert (ks !== null);
-
     if (!state.get(Koinos.StateKey.MinerActivated)) {
+
+      if (!state.get(Koinos.StateKey.HasKeystore)) {
+        let error = {
+          kMessage: "No signing key detected. Please open the key management window."
+        };
+        notify(Koinos.StateKey.ErrorReport, error);
+        return;
+      }
+
       config.ethAddress = args[0];
       config.endpoint = args[1];
       config.developerTip = args[2];
       config.proofFrequency = args[3];
       config.proofPer = args[4];
 
-      ks.keyFromPassword(enterPassword(), function (err, pwDerivedKey) {
-         if (err) {
-          let error = {
-            kMessage: "There was a problem unlocking the keystore.",
-            error: err
-          };
-          notify(Koinos.StateKey.ErrorReport, error);
-         }
-         assert (ks.isDerivedKeyCorrect(pwDerivedKey));
-         derivedKey = pwDerivedKey;
-      });
-      console.log(getAddresses()[0]);
-      web3 = new Web3(config.endpoint);
-
-      try {
-        await web3.eth.net.isListening();
-      }
-      catch(e) {
-        notify(Koinos.StateKey.ErrorReport, {
-          kMessage: "The provided Ethereum endpoint is not valid.",
-          exception: e
-        });
-        return;
-      }
-
-      contract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress);
-      updateTokenBalance();
-      web3.eth.getBalance(getAddresses()[0], function(err, result) {
-        if (err) {
-          let error = {
-            kMessage: "There was a problem retrieving the Ether balance.",
-            error: err
-          };
-          notify(Koinos.StateKey.ErrorReport, error);
-        } else {
-          notify(Koinos.StateKey.EthBalanceUpdate, [result, 0]);
-        }
-      });
-
-      let proofPeriod = config.proofPer === "day" ? Koinos.TimeSpan.SecondsPerDay : Koinos.TimeSpan.SecondsPerWeek;
-      proofPeriod /= config.proofFrequency;
-
-      miner = new KoinosMiner(
-        config.ethAddress,
-        TipAddresses,
-        getAddresses()[0],
-        KnsTokenMiningAddress,
-        config.endpoint,
-        config.developerTip ? config.tipPercent : 0,
-        proofPeriod,
-        config.gasMultiplier,
-        config.gasPriceLimit,
-        signCallback,
-        hashrateCallback,
-        proofCallback,
-        errorCallback);
-      miner.start();
-      state.set(Koinos.StateKey.MinerActivated, true);
-      writeConfiguration();
-      notify(Koinos.StateKey.MinerActivated, state.get(Koinos.StateKey.MinerActivated));
+      promptPassword();
     }
     else {
       stopMiner();
@@ -420,4 +369,201 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, async (event, ...args) => {
     stopMiner();
     notify(Koinos.StateKey.ErrorReport, err);
   }
+});
+
+ipcMain.handle(Koinos.StateKey.GenerateKeys, (event, args) => {
+  if (keyManagementWindow !== null) {
+    let seedPhrase = createKeystore(args, null);
+    keyManagementWindow.send(Koinos.StateKey.SeedPhrase, seedPhrase);
+  }
+});
+
+ipcMain.handle(Koinos.StateKey.ManageKeys, (event, ...args) => {
+  if (keyManagementWindow !== null) {
+    keyManagementWindow.close();
+    keyManagementWindow = null;
+  }
+  else {
+    keyManagementWindow = new BrowserWindow({
+      width: 900,
+      height: 600,
+      titleBarStyle: "hidden",
+      resizable: false,
+      maximizable: false,
+      webPreferences: {
+        nodeIntegration: true,
+      },
+      show: false
+    })
+
+    keyManagementWindow.on('close', function() {
+      keyManagementWindow = null;
+    });
+
+    if (ks !== null) {
+      keyManagementWindow.loadFile("components/manage-keys.html");
+    }
+    else {
+      keyManagementWindow.loadFile("components/generate-keys.html");
+    }
+
+    keyManagementWindow.once('ready-to-show', () => {
+      if (ks !== null ) {
+        keyManagementWindow.send(Koinos.StateKey.SigningAddress, getAddresses()[0]);
+      }
+      keyManagementWindow.show();
+    });
+  }
+});
+
+ipcMain.on(Koinos.StateKey.ClosePasswordPrompt, async (event, password) => {
+  if (password.length === 0)
+  {
+    let error = {
+      kMessage: "Please provide the password to unlock your keystore."
+    };
+    notify(Koinos.StateKey.ErrorReport, error);
+    return;
+  }
+
+  ks.keyFromPassword(password, async function (err, pwDerivedKey) {
+    if (err) {
+      let error = {
+        kMessage: "There was a problem unlocking the keystore.",
+        error: err
+      };
+      notify(Koinos.StateKey.ErrorReport, error);
+      return;
+    }
+    if (!ks.isDerivedKeyCorrect(pwDerivedKey)) {
+      let error = {
+        kMessage: "The password is incorrect."
+      };
+      notify(Koinos.StateKey.ErrorReport, error);
+      return;
+    }
+
+    derivedKey = pwDerivedKey;
+
+    web3 = new Web3(config.endpoint);
+
+    try {
+      await web3.eth.net.isListening();
+    }
+    catch(e) {
+      notify(Koinos.StateKey.ErrorReport, {
+        kMessage: "The provided Ethereum endpoint is not valid.",
+        exception: e
+      });
+      return;
+    }
+
+    contract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress);
+    updateTokenBalance();
+    updateEtherBalance();
+
+    let proofPeriod = config.proofPer === "day" ? Koinos.TimeSpan.SecondsPerDay : Koinos.TimeSpan.SecondsPerWeek;
+    proofPeriod /= config.proofFrequency;
+
+    miner = new KoinosMiner(
+      config.ethAddress,
+      TipAddresses,
+      getAddresses()[0],
+      KnsTokenMiningAddress,
+      config.endpoint,
+      config.developerTip ? 5 : 0,
+      proofPeriod,
+      config.gasMultiplier,
+      config.gasPriceLimit,
+      signCallback,
+      hashrateCallback,
+      proofCallback,
+      errorCallback);
+    miner.start();
+    state.set(Koinos.StateKey.MinerActivated, true);
+    writeConfiguration();
+    notify(Koinos.StateKey.MinerActivated, state.get(Koinos.StateKey.MinerActivated));
+  });
+});
+
+function promptPassword() {
+  // create new window
+  let passwordModalWindow = new BrowserWindow({
+    parent: win,
+    width: 600,
+    height: 400,
+    frame: false,
+    titleBarStyle: "hidden",
+    resizable: false,
+    maximizable: false,
+    modal: true,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+    show: false
+  });
+
+  passwordModalWindow.loadFile("components/password-modal.html");
+  passwordModalWindow.once('ready-to-show', () => {
+    passwordModalWindow.show();
+  });
+}
+
+ipcMain.handle(Koinos.StateKey.ExportKey, (event, arg) => {
+  exportKey(arg, function (err, pwDerivedKey) {
+    if (err) {
+      let error = {
+        kMessage: "There was a problem unlocking the keystore.",
+        error: err
+      };
+
+      if (keyManagementWindow !== null) {
+        keyManagementWindow.close();
+        keyManagementWindow = null;
+      }
+
+      console.log(err);
+      notify(Koinos.StateKey.ErrorReport, error);
+    }
+    else {
+      if (ks.isDerivedKeyCorrect(pwDerivedKey)) {
+        let key = ks.exportPrivateKey(ks.getAddresses()[0], pwDerivedKey);
+        keyManagementWindow.send(Koinos.StateKey.PrivateKey, ks.exportPrivateKey(ks.getAddresses()[0], pwDerivedKey));
+      }
+      else {
+         if (keyManagementWindow !== null) {
+            keyManagementWindow.close();
+            keyManagementWindow = null;
+          }
+
+          notify(Koinos.StateKey.ErrorReport, {kMessage: "Password is incorrect"});
+      }
+    }
+  });
+});
+
+ipcMain.handle(Koinos.StateKey.ExportConfirmationModal, (event, ...args) => {
+  let exportKeyConfirmationModal = new BrowserWindow({
+    parent: keyManagementWindow,
+    width: 300,
+    height: 200,
+    frame: false,
+    titleBarStyle: "hidden",
+    resizable: false,
+    maximizable: false,
+    modal: true,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+    show: false
+  });
+
+  exportKeyConfirmationModal.loadFile("components/export-confirmation.html");
+  exportKeyConfirmationModal.once('ready-to-show', () => {
+    exportKeyConfirmationModal.show();
+  });
+});
+
+ipcMain.handle(Koinos.StateKey.ConfirmExportKey, (event, ...args) => {
+  keyManagementWindow.send(Koinos.StateKey.ConfirmExportKey);
 });
