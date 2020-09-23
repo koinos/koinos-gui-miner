@@ -34,5 +34,4 @@ deploy:
   file: dist/installer/*.*
   skip_cleanup: true
   on:
-    branch: package
     tags: true
