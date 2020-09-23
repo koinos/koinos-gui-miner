@@ -13,7 +13,11 @@ module.exports = {
     SeedPhrase: 'seed-phrase',
     PasswordModal: 'password-modal',
     RestoreState: 'restore-state',
-    Configuration: 'koinos-config'
+    Configuration: 'koinos-config',
+    SigningAddress: 'signing-address',
+    ExportKey: 'export-key',
+    PrivateKey: 'private-key',
+    ExportKeyError: 'export-key-error'
   },
   TimeSpan: {
     SecondsPerDay: 86400,
@@ -59,7 +63,10 @@ module.exports = {
     Word10: "word10",
     Word11: "word11",
     Word12: "word12",
-    GenerateButton: "generate-button"
+    GenerateButton: "generate-button",
+    SigningAddress: "address-text",
+    PrivateKey: "private-key",
+    ExportKeyError: "export-key-error"
   }
 
 };

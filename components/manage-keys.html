@@ -48,7 +48,13 @@
       margin: 10px 30px;
     }
 
-    #exportButton {
+    #export-warning {
+      color: red;
+      font-size: 0.8em;
+      text-align: center;
+    }
+
+    #export-button {
       position: relative;
       background-color: #6F00F6;
       color: white;
@@ -60,7 +66,7 @@
       float: right;
     }
 
-    #recoverButton {
+    #recover-button {
       position: absolute;
       color: #6F00F6;
       padding: 10px 20px;
@@ -123,26 +129,28 @@
 
       <div id="key">
         <div>Key:</div>
-        <div id="key-text" onClick='copyText(this)'>6879206e6f74206d653f</div>
+        <div id="address-text" onClick='copyText(this)'></div>
       </div>
 
     </div>
     <div class="input-area">
       <div>
-        <input type="text" placeholder="Password">
-        <span id="exportButton">Export Key</span>
+        <input id="password" type="password" placeholder="Password">
+        <div id="export-warning">WARNING: Exporting your key may put it at risk.<br/>Proceed with caution!</div>
+        <span id="export-button" onclick="exportKey()">Export Key</span>
+        <div id="private-key"></div>
+        <div id="export-key-error"></div>
       </div>
       <div class="message">
         <h2>Forgot your password?</h2>
         <div>We cannot recover your password! If you lost your password the only way to recover your account is with
           your 12 word phrase.
         </div>
-        <div id="recoverButton" onclick="recoverKeys()">Recover with phrase</div>
+        <div id="recover-button" onclick="recoverKeys()">Recover with phrase</div>
       </div>
     </div>
-    <span id="close-button" onclick="closeThis()">Close</span>
+    <span id="close-button" onclick="closeWindow()">Close</span>
   </div>
-  <script src="../script.js"></script>
   <script>
     function copyText(element) {
       console.log(element)
@@ -168,6 +176,7 @@
       }
     }
   </script>
+  <script src="../assets/js/manage-keys.js"></script>
 </body>
 
 </html>
