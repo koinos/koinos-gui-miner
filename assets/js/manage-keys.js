@@ -16,11 +16,5 @@ function exportKey() {
 }
 
 ipcRenderer.on(Koinos.StateKey.PrivateKey, (event, arg) => {
-   document.getElementById(Koinos.Field.ExportKeyError).innerHTML = "";
    document.getElementById(Koinos.Field.PrivateKey).innerHTML = arg;
-});
-
-ipcRenderer.on(Koinos.StateKey.ExportKeyError, (event, arg) => {
-   document.getElementById(Koinos.Field.PrivateKey).innerHTML = "";
-   document.getElementById(Koinos.Field.ExportKeyError).innerHTML = arg;
 });

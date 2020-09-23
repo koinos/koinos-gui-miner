@@ -468,7 +468,12 @@ ipcMain.handle(Koinos.StateKey.ExportKey, (event, arg) => {
         keyManagementWindow.send(Koinos.StateKey.PrivateKey, ks.exportPrivateKey(ks.getAddresses()[0], pwDerivedKey));
       }
       else {
-         keyManagementWindow.send(Koinos.StateKey.ExportKeyError, "Password is incorrect.");
+         if (keyManagementWindow !== null) {
+            keyManagementWindow.close();
+            keyManagementWindow = null;
+          }
+
+          notify(Koinos.StateKey.ErrorReport, {kMessage: "Password is incorrect"});
       }
     }
   });
