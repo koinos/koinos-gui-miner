@@ -57,6 +57,7 @@ function generateKeys() {
 }
 
 ipcRenderer.on(Koinos.StateKey.SeedPhrase, (event, arg) => {
+  document.getElementById(Koinos.Field.GenerateButton).className += " grayed";
   let words = arg.split(" ");
 
   document.getElementById(Koinos.Field.Word1).innerHTML = "1. " + words[0];

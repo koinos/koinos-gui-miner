@@ -324,7 +324,7 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, async (event, ...args) => {
 
       if (!state.get(Koinos.StateKey.HasKeystore)) {
         let error = {
-          kMessage: "Create an Ethereum keystore before attempting to mine."
+          kMessage: "No signing key detected. Please open the key management window."
         };
         notify(Koinos.StateKey.ErrorReport, error);
         return;
