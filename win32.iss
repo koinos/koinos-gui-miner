@@ -2,7 +2,6 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Koinos Miner"
-#define MyAppVersion "v0.01"
 #define MyAppPublisher "OpenOrchard"
 #define MyAppURL "https://www.openorchard.io/"
 #define MyAppExeName "Koinos Miner.exe"
@@ -22,7 +21,7 @@ DefaultDirName={autopf}\{#MyAppName}
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
-OutputBaseFilename=KoinosGUIMiner
+OutputBaseFilename=KoinosMiner{#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
