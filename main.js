@@ -9,6 +9,7 @@ let Web3 = require('web3');
 let Tx = require('ethereumjs-tx').Transaction;
 let KoinosMiner = require('koinos-miner');
 const { assert } = require("console");
+const { create } = require('domain');
 let miner = null;
 let ks = null;
 let derivedKey = null;
@@ -258,7 +259,7 @@ function openKeystore() {
    }
 }
 
-function createKeystore(password, seedPhrase) {
+function createKeystore(password, seedPhrase, cb) {
    if (!seedPhrase) {
       seedPhrase = keystore.generateRandomSeed();
    }
@@ -291,6 +292,9 @@ function createKeystore(password, seedPhrase) {
                console.log(getAddresses()[0]);
                saveKeystore();
                state.set(Koinos.StateKey.HasKeystore, true);
+            }
+            if (cb) {
+               cb(ks);
             }
       });
       }
@@ -379,7 +383,7 @@ ipcMain.handle(Koinos.StateKey.GenerateKeys, (event, args) => {
   }
 });
 
-ipcMain.handle(Koinos.StateKey.ManageKeys, (event, ...args) => {
+function launchKeyManagement() {
   if (keyManagementWindow !== null) {
     keyManagementWindow.close();
     keyManagementWindow = null;
@@ -395,7 +399,7 @@ ipcMain.handle(Koinos.StateKey.ManageKeys, (event, ...args) => {
         nodeIntegration: true,
       },
       show: false
-    })
+    });
 
     keyManagementWindow.on('close', function() {
       keyManagementWindow = null;
@@ -415,6 +419,10 @@ ipcMain.handle(Koinos.StateKey.ManageKeys, (event, ...args) => {
       keyManagementWindow.show();
     });
   }
+}
+
+ipcMain.handle(Koinos.StateKey.ManageKeys, (event, ...args) => {
+  launchKeyManagement();
 });
 
 ipcMain.on(Koinos.StateKey.ClosePasswordPrompt, async (event, password) => {
@@ -566,4 +574,34 @@ ipcMain.handle(Koinos.StateKey.ExportConfirmationModal, (event, ...args) => {
 
 ipcMain.handle(Koinos.StateKey.ConfirmExportKey, (event, ...args) => {
   keyManagementWindow.send(Koinos.StateKey.ConfirmExportKey);
+});
+
+ipcMain.handle(Koinos.StateKey.RecoverKeyWindow, (event, ...args) => {
+  let recoverKeyWindow = new BrowserWindow({
+    width: 900,
+    height: 600,
+    titleBarStyle: "hidden",
+    resizable: false,
+    maximizable: false,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+    show: false
+  });
+
+  recoverKeyWindow.loadFile("components/recover-keys.html");
+  recoverKeyWindow.once('ready-to-show', () => {
+    recoverKeyWindow.show();
+  });
+});
+
+ipcMain.handle(Koinos.StateKey.RecoverKey, (event, args) => {
+  if (!keystore.isSeedValid(args[1])) {
+    notify(Koinos.StateKey.ErrorReport, {kMessage: "Recovery phrase is not valid."});
+  }
+  else {
+    createKeystore(args[0], args[1], (...args) => {
+      launchKeyManagement();
+    });
+  }
 });

@@ -75,6 +75,19 @@
       cursor: pointer;
     }
 
+    #recover-button {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background-color: #6F00F6;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      font-size: 1em;
+      margin-top: 1em;
+      cursor: pointer;
+    }
+
     .container {
       display: flex;
       flex-direction: column;
@@ -113,6 +126,7 @@
         <form action="">
           <input id="password" type="password" placeholder="Password" onkeyup="onPasswordKeyUp()" autofocus>
           <input id="password-confirm" type="password" placeholder="Confirm Password" onkeyup="onPasswordKeyUp()">
+          <span id="recover-button" onclick="recoverKeys()">Recover Key</span>
           <span id="generate-button" onclick="generateKeys()">Generate Key</span>
           <span id="close-button" onclick="closeWindow()">Close</span>
         </form>

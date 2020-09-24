@@ -21,3 +21,8 @@ ipcRenderer.on(Koinos.StateKey.ConfirmExportKey, (event, ...args) => {
    let pass = document.getElementById(Koinos.Field.Password).value;
    ipcRenderer.invoke(Koinos.StateKey.ExportKey, pass);
 });
+
+function recoverKeys() {
+   ipcRenderer.invoke(Koinos.StateKey.RecoverKeyWindow);
+   this.close();
+}

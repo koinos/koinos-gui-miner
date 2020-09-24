@@ -21,7 +21,9 @@ module.exports = {
     PrivateKey: 'private-key',
     ExportKeyError: 'export-key-error',
     ExportConfirmationModal: 'export-confirmation-modal',
-    ConfirmExportKey: 'confirm-export-key'
+    ConfirmExportKey: 'confirm-export-key',
+    RecoverKeyWindow: 'recover-key-window',
+    RecoverKey: 'recover-key'
   },
   TimeSpan: {
     SecondsPerDay: 86400,
