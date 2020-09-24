@@ -458,7 +458,7 @@ ipcMain.on(Koinos.StateKey.ClosePasswordPrompt, async (event, password) => {
       return;
     }
 
-    contract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress);
+    contract = new web3.eth.Contract(abi, KnsTokenAddress);
     updateTokenBalance();
     updateEtherBalance();
 
