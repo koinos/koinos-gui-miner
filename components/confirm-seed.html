@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    /*
+      Colors:
+      Green: 34DD00
+      Red: DD003F
+      Light Purple: 6F00F6
+      Very Deep Purple: 0F091F
+    */
+    body {
+      -webkit-app-region: drag;
+    }
+
+    .form-area {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    form {
+      width: 50%;
+    }
+
+    input.password {
+      width: 25em;
+      border-bottom: 1px #6f00f6 solid;
+      padding: 0.67em;
+      color: white;
+      font-size: 1em;
+      text-align: center;
+      background-color: none;
+    }
+
+    input.seed {
+      width: 1em;
+      color: white;
+      font-size: 1em;
+      text-align: left;
+      background-color: none;
+    }
+
+    #close-button {
+      position: absolute;
+      bottom: 20px;
+      right: 180px;
+      background-color: #dd003f;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      font-size: 1em;
+      margin-top: 1em;
+      cursor: pointer;
+    }
+
+    #confirm-button {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background-color: #6F00F6;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      font-size: 1em;
+      margin-top: 1em;
+      cursor: pointer;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      align-items: center;
+      padding: 1.4em;
+    }
+
+    .warning {
+      margin: 40px 0px;
+      padding: 0 40px;
+    }
+
+    p {
+      font-size: .8em;
+    }
+
+    table {
+      width: 70%;
+      padding: 10px 20px;
+    }
+
+    #twelve-words {
+      visibility: visible;
+    }
+  </style>
+  <title>Create</title>
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="input-area">
+      <div>
+        <input id="password" class="password" type="password" placeholder="Password">
+      </div>
+    </div>
+    <div>
+      <h2>Confirm Recovery Phrase</h2>
+      <div class="warning">
+        <p>Please enter the 12 word recovery phrase provided to you upon key generation to recover you key.
+        </p>
+      </div>
+      <div id="twelve-words">
+        <table>
+          <tbody>
+            <tr>
+              <td class="seed-number">1:</td>
+              <td>
+                <input class="seed-word" id="word1"></input>
+              </td>
+              <td class="seed-number">2:</td>
+              <td>
+                <input class="seed-word" id="word2"></input>
+              </td>
+              <td class="seed-number">3:</td>
+              <td>
+                <input class="seed-word" id="word3"></input>
+              </td>
+            </tr>
+            <tr>
+              <td class="seed-number">4:</td>
+              <td>
+                <input class="seed-word" id="word4"></input>
+              </td>
+              <td class="seed-number">5:</td>
+              <td>
+                <input class="seed-word" id="word5"></input>
+              </td>
+              <td class="seed-number">6:</td>
+              <td>
+                <input class="seed-word" id="word6"></input>
+              </td>
+            </tr>
+            <tr>
+              <td class="seed-number">7:</td>
+              <td>
+                <input class="seed-word" id="word7"></input>
+              </td>
+              <td class="seed-number">8:</td>
+              <td>
+                <input class="seed-word" id="word8"></input>
+              </td>
+              <td class="seed-number">9:</td>
+              <td>
+                <input class="seed-word" id="word9"></input>
+              </td>
+            </tr>
+            <tr>
+               <td class="seed-number">10:</td>
+               <td>
+                 <input class="seed-word" id="word10"></input>
+               </td>
+               <td class="seed-number">11:</td>
+               <td>
+                 <input class="seed-word" id="word11"></input>
+               </td>
+               <td class="seed-number">12:</td>
+               <td>
+                 <input class="seed-word" id="word12"></input>
+               </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+         <span id="confirm-button" onclick="confirmSeed()">Recover Key</span>
+         <span id="close-button" onclick="closeWindow()">Close</span>
+      </div>
+    </div>
+  </div>
+  <script src="../assets/js/confirm-seed.js"></script>
+</body>
+
+</html>

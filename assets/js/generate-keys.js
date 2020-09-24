@@ -3,6 +3,9 @@ const Koinos = require('../assets/js/constants.js');
 let generated = false;
 
 function closeWindow() {
+  if (generated) {
+    ipcRenderer.invoke(Koinos.StateKey.ConfirmSeedWindow);
+  }
   this.close();
 }
 
@@ -51,6 +54,7 @@ function onPasswordKeyUp() {
 }
 
 function generateKeys() {
+  if (!passwordIsValid()) return;
   if (generated) return;
   let pass = document.getElementById(Koinos.Field.Password).value;
   ipcRenderer.invoke(Koinos.StateKey.GenerateKeys, pass);
@@ -58,6 +62,7 @@ function generateKeys() {
 
 ipcRenderer.on(Koinos.StateKey.SeedPhrase, (event, arg) => {
   document.getElementById(Koinos.Field.GenerateButton).className += " grayed";
+  document.getElementById(Koinos.Field.RecoverButton).className += " grayed";
   let words = arg.split(" ");
 
   document.getElementById(Koinos.Field.Word1).innerHTML = "1. " + words[0];
@@ -78,6 +83,7 @@ ipcRenderer.on(Koinos.StateKey.SeedPhrase, (event, arg) => {
 });
 
 function recoverKeys() {
-   ipcRenderer.invoke(Koinos.StateKey.RecoverKeyWindow);
-   this.close();
+  if (generate) return;
+  ipcRenderer.invoke(Koinos.StateKey.RecoverKeyWindow);
+  this.close();
 }

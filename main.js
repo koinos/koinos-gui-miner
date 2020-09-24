@@ -234,14 +234,6 @@ function errorCallback(error) {
   notify(Koinos.StateKey.ErrorReport, error);
 }
 
-function createPassword() {
-  return 'password';
-}
-
-function enterPassword() {
-  return 'password';
-}
-
 // Generate a new keystore
 // seedPhrase is optional, but allows for recovery of private key
 function openKeystore() {
@@ -249,6 +241,7 @@ function openKeystore() {
    if (fs.existsSync(keystorePath)) {
       try {
          ks = keystore.deserialize(fs.readFileSync(keystorePath));
+         state.set(Koinos.StateKey.HasKeystore, true);
       } catch (err) {
         let error = {
           kMessage: "There was a problem deserializing the keystore.",
@@ -277,9 +270,7 @@ function createKeystore(password, seedPhrase, cb) {
         notify(Koinos.StateKey.ErrorReport, error);
       }
       else {
-         ks = vault;
-
-         ks.keyFromPassword(password, function (err, pwDerivedKey) {
+         vault.keyFromPassword(password, function (err, pwDerivedKey) {
             if (err) {
              let error = {
                kMessage: "There was a problem unlocking the keystore.",
@@ -288,15 +279,13 @@ function createKeystore(password, seedPhrase, cb) {
              notify(Koinos.StateKey.ErrorReport, error);
             }
             else {
-               ks.generateNewAddress(pwDerivedKey, 1);
-               console.log(getAddresses()[0]);
-               saveKeystore();
+               vault.generateNewAddress(pwDerivedKey, 1);
                state.set(Koinos.StateKey.HasKeystore, true);
+               if (cb) {
+                  cb(vault);
+               }
             }
-            if (cb) {
-               cb(ks);
-            }
-      });
+         });
       }
    });
 
@@ -378,8 +367,11 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, async (event, ...args) => {
 
 ipcMain.handle(Koinos.StateKey.GenerateKeys, (event, args) => {
   if (keyManagementWindow !== null) {
-    let seedPhrase = createKeystore(args, null);
-    keyManagementWindow.send(Koinos.StateKey.SeedPhrase, seedPhrase);
+    let seedPhrase = createKeystore(args, null, (vault) => {
+      ks = vault;
+      state.set(Koinos.StateKey.HasKeystore, true);
+      keyManagementWindow.send(Koinos.StateKey.SeedPhrase, seedPhrase);
+    });
   }
 });
 
@@ -600,8 +592,65 @@ ipcMain.handle(Koinos.StateKey.RecoverKey, (event, args) => {
     notify(Koinos.StateKey.ErrorReport, {kMessage: "Recovery phrase is not valid."});
   }
   else {
-    createKeystore(args[0], args[1], (...args) => {
+    createKeystore(args[0], args[1], (vault) => {
+      ks = vault;
+      state.set(Koinos.StateKey.HasKeystore, true);
+      saveKeystore();
       launchKeyManagement();
     });
   }
+});
+
+ipcMain.handle(Koinos.StateKey.ConfirmSeedWindow, (event, ...args) => {
+  let confirmSeedWindow = new BrowserWindow({
+    width: 900,
+    height: 600,
+    titleBarStyle: "hidden",
+    resizable: false,
+    maximizable: false,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+    show: false
+  });
+
+  confirmSeedWindow.loadFile("components/confirm-seed.html");
+  confirmSeedWindow.once('ready-to-show', () => {
+    confirmSeedWindow.show();
+  });
+});
+
+ipcMain.handle(Koinos.StateKey.ConfirmSeed, (event, args) => {
+  ks.keyFromPassword(args[0], function (err, pwDerivedKey) {
+    if (err) {
+      let error = {
+        kMessage: "There was a problem unlocking the keystore.",
+        error: err
+      };
+      notify("Koinos.StateKey.ErrorReport, error");
+    }
+    else {
+      if (!ks.isDerivedKeyCorrect(pwDerivedKey)) {
+        notify(Koinos.StateKey.ErrorReport, {kMessage: "Password is incorrect."});
+        ks = null;
+        state.set(Koinos.StateKey.HasKeystore, false);
+      }
+      else if (ks.getSeed(pwDerivedKey) != args[1]) {
+        console.log(ks.getSeed(pwDerivedKey));
+        console.log(args[1]);
+        notify(Koinos.StateKey.ErrorReport, {kMessage: "Recovery phrase is not valid."});
+        ks = null;
+        state.set(Koinos.StateKey.HasKeystore, false);
+      }
+      else {
+        saveKeystore();
+        launchKeyManagement();
+      }
+    }
+  });
+});
+
+ipcMain.handle(Koinos.StateKey.CancelConfirmSeed, (event, args) => {
+  ks = null;
+  state.set(Koinos.StateKey.HasKeystore, false);
 });

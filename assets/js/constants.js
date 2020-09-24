@@ -23,7 +23,10 @@ module.exports = {
     ExportConfirmationModal: 'export-confirmation-modal',
     ConfirmExportKey: 'confirm-export-key',
     RecoverKeyWindow: 'recover-key-window',
-    RecoverKey: 'recover-key'
+    RecoverKey: 'recover-key',
+    ConfirmSeedWindow: 'confirm-seed-window',
+    ConfirmSeed: 'confirm-seed',
+    CancelConfirmSeed: 'cancel-confirm-seed'
   },
   TimeSpan: {
     SecondsPerDay: 86400,
@@ -73,7 +76,8 @@ module.exports = {
     EnterButton: "enter-button",
     SigningAddress: "address-text",
     PrivateKey: "private-key",
-    ExportKeyError: "export-key-error"
+    ExportKeyError: "export-key-error",
+    RecoverButton: "recover-button"
   }
 
 };
