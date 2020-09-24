@@ -2,7 +2,7 @@ const electron = require('electron');
 const { app, ipcMain, BrowserWindow } = require("electron");
 const { keystore, signing } = require('eth-lightwallet');
 const fs = require('fs');
-const KnsToken = require('./assets/js/KnsToken.js');
+const abi = require('./abi.js');
 const path = require('path');
 const Koinos = require('./assets/js/constants.js');
 let Web3 = require('web3');
@@ -353,7 +353,7 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, async (event, ...args) => {
         return;
       }
       
-      contract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress);
+      contract = new web3.eth.Contract(abi, KnsTokenAddress);
       updateTokenBalance();
       web3.eth.getBalance(getAddresses()[0], function(err, result) {
         if (err) {
