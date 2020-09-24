@@ -22,7 +22,9 @@ function onStateRestoration(s) {
   const errorMessage = document.getElementById(Koinos.Field.Errors);
   const documentation = document.getElementById(Koinos.Field.DocumentationLink);
   const openGithub = document.getElementById(Koinos.Field.GitHubIcon);
-  const close = document.getElementById(Koinos.Field.ErrorClose);
+  const errorClose = document.getElementById(Koinos.Field.ErrorClose);
+  const warningMessage = document.getElementById(Koinos.Field.Warnings);
+  const warningClose = document.getElementById(Koinos.Field.WarningClose);
 
   documentation.addEventListener('click', e => {
     shell.openExternal('https://koinos.io');
@@ -32,8 +34,12 @@ function onStateRestoration(s) {
     shell.openExternal('https://github.com/open-orchard/koinos-gui-miner');
   });
 
-  close.addEventListener('click', e => {
+  errorClose.addEventListener('click', e => {
     errorMessage.style.display = "none";
+  });
+
+  warningClose.addEventListener('click', e => {
+    warningMessage.style.display = "none";
   });
 }
 
@@ -71,6 +77,15 @@ function onErrorReport(e) {
     errorMessage.innerHTML = e.kMessage;
     errors.style.display = "flex";
     ipcRenderer.invoke(Koinos.StateKey.StopMiner);
+  }
+}
+
+function onWarningReport(e) {
+  if (e.kMessage !== undefined) {
+    const warnings = document.getElementById(Koinos.Field.Warnings);
+    const warningMessage = document.getElementById(Koinos.Field.WarningMessage);
+    warningMessage.innerHTML = e.kMessage;
+    warnings.style.display = "flex";
   }
 }
 
@@ -241,3 +256,6 @@ ipcRenderer.on(Koinos.StateKey.ErrorReport, (event, arg) => {
   onErrorReport(arg);
 });
 
+ipcRenderer.on(Koinos.StateKey.WarningReport, (event, arg) => {
+  onWarningReport(arg);
+});
