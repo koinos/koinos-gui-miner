@@ -82,6 +82,8 @@ function readConfiguration() {
 
   openKeystore();
 
+  web3 = new Web3(config.endpoint);
+
   return config;
 }
 
@@ -169,7 +171,7 @@ function hashrateCallback(hashrate) {
 }
 
 function updateTokenBalance() {
-   if (web3 === null || contract === null)
+   if ( contract === null)
       return;
 
    contract.methods.balanceOf(config.ethAddress).call({}, function(err, result) {
@@ -188,7 +190,7 @@ function updateTokenBalance() {
 }
 
 function updateEtherBalance() {
-  if (web3 === null || getAddresses()[0] === null)
+  if (getAddresses()[0] === null)
     return;
 
   web3.eth.getBalance(getAddresses()[0], function(err, result) {
@@ -205,7 +207,7 @@ function updateEtherBalance() {
 }
 
 function proofCallback(submission) {
-  if (web3 !== null && contract !== null) {
+  if (contract !== null) {
     updateTokenBalance();
 
     web3.eth.getBalance(getAddresses()[0], function (err, result) {
@@ -312,7 +314,7 @@ async function signCallback(web3, txData) {
   txData.nonce = await web3.eth.getTransactionCount(
     txData.from
   );
-
+   txData.gas = 500000;
    let rawTx = new Tx(txData);
    return '0x' + signing.signTx(ks, derivedKey, rawTx.serialize(), txData.from);
 }
@@ -329,7 +331,6 @@ function stopMiner() {
       miner.stop();
    }
 
-   web3 = null;
    miner = null;
    contract = null;
    derivedKey = null;
@@ -409,7 +410,7 @@ ipcMain.handle(Koinos.StateKey.ManageKeys, (event, ...args) => {
 
     keyManagementWindow.once('ready-to-show', () => {
       if (ks !== null ) {
-        keyManagementWindow.send(Koinos.StateKey.SigningAddress, getAddresses()[0]);
+        keyManagementWindow.send(Koinos.StateKey.SigningAddress, web3.utils.toChecksumAddress(getAddresses()[0]));
       }
       keyManagementWindow.show();
     });
@@ -527,7 +528,6 @@ ipcMain.handle(Koinos.StateKey.ExportKey, (event, arg) => {
     }
     else {
       if (ks.isDerivedKeyCorrect(pwDerivedKey)) {
-        let key = ks.exportPrivateKey(ks.getAddresses()[0], pwDerivedKey);
         keyManagementWindow.send(Koinos.StateKey.PrivateKey, ks.exportPrivateKey(ks.getAddresses()[0], pwDerivedKey));
       }
       else {
