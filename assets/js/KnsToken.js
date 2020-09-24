@@ -1,4 +1,4 @@
-{
+let token = {
   "fileName": "KnsToken.sol",
   "contractName": "KnsToken",
   "source": "\n// Not using 0.6.8 to suppress SPDX license warnings, as contracts-ethereum-package does not exist until version 3.1.0\npragma solidity >0.6.0 <0.6.8;\n\nimport \"@openzeppelin/contracts/access/AccessControl.sol\";\nimport \"@openzeppelin/contracts/token/ERC20/ERC20.sol\";\nimport \"@openzeppelin/contracts/token/ERC20/ERC20Capped.sol\";\nimport \"@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol\";\nimport \"@openzeppelin/contracts/token/ERC20/ERC20Snapshot.sol\";\n\ncontract KnsToken\n   is AccessControl,\n      ERC20,\n      ERC20Capped,\n      ERC20Burnable\n{\n   bytes32 public constant MINTER_ROLE = keccak256(\"MINTER_ROLE\");\n   uint256 public constant ONE_KNS = 100000000;\n   uint8 public constant KNS_DECIMALS = 8;\n   uint256 public constant KNS_CAP = 100 * 1000000 * ONE_KNS;\n\n   constructor(string memory name, string memory symbol, address minter)\n      ERC20( name, symbol )\n      ERC20Capped( KNS_CAP )\n      public\n   {\n      _setupDecimals( KNS_DECIMALS );\n      _setupRole( DEFAULT_ADMIN_ROLE, _msgSender() );\n      if( minter != address(0) )\n         _setupRole( MINTER_ROLE, minter );\n   }\n\n   /**\n    * @dev Creates `amount` new tokens for `to`.\n    *\n    * See {ERC20-_mint}.\n    *\n    * Requirements:\n    *\n    * - the caller must have the `MINTER_ROLE`.\n    */\n   function mint(address to, uint256 amount) public\n   {\n      require(hasRole(MINTER_ROLE, _msgSender()), \"KnsToken: mint() requires MINTER_ROLE\");\n      _mint(to, amount);\n   }\n\n   function _beforeTokenTransfer(address from, address to, uint256 amount) internal override(ERC20, ERC20Capped)\n   {\n       super._beforeTokenTransfer(from, to, amount);\n   }\n}\n",
@@ -2230,4 +2230,6 @@
     },
     "evmVersion": "petersburg"
   }
-}
+};
+
+module.exports = token;
