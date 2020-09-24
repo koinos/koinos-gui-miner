@@ -27,10 +27,16 @@
       font-size: 1em;
       text-align: center;
       background-color: none;
+      margin-right: 100px;
+      margin-bottom: 10px;
     }
 
     #public-key {
-      margin-bottom: 50px;
+      margin-bottom: 10px;
+    }
+
+    #password {
+      margin-top: 15px;
     }
 
     #key {
@@ -48,9 +54,17 @@
     }
 
     #export-warning {
+      padding: .8em;
       color: red;
       font-size: 0.8em;
       text-align: center;
+    }
+
+    #private-key {
+      margin-top: 20px;
+      text-align: center;
+      padding: 30px;
+      height: 30px;
     }
 
     #export-button {
@@ -67,9 +81,9 @@
 
     #recover-button {
       position: absolute;
-      color: #6F00F6;
+      background-color: #6F00F6;
+      color: white;
       padding: 10px 20px;
-      border: 1px #6F00F6 solid;
       font-size: 1em;
       margin-top: 1em;
       cursor: pointer;
@@ -92,6 +106,13 @@
       cursor: pointer;
     }
 
+    .input-area {
+      margin-left: 50px;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
+
     .container {
       display: flex;
       flex-direction: column;
@@ -101,12 +122,12 @@
       margin-top: 3em;
     }
 
-    .input-area {
-      width: 400px;
-    }
 
     .message {
-      margin-top: 100px;
+      margin-top: 50px;
+      font-size: .8em;
+      width: 400px;
+      margin-left: -400px;
     }
 
     p {
@@ -134,9 +155,13 @@
     </div>
     <div class="input-area">
       <div>
-        <input id="password" type="password" placeholder="Password">
-        <div id="export-warning">WARNING: Exporting your key may put it at risk.<br/>Proceed with caution!</div>
-        <span id="export-button" onclick="exportKey()">Export Key</span>
+        <div>
+          <input id="password" type="password" placeholder="Password"><span id="export-button"
+            onclick="exportKey()">Export
+            Key</span>
+        </div>
+        <div id="export-warning" class="blink-me">WARNING: Exporting your key may put it at risk. Proceed with caution!
+        </div>
         <div id="private-key"></div>
       </div>
       <div class="message">
