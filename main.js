@@ -304,7 +304,7 @@ async function signCallback(web3, txData) {
   txData.nonce = await web3.eth.getTransactionCount(
     txData.from
   );
-  txData.gas = 500000;
+
   let rawTx = new Tx(txData);
   return '0x' + signing.signTx(userKeystore, derivedKey, rawTx.serialize(), txData.from);
 }
