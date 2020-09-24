@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
   <style>
     /*
       Colors:
@@ -14,8 +14,16 @@
       Very Deep Purple: 0F091F
     */
     body {
-      color: white;
-      -webkit-app-region: no-drag;
+      -webkit-app-region: drag;
+    }
+
+    .form-area {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    form {
+      width: 50%;
     }
 
     input {
@@ -28,7 +36,33 @@
       background-color: none;
     }
 
-    #generateButton {
+    #password-feedback {
+      padding: 10px 40px;
+      width: 50%;
+      color: #ffffff;
+      margin-left: 20px;
+      border-radius: 5px;
+      text-align: center;
+      visibility: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #close-button {
+      position: absolute;
+      bottom: 20px;
+      right: 180px;
+      background-color: #dd003f;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      font-size: 1em;
+      margin-top: 1em;
+      cursor: pointer;
+    }
+
+    #generate-button {
       position: absolute;
       bottom: 20px;
       right: 20px;
@@ -49,16 +83,22 @@
       padding: 1.4em;
     }
 
-    .input-area {
-      width: 400px;
-    }
-
-    .message {
-      margin-top: 50px;
+    .warning {
+      margin: 40px 0px;
+      padding: 0 40px;
     }
 
     p {
       font-size: .8em;
+    }
+
+    table {
+      width: 70%;
+      padding: 10px 20px;
+    }
+
+    #twelve-words {
+      visibility: hidden;
     }
   </style>
   <title>Create</title>
@@ -67,16 +107,20 @@
 
 <body>
   <div class="container">
-    <div class="input-area">
+    <div>
       <h2>Create Private Key</h2>
-      <p></p>
-      <form action="">
-        <input type="text" placeholder="Password">
-        <input type="text" placeholder="Confirm Password">
-        <span id="generateButton" onclick="closeKeyss()">Generate Keys</span>
-      </form>
-      <div class="message">
-        <h2>Read Carefully!</h2>
+      <div class="form-area">
+        <form action="">
+          <input id="password" type="password" placeholder="Password" onkeyup="onPasswordKeyUp()" autofocus>
+          <input id="password-confirm" type="password" placeholder="Confirm Password" onkeyup="onPasswordKeyUp()">
+          <span id="generate-button" onclick="generateKeys()">Generate Key</span>
+          <span id="close-button" onclick="closeWindow()">Close</span>
+        </form>
+        <div id="password-feedback">
+        </div>
+      </div>
+      <div class="warning">
+        <h2>Please Read Carefully!</h2>
         <p>We cannot recover your password! If you lose your password the only way to recover your account is with your
           12
           word phrase. THERE IS NO WAY TO RECOVER THE 12 WORD PHRASE! It is most advisable to write down your 12 word
@@ -84,14 +128,36 @@
           upcoming civil war, riots, corona virus, wild fires, hurricanes etc.
         </p>
       </div>
+      <div id="twelve-words">
+        Your 12 Word Phrase:
+        <table>
+          <tbody>
+            <tr>
+              <td id="word1"></td>
+              <td id="word2"></td>
+              <td id="word3"></td>
+            </tr>
+            <tr>
+              <td id="word4"></td>
+              <td id="word5"></td>
+              <td id="word6"></td>
+            </tr>
+            <tr>
+              <td id="word7"></td>
+              <td id="word8"></td>
+              <td id="word9"></td>
+            </tr>
+            <tr>
+              <td id="word10"></td>
+              <td id="word11"></td>
+              <td id="word12"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-  <script src="script.js"></script>
-  <script>
-    function closeKeyss() {
-      console.log('clicked')
-    }
-  </script>
+  <script src="../assets/js/generate-keys.js"></script>
 </body>
 
 </html>

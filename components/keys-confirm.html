@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    /*
+      Colors:
+      Green: 34DD00
+      Red: DD003F
+      Light Purple: 6F00F6
+      Very Deep Purple: 0F091F
+    */
+    body {
+      -webkit-app-region: no-drag;
+    }
+
+
+    form {
+      width: 50%;
+    }
+
+    input {
+      border: 1px #6f00f6 solid;
+      border-radius: 8px;
+      padding: 0.67em;
+      color: white;
+      font-size: 1em;
+      text-align: center;
+      background-color: none;
+      margin: .5em;
+      ;
+    }
+
+    #message {
+      padding: 10px 40px;
+      width: 50%;
+      color: #ffffff;
+      margin-left: 20px;
+      background: hsl(0deg 89% 64% / 90%);
+      border-radius: 5px;
+      text-align: center;
+      visibility: hidden;
+    }
+
+    #confirm-button {
+      position: absolute;
+      bottom: 250px;
+      right: 60px;
+      border: 1px solid #34DD00;
+      color: #34DD00;
+      padding: 10px 20px;
+      font-size: 1em;
+      margin-top: 1em;
+      cursor: pointer;
+    }
+
+    #startover-div {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      padding: 10px 10px;
+    }
+
+    #startover-button {
+      color: #DD003F;
+      border: 1px solid #DD003F;
+      font-size: 1em;
+      margin-top: 1em;
+      cursor: pointer;
+      padding: 10px 20px;
+      margin-right: 20px;
+    }
+
+    #startover-message {
+      color: gray;
+    }
+
+    #word-container {
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-wrap: wrap;
+      flex-wrap: wrap;
+      -webkit-align-items: center;
+      align-items: center;
+      -webkit-align-content: center;
+      align-content: center;
+    }
+
+    .non-match {
+      border: 1px solid #c65656;
+    }
+
+    .word-match {
+      border: 1px solid #5fb56b;
+    }
+
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      align-items: center;
+      padding: 1.4em;
+    }
+
+    p {
+      font-size: .8em;
+    }
+  </style>
+  <title>Create</title>
+
+</head>
+
+<body>
+  <div class="container">
+    <h2>Confirm 12 Word Phrase</h2>
+    <div id="twelve-words">
+      Enter Your 12 Word Phrase:
+      <div id="word-container">
+        <div>
+          <input id="Word1" type="text" placeholder="Word 1" class="non-match">
+        </div>
+        <div>
+          <input id="Word2" type="text" placeholder="Word 2" class="word-match">
+        </div>
+        <div>
+          <input id="Word3" type="text" placeholder="Word 3">
+        </div>
+        <div>
+          <input id="Word4" type="text" placeholder="Word 4">
+        </div>
+        <div>
+          <input id="Word5" type="text" placeholder="Word 5">
+        </div>
+        <div>
+          <input id="Word6" type="text" placeholder="Word 6">
+        </div>
+        <div>
+          <input id="Word7" type="text" placeholder="Word 7">
+        </div>
+        <div>
+          <input id="Word8" type="text" placeholder="Word 8">
+        </div>
+        <div>
+          <input id="Word9" type="text" placeholder="Word 9">
+        </div>
+        <div>
+          <input id="Word10" type="text" placeholder="Word 10">
+        </div>
+        <div>
+          <input id="Word11" type="text" placeholder="Word 11">
+        </div>
+        <div>
+          <input id="Word12" type="text" placeholder="Word 12">
+        </div>
+      </div>
+    </div>
+    <div>
+
+    </div>
+    <div>
+      <div id="startover-div">
+        <span id="startover-button">Start Over</span><span id="startover-message">Are you stuck? lets start over.</span>
+      </div>
+      <span id="confirm-button">Confirm</span>
+    </div>
+  </div>
+  <script src="../script.js"></script>
+</body>
+
+</html>

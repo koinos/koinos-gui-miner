@@ -27,9 +27,48 @@
       font-size: 1em;
       text-align: center;
       background-color: none;
+      margin-right: 100px;
+      margin-bottom: 10px;
     }
 
-    #generateButton {
+    #public-key {
+      margin-bottom: 10px;
+    }
+
+    #password {
+      margin-top: 15px;
+    }
+
+    #key {
+      background: #6F00F6;
+      width: 100vw;
+      font-size: 1.2em;
+      padding: 20px;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      text-transform: uppercase;
+    }
+
+    #key div {
+      margin: 10px 30px;
+    }
+
+    #export-warning {
+      padding: .8em;
+      color: red;
+      font-size: 0.8em;
+      text-align: center;
+    }
+
+    #private-key {
+      margin-top: 20px;
+      text-align: center;
+      padding: 30px;
+      height: 30px;
+    }
+
+    #export-button {
       position: relative;
       background-color: #6F00F6;
       color: white;
@@ -41,15 +80,38 @@
       float: right;
     }
 
-    #recoverButton {
+    #recover-button {
       position: absolute;
-      background-color: #f62d00;
+      background-color: #6F00F6;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1em;
+      margin-top: 1em;
+      cursor: pointer;
+    }
+
+    #close-button {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background-color: #dd003f;
       color: white;
       padding: 10px 20px;
       border: none;
       font-size: 1em;
       margin-top: 1em;
       cursor: pointer;
+    }
+
+    #copy {
+      cursor: pointer;
+    }
+
+    .input-area {
+      margin-left: 50px;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
     }
 
     .container {
@@ -61,12 +123,12 @@
       margin-top: 3em;
     }
 
-    .input-area {
-      width: 400px;
-    }
 
     .message {
-      margin-top: 100px;
+      margin-top: 50px;
+      font-size: .8em;
+      width: 400px;
+      margin-left: -400px;
     }
 
     p {
@@ -84,38 +146,61 @@
 
 <body>
   <div class="container">
+    <div id="public-key">
+
+      <div id="key">
+        <div>Key:</div>
+        <div id="address-text" onClick='copyText(this)'></div>
+      </div>
+
+    </div>
     <div class="input-area">
-      <h2></h2>
-      <p></p>
-      <form action="">
-        <input type="text" placeholder="Password">
-        <span id="generateButton" onclick="closeKeyss()">Manage Keys</span>
-      </form>
+      <div>
+        <div>
+          <input id="password" type="password" placeholder="Password"><span id="export-button"
+            onclick="exportKey()">Export
+            Key</span>
+        </div>
+        <div id="export-warning" class="blink-me">WARNING: Exporting your key may put it at risk. Proceed with caution!
+        </div>
+        <div id="private-key"></div>
+      </div>
       <div class="message">
-        <h2>Read Carefully!</h2>
+        <h2>Forgot your password?</h2>
         <div>We cannot recover your password! If you lost your password the only way to recover your account is with
-          your
-          12word phrase.
+          your 12 word phrase.
         </div>
-
-        <div id="recoverButton" onclick="recoverKeys()">12 Word Key Recovery</div>
-
-        <div class="warning">THERE IS NO WAY TO RECOVER THE 12 WORD PHRASE! It is most advisable to write down your
-          12
-          word
-          phrase and store it somewhwere safe. Also make sure someone you trust has a copy in case you die in the
-          upcoming civil war, riots, corona virus, wild fires, hurricanes etc.
-        </div>
-
+        <div id="recover-button" onclick="recoverKeys()">Recover with phrase</div>
       </div>
     </div>
+    <span id="close-button" onclick="closeWindow()">Close</span>
   </div>
-  <script src="../script.js"></script>
   <script>
-    function closeKeyss() {
-      console.log('clicked')
+    function copyText(element) {
+      console.log(element)
+      var range, selection, worked;
+
+      if (document.body.createTextRange) {
+        range = document.body.createTextRange();
+        range.moveToElementText(element);
+        range.select();
+      } else if (window.getSelection) {
+        selection = window.getSelection();
+        range = document.createRange();
+        range.selectNodeContents(element);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+
+      try {
+        document.execCommand('copy');
+      }
+      catch (err) {
+        alert('unable to copy text');
+      }
     }
   </script>
+  <script src="../assets/js/manage-keys.js"></script>
 </body>
 
 </html>
