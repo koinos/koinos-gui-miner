@@ -277,7 +277,6 @@ function createKeystore(password, seedPhrase, cb) {
             }
             else {
                vault.generateNewAddress(pwDerivedKey, 1);
-               state.set(Koinos.StateKey.HasKeystore, true);
                if (cb) {
                   cb(vault);
                }

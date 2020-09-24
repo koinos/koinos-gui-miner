@@ -4,7 +4,7 @@ let generated = false;
 
 function closeWindow() {
   if (generated) {
-    ipcRenderer.invoke(Koinos.StateKey.ConfirmSeedWindow);
+    ipcRenderer.invoke(Koinos.StateKey.CancelConfirmSeed);
   }
   this.close();
 }
@@ -54,14 +54,19 @@ function onPasswordKeyUp() {
 }
 
 function generateKeys() {
+  if (generated) {
+   ipcRenderer.invoke(Koinos.StateKey.ConfirmSeedWindow);
+   this.close();
+  }
+
   if (!passwordIsValid()) return;
-  if (generated) return;
+
   let pass = document.getElementById(Koinos.Field.Password).value;
   ipcRenderer.invoke(Koinos.StateKey.GenerateKeys, pass);
 }
 
 ipcRenderer.on(Koinos.StateKey.SeedPhrase, (event, arg) => {
-  document.getElementById(Koinos.Field.GenerateButton).className += " grayed";
+  document.getElementById(Koinos.Field.GenerateButton).innerHTML = "Next";
   document.getElementById(Koinos.Field.RecoverButton).className += " grayed";
   let words = arg.split(" ");
 
@@ -83,7 +88,7 @@ ipcRenderer.on(Koinos.StateKey.SeedPhrase, (event, arg) => {
 });
 
 function recoverKeys() {
-  if (generate) return;
+  if (generated) return;
   ipcRenderer.invoke(Koinos.StateKey.RecoverKeyWindow);
   this.close();
 }
