@@ -1,8 +1,24 @@
 const { ipcRenderer } = require('electron');
 const Koinos = require('../assets/js/constants.js');
+const Qr = require('ethereum-qr-code');
 
 ipcRenderer.on(Koinos.StateKey.SigningAddress, (event, arg) => {
   document.getElementById(Koinos.Field.SigningAddress).innerHTML = arg;
+
+  const qr = new Qr();
+  const codeDetails = {
+    to: arg
+  };
+
+  const configDetails = {
+    size: 180,
+    selector: '#qr-code',
+    options: {
+      margin: 2,
+    }
+  };
+
+  qr.toCanvas(codeDetails, configDetails);
 });
 
 function closeWindow() {
