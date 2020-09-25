@@ -83,7 +83,7 @@ module.exports = {
     CloseButton: "close-button",
     CloseButton1: "close-button1",
     GenerateKeyDiv: "generate-key-div",
-    ConfirmSeedDiv: "confirm-seed-div"
+    ConfirmSeedDiv: "confirm-seed-div",
     Warnings: "warnings",
     WarningMessage: "warning-message",
     WarningClose: "warning-close"
