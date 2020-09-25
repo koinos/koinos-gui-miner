@@ -231,6 +231,10 @@ function errorCallback(error) {
   notify(Koinos.StateKey.ErrorReport, error);
 }
 
+function warningCallback(warning) {
+  notify(Koinos.StateKey.WarningReport, warning);
+}
+
 // Generate a new keystore
 // seedPhrase is optional, but allows for recovery of private key
 function openKeystore() {
@@ -472,7 +476,8 @@ ipcMain.on(Koinos.StateKey.ClosePasswordPrompt, async (event, password) => {
       signCallback,
       hashrateCallback,
       proofCallback,
-      errorCallback);
+      errorCallback,
+      warningCallback);
     miner.start();
     state.set(Koinos.StateKey.MinerActivated, true);
     writeConfiguration();
