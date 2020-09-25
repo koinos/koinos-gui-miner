@@ -79,7 +79,10 @@ module.exports = {
     ExportKeyError: "export-key-error",
     RecoverButton: "recover-button",
     Warning: "warning",
-    CloseButton: "close-button"
+    CloseButton: "close-button",
+    CloseButton1: "close-button1",
+    GenerateKeyDiv: "generate-key-div",
+    ConfirmSeedDiv: "confirm-seed-div"
   }
 
 };

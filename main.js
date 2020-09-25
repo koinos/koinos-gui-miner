@@ -277,7 +277,6 @@ function createKeystore(password, seedPhrase, cb) {
             }
             else {
                vault.generateNewAddress(pwDerivedKey, 1);
-               state.set(Koinos.StateKey.HasKeystore, true);
                if (cb) {
                   cb(vault);
                }
@@ -391,7 +390,7 @@ function launchKeyManagement() {
     keyManagementWindow = null;
   });
 
-  if (state.get(Koinos.StateKey.HasKeystore)) {
+  if (userKeystore !== null) {
     keyManagementWindow.loadFile("components/manage-keys.html");
   }
   else {
@@ -646,7 +645,7 @@ ipcMain.handle(Koinos.StateKey.ConfirmSeed, (event, args) => {
   });
 });
 
-ipcMain.handle(Koinos.StateKey.CancelConfirmSeed, (event, args) => {
+ipcMain.handle(Koinos.StateKey.CancelConfirmSeed, (event, ...args) => {
   userKeystore = null;
   state.set(Koinos.StateKey.HasKeystore, false);
 });

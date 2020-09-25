@@ -19,16 +19,15 @@
 
     .form-area {
       display: flex;
+      flex-direction: row;
       justify-content: space-around;
-    }
-
-    form {
-      width: 50%;
+      margin-bottom: 20px;
     }
 
     input.password {
-      width: 25em;
+      width: 20em;
       border-bottom: 1px #6f00f6 solid;
+      margin: 0 10px;
       padding: 0.67em;
       color: white;
       font-size: 1em;
@@ -37,10 +36,9 @@
     }
 
     #password-feedback {
-      padding: 10px 40px;
-      width: 50%;
+      margin: 0 auto;
+      width: 80%;
       color: #ffffff;
-      margin-left: 20px;
       border-radius: 5px;
       text-align: center;
       visibility: hidden;
@@ -50,17 +48,17 @@
     }
 
     input.seed {
-      width: 1em;
+      border: 1px #6f00f6 solid;
+      border-radius: 8px;
+      padding: 0.67em;
       color: white;
       font-size: 1em;
       text-align: left;
       background-color: none;
+      margin: .5em;
     }
 
     #close-button {
-      position: absolute;
-      bottom: 20px;
-      right: 180px;
       background-color: #dd003f;
       color: white;
       padding: 10px 20px;
@@ -71,9 +69,6 @@
     }
 
     #recovery-button {
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
       background-color: #6F00F6;
       color: white;
       padding: 10px 20px;
@@ -81,6 +76,16 @@
       font-size: 1em;
       margin-top: 1em;
       cursor: pointer;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      width: 260px;
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
     }
 
     .container {
@@ -91,7 +96,7 @@
       padding: 1.4em;
     }
 
-    .warning {
+    #warning {
       margin: 40px 0px;
       padding: 0 40px;
     }
@@ -100,14 +105,21 @@
       font-size: .8em;
     }
 
-    table {
-      width: 70%;
-      padding: 10px 20px;
+    #twelve-words {
+      margin-top: 60px;
     }
 
-    #twelve-words {
-      visibility: visible;
+    #word-container {
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-wrap: wrap;
+      flex-wrap: wrap;
+      -webkit-align-items: center;
+      align-items: center;
+      -webkit-align-content: center;
+      align-content: center;
     }
+
   </style>
   <title>Create</title>
 
@@ -116,86 +128,60 @@
 <body>
   <div class="container">
     <div>
-      <h2>Create Private Key</h2>
+      <h2>Recover Private Key</h2>
       <div class="form-area">
         <form action="">
           <input id="password" class="password" type="password" placeholder="Password" onkeyup="onPasswordKeyUp()" autofocus>
           <input id="password-confirm" class="password" type="password" placeholder="Confirm Password" onkeyup="onPasswordKeyUp()">
         </form>
-        <div id="password-feedback">
+        <div class="buttons">
+          <span id="close-button" onclick="closeWindow()">Cancel</span>
+          <span id="recovery-button" onclick="recoverKeys()">Recover Key</span>
         </div>
       </div>
-      <div class="warning">
-        <h2>Please Read Carefully!</h2>
-        <p>Please enter the 12 word recovery phrase provided to you upon key generation to recover you key.
-        </p>
+      <div id="password-feedback">
+        &nbsp;
       </div>
       <div id="twelve-words">
-        <table>
-          <tbody>
-            <tr>
-              <td class="seed-number">1:</td>
-              <td>
-                <input class="seed-word" id="word1"></input>
-              </td>
-              <td class="seed-number">2:</td>
-              <td>
-                <input class="seed-word" id="word2"></input>
-              </td>
-              <td class="seed-number">3:</td>
-              <td>
-                <input class="seed-word" id="word3"></input>
-              </td>
-            </tr>
-            <tr>
-              <td class="seed-number">4:</td>
-              <td>
-                <input class="seed-word" id="word4"></input>
-              </td>
-              <td class="seed-number">5:</td>
-              <td>
-                <input class="seed-word" id="word5"></input>
-              </td>
-              <td class="seed-number">6:</td>
-              <td>
-                <input class="seed-word" id="word6"></input>
-              </td>
-            </tr>
-            <tr>
-              <td class="seed-number">7:</td>
-              <td>
-                <input class="seed-word" id="word7"></input>
-              </td>
-              <td class="seed-number">8:</td>
-              <td>
-                <input class="seed-word" id="word8"></input>
-              </td>
-              <td class="seed-number">9:</td>
-              <td>
-                <input class="seed-word" id="word9"></input>
-              </td>
-            </tr>
-            <tr>
-               <td class="seed-number">10:</td>
-               <td>
-                 <input class="seed-word" id="word10"></input>
-               </td>
-               <td class="seed-number">11:</td>
-               <td>
-                 <input class="seed-word" id="word11"></input>
-               </td>
-               <td class="seed-number">12:</td>
-               <td>
-                 <input class="seed-word" id="word12"></input>
-               </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div>
-         <span id="recovery-button" onclick="recoverKeys()">Recover Key</span>
-         <span id="close-button" onclick="closeWindow()">Close</span>
-      </div>
+        Enter Your 12 Word Recovery Phrase:
+        <div id="word-container">
+          <div>
+            <input class="seed" id="word1" type="text" placeholder="Word 1">
+          </div>
+          <div>
+            <input class="seed" id="word2" type="text" placeholder="Word 2">
+          </div>
+          <div>
+            <input class="seed" id="word3" type="text" placeholder="Word 3">
+          </div>
+          <div>
+            <input class="seed" id="word4" type="text" placeholder="Word 4">
+          </div>
+          <div>
+            <input class="seed" id="word5" type="text" placeholder="Word 5">
+          </div>
+          <div>
+            <input class="seed" id="word6" type="text" placeholder="Word 6">
+          </div>
+          <div>
+            <input class="seed" id="word7" type="text" placeholder="Word 7">
+          </div>
+          <div>
+            <input class="seed" id="word8" type="text" placeholder="Word 8">
+          </div>
+          <div>
+            <input class="seed" id="word9" type="text" placeholder="Word 9">
+          </div>
+          <div>
+            <input class="seed" id="word10" type="text" placeholder="Word 10">
+          </div>
+          <div>
+            <input class="seed" id="word11" type="text" placeholder="Word 11">
+          </div>
+          <div>
+            <input class="seed" id="word12" type="text" placeholder="Word 12">
+          </div>
+        </div>
     </div>
   </div>
   <script src="../assets/js/recover-keys.js"></script>

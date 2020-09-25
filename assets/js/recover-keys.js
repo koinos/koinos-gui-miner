@@ -36,17 +36,17 @@ function onPasswordKeyUp() {
   if (!passwordIsRequiredLength(pass)) {
     message.innerHTML = "Password must be atleast 8 characters"
     message.style.visibility = "visible";
-    message.style.background = "#c65656"
+    message.style.color = "#c65656"
   }
   else if (!passwordsMatch(pass, passConfirm)) {
     message.innerHTML = "Passwords do not match"
     message.style.visibility = "visible";
-    message.style.background = "#c65656"
+    message.style.color = "#c65656"
   }
   else {
     message.innerHTML = "Password accepted"
     message.style.visibility = "visible";
-    message.style.background = "#5fb56b";
+    message.style.color = "#5fb56b";
   }
 }
 
