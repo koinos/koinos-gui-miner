@@ -52,6 +52,12 @@ a {
   height: 12px;
 }
 
+.emphasize {
+  font-weight: bold;
+  color: yellow;
+  font-size: .7em;
+}
+
 /* app config area */
 .config {
   color: rgb(220, 220, 220);
