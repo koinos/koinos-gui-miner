@@ -5,6 +5,7 @@ module.exports = {
     KoinBalanceUpdate: 'koin-balance-update',
     EthBalanceUpdate: 'eth-balance-update',
     ErrorReport: 'error-report',
+    WarningReport: 'warning-report',
     MinerActivated: 'miner-activated',
     ToggleMiner: 'toggle-miner',
     StopMiner: 'stop-miner',
@@ -71,7 +72,10 @@ module.exports = {
     EnterButton: "enter-button",
     SigningAddress: "address-text",
     PrivateKey: "private-key",
-    ExportKeyError: "export-key-error"
+    ExportKeyError: "export-key-error",
+    Warnings: "warnings",
+    WarningMessage: "warning-message",
+    WarningClose: "warning-close"
   }
 
 };

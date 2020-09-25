@@ -233,6 +233,10 @@ function errorCallback(error) {
   notify(Koinos.StateKey.ErrorReport, error);
 }
 
+function warningCallback(warning) {
+  notify(Koinos.StateKey.WarningReport, warning);
+}
+
 function createPassword() {
   return 'password';
 }
@@ -479,7 +483,8 @@ ipcMain.on(Koinos.StateKey.ClosePasswordPrompt, async (event, password) => {
       signCallback,
       hashrateCallback,
       proofCallback,
-      errorCallback);
+      errorCallback,
+      warningCallback);
     miner.start();
     state.set(Koinos.StateKey.MinerActivated, true);
     writeConfiguration();
