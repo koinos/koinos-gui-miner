@@ -77,7 +77,9 @@ module.exports = {
     SigningAddress: "address-text",
     PrivateKey: "private-key",
     ExportKeyError: "export-key-error",
-    RecoverButton: "recover-button"
+    RecoverButton: "recover-button",
+    Warning: "warning",
+    CloseButton: "close-button"
   }
 
 };

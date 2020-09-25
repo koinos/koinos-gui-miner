@@ -19,16 +19,16 @@
 
     .form-area {
       display: flex;
+      flex-direction: row;
       justify-content: space-around;
+      margin-bottom: 20px;
     }
 
-    form {
-      width: 50%;
-    }
 
     input {
-      width: 25em;
+      width: 20em;
       border-bottom: 1px #6f00f6 solid;
+      margin: 0 10px;
       padding: 0.67em;
       color: white;
       font-size: 1em;
@@ -37,10 +37,9 @@
     }
 
     #password-feedback {
-      padding: 10px 40px;
-      width: 50%;
+      margin: 0 auto;
+      width: 80%;
       color: #ffffff;
-      margin-left: 20px;
       border-radius: 5px;
       text-align: center;
       visibility: hidden;
@@ -50,9 +49,9 @@
     }
 
     #close-button {
-      position: absolute;
+      /* position: absolute;
       bottom: 20px;
-      right: 180px;
+      right: 180px; */
       background-color: #dd003f;
       color: white;
       padding: 10px 20px;
@@ -63,9 +62,9 @@
     }
 
     #generate-button {
-      position: absolute;
+      /* position: absolute;
       bottom: 20px;
-      right: 20px;
+      right: 20px; */
       background-color: #6F00F6;
       color: white;
       padding: 10px 20px;
@@ -76,16 +75,26 @@
     }
 
     #recover-button {
-      position: absolute;
+      /* position: absolute;
       bottom: 20px;
-      left: 20px;
-      background-color: #6F00F6;
+      right: 200px; */
+      background-color: #1f89c7;
       color: white;
       padding: 10px 20px;
       border: none;
       font-size: 1em;
       margin-top: 1em;
       cursor: pointer;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      width: 340px;
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
     }
 
     .container {
@@ -96,7 +105,7 @@
       padding: 1.4em;
     }
 
-    .warning {
+    #warning {
       margin: 40px 0px;
       padding: 0 40px;
     }
@@ -106,12 +115,51 @@
     }
 
     table {
-      width: 70%;
-      padding: 10px 20px;
+      padding-left: 50px;
+      margin-top: 10px;
+      margin-bottom: 10px;
     }
 
     #twelve-words {
       visibility: hidden;
+      display: flex;
+      text-align: left;
+      flex-flow: column;
+      justify-content: center;
+      margin-top: 60px;
+      margin-left: 80px;
+    }
+
+    #secure-key {
+      width: 90%;
+    }
+
+    .fade-in {
+      animation: fadeIn ease 1s;
+    }
+
+    .fade-out {
+      animation: fadeOut ease 1s;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeOut {
+      0% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
     }
   </style>
   <title>Create</title>
@@ -126,14 +174,17 @@
         <form action="">
           <input id="password" type="password" placeholder="Password" onkeyup="onPasswordKeyUp()" autofocus>
           <input id="password-confirm" type="password" placeholder="Confirm Password" onkeyup="onPasswordKeyUp()">
-          <span id="recover-button" onclick="recoverKeys()">Recover Key</span>
-          <span id="generate-button" onclick="generateKeys()">Generate Key</span>
-          <span id="close-button" onclick="closeWindow()">Close</span>
+          <div class="buttons">
+            <span id="recover-button" onclick="recoverKeys()">Restore Key</span>
+            <span id="close-button" onclick="closeWindow()">Cancel</span>
+            <span id="generate-button" onclick="generateKeys()">Next</span>
+          </div>
         </form>
-        <div id="password-feedback">
-        </div>
       </div>
-      <div class="warning">
+      <div id="password-feedback">
+        &nbsp;
+      </div>
+      <div id="warning">
         <h2>Please Read Carefully!</h2>
         <p>We cannot recover your password! If you lose your password the only way to recover your account is with your
           12
@@ -143,7 +194,7 @@
         </p>
       </div>
       <div id="twelve-words">
-        Your 12 Word Phrase:
+        <div>Your 12 Word Phrase:</div>
         <table>
           <tbody>
             <tr>
@@ -168,6 +219,11 @@
             </tr>
           </tbody>
         </table>
+        <div class="emphasize" id="secure-key">
+          Pleaase write down your twelve word phrase, it is the only way to recover your private key! Keep it in a safe
+          place, anyone with this phrase can unlock your wallet and take all the Koin. You will be
+          asked to confirm all twelve words on the next page.
+        </div>
       </div>
     </div>
   </div>
