@@ -1,0 +1,4 @@
+call electron-packager . --out dist/
+
+FOR /F "tokens=*" %%V in ('python ci/get_version.py package.json') DO ( SET VERSION=%%V )
+call iscc /DMyAppVersion=%VERSION% win32.iss

@@ -1,7 +1,4 @@
-bin
-build
-Testing
-libraries/pack/gen
+dist/
 
 # Mac files
 .DS_Store
@@ -19,4 +16,3 @@ __pycache__
 
 # npm
 node_modules
-

@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Koinos Miner!</title>
+  <title>Koinos Miner</title>
   <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
   <link rel="stylesheet" href="assets/css/normalize.css" />
   <link rel="stylesheet" href="assets/css/style.css" />
@@ -12,17 +12,71 @@
       text-align: center;
       margin-top: 40px;
     }
+
+    #titlebar {
+      display: block;
+      position: fixed;
+      height: 22px;
+      width: calc(100% - 2px);
+      padding: 10px;
+      right: 20px;
+      text-align: right;
+      color: #6F00F6;
+      font-size: .7em;
+    }
   </style>
 </head>
 
 <body>
-  <div class="grid-container">
+  <header id="titlebar">
+    <!--Koinos Miner v0.1.0-->
+  </header>
+  <div class="config">
+    <div class="no-drag">
+      <span>Ethereum Endpoint</span>
+      <div><input id="eth-endpoint" type="text" value="" placeholder="ETH Endpoint"></div>
+    </div>
+    <div class="proof-period no-drag">
+      <span>Proof Frequency</span>
+      <div>
+        <input id="proof-frequency" type="number" value="1" min="1">
+      </div>
+    </div>
+    <div class="periods">
+      <div class="per">Per</div>
+      <div>
+        <span id="check-day" class="toggle checked" onclick="toggleProofPeriod('day')">Day</span><span id="check-week"
+          class="toggle" onclick="toggleProofPeriod('week')">Week</span>
+      </div>
+    </div>
+    <div>
+      <span>Ether Balance</span>
+      <div class="eth-balance">
+        <div id="eth-balance">0.0 ETH</div>
+        <div id="eth-balance-sub" class="sub"></div>
+      </div>
+    </div>
+    <div>
+      <div id="key-managment" onclick="onKeyManagementClick()"><img src="./assets/images/key.svg" alt=""> Key</div>
+    </div>
+    <div>
+      <div class="tip">
+        <span>Dev Tip (5%)</span>
+        <label>
+          <input id="tip" type="checkbox" class="check-custom toggle-switch disabled" checked /><span id="check-toggle"
+            class="check-toggle">
+          </span>
+        </label>
+        <div class="thank-you">OpenOrchard thanks you!</div>
+      </div>
+    </div>
+  </div>
+  <div class="top-grid">
     <div class="brand">
       <img src="assets/images/koinos-logo.svg" alt="" />
     </div>
-
     <div class="eth-start">
-      <input id="ethAddress" type="text" placeholder="ETH address"
+      <input id="eth-address" type="text" placeholder="ETH Address"
         value="0x26F632333F8346877f58B200f98346F3Db67B506" /><button onClick="toggleMiner();" id="power-button"
         class="redBorder" onblur="">
         <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
@@ -32,13 +86,8 @@
         </svg>
       </button>
     </div>
-    <div class="tip">
-      <span>Dev Tip</span><label><input id="tip" type="checkbox" class="check-custom toggle-switch disabled"
-          checked /><span id="check-toggle" class="check-toggle"></span>
-      </label>
-      <div class="thank-you">OpenOrchard thanks you!</div>
-    </div>
-
+  </div>
+  <div class="grid-container">
     <div class="koin-mined">
       <div>
         <div id="koin-balance" class="km-text">0.0</div>
@@ -76,12 +125,35 @@
       </script>
       .
     </div>
-    <span class="version">v0.01</span>
+    <span class="version">
+      <span id="documentation-link" onclick="launchModal()">Documentation</span>
+    </span>
+    <div id="errors" class="errors flicker-in" style="display:none;">
+      <div id="error-close">
+        Close
+      </div>
+      <div id="error-message" class="error-message">
+      </div>
+      <div id="github-icon">
+        <img src="assets/images/github.svg" alt="">
+        <div id="github-link">GitHub Issues</div>
+      </div>
+    </div>
+    <div id="warnings" class="warnings flicker-in" style="display:none;">
+      <div id="warning-close">
+        Close
+      </div>
+      <div id="warning-message" class="warning-message">
+      </div>
+      <div id="warning-github-icon">
+        <img src="assets/images/github.svg" alt="">
+        <div id="warning-github-link">GitHub Issues</div>
+      </div>
+    </div>
   </div>
   <script src="assets/js/d3.min.js"></script>
   <script src="assets/js/graph.js"></script>
   <script src="script.js"></script>
-
 
 </body>
 
