@@ -52,6 +52,12 @@ a {
   height: 12px;
 }
 
+.emphasize {
+  font-weight: bold;
+  color: yellow;
+  font-size: .7em;
+}
+
 /* app config area */
 .config {
   color: rgb(220, 220, 220);
@@ -334,6 +340,48 @@ a {
   margin-left: 10px;
 }
 
+/* Warning */
+#warning-close {
+  margin-left: -40px;
+  padding-right: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid white;
+  cursor: pointer;
+}
+.warnings {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: rgb(181, 137, 0);
+  padding: 2em;
+  padding-left: 5em;
+  display: flex;
+}
+.warning-message {
+  width: 70%;
+  padding-left: 30px;
+}
+#warning-github-icon {
+  margin-left: 30px;
+  font-size: .7em;
+  display: flex;
+  justify-content: space-around;
+  border-left: 1px solid white;
+  cursor: pointer;
+}
+#warning-github-icon img {
+  width: 20px;
+  padding-left: 25px;
+}
+#warning-github-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+}
 
 .hide {
   visibility: hidden;

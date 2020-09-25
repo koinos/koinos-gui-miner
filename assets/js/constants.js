@@ -5,6 +5,7 @@ module.exports = {
     KoinBalanceUpdate: 'koin-balance-update',
     EthBalanceUpdate: 'eth-balance-update',
     ErrorReport: 'error-report',
+    WarningReport: 'warning-report',
     MinerActivated: 'miner-activated',
     ToggleMiner: 'toggle-miner',
     StopMiner: 'stop-miner',
@@ -21,7 +22,12 @@ module.exports = {
     PrivateKey: 'private-key',
     ExportKeyError: 'export-key-error',
     ExportConfirmationModal: 'export-confirmation-modal',
-    ConfirmExportKey: 'confirm-export-key'
+    ConfirmExportKey: 'confirm-export-key',
+    RecoverKeyWindow: 'recover-key-window',
+    RecoverKey: 'recover-key',
+    ConfirmSeedWindow: 'confirm-seed-window',
+    ConfirmSeed: 'confirm-seed',
+    CancelConfirmSeed: 'cancel-confirm-seed'
   },
   TimeSpan: {
     SecondsPerDay: 86400,
@@ -71,7 +77,16 @@ module.exports = {
     EnterButton: "enter-button",
     SigningAddress: "address-text",
     PrivateKey: "private-key",
-    ExportKeyError: "export-key-error"
+    ExportKeyError: "export-key-error",
+    RecoverButton: "recover-button",
+    Warning: "warning",
+    CloseButton: "close-button",
+    CloseButton1: "close-button1",
+    GenerateKeyDiv: "generate-key-div",
+    ConfirmSeedDiv: "confirm-seed-div"
+    Warnings: "warnings",
+    WarningMessage: "warning-message",
+    WarningClose: "warning-close"
   }
 
 };

@@ -12,7 +12,6 @@ input.addEventListener("keyup", function(event) {
 });
 
 function closeButton() {
-  ipcRenderer.send(Koinos.StateKey.ClosePasswordPrompt, "")
   this.close();
 }
 

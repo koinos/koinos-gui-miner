@@ -9,11 +9,12 @@ let Web3 = require('web3');
 let Tx = require('ethereumjs-tx').Transaction;
 let KoinosMiner = require('koinos-miner');
 const { assert } = require("console");
+const { create } = require('domain');
 let miner = null;
-let ks = null;
+let userKeystore = null;
 let derivedKey = null;
-let win = null;
-let contract = null;
+let mainWindow = null;
+let tokenContract = null;
 let web3 = null;
 var keyManagementWindow = null;
 
@@ -66,8 +67,8 @@ const TipAddresses = [
 
 function notify(event, args) {
   state.set(event, args);
-  if (win !== null) {
-    win.send(event, args);
+  if (mainWindow !== null) {
+    mainWindow.send(event, args);
   }
 }
 
@@ -93,10 +94,7 @@ function writeConfiguration() {
 }
 
 function createWindow() {
-  console.log(configFile);
-  console.log(keystoreFile);
-  // Create the browser window.
-  win = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1200,
     height: 660,
     icon: path.join(__dirname, 'assets/icons/png/koinos-icon_512.png'),
@@ -116,14 +114,14 @@ function createWindow() {
   }
 
   // and load the index.html of the app.
-  win.loadFile("index.html");
+  mainWindow.loadFile("index.html");
 
-  win.webContents.on('did-finish-load', function () {
-    win.send(Koinos.StateKey.RestoreState, state);
+  mainWindow.webContents.on('did-finish-load', function () {
+    mainWindow.send(Koinos.StateKey.RestoreState, state);
   });
 
-  win.once('ready-to-show', () => {
-    win.show()
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show()
   });
 
   // Open the DevTools.
@@ -142,7 +140,7 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit()
   }
-  win = null;
+  mainWindow = null;
   login = null;
 })
 
@@ -171,10 +169,10 @@ function hashrateCallback(hashrate) {
 }
 
 function updateTokenBalance() {
-   if ( contract === null)
+   if (tokenContract === null)
       return;
 
-   contract.methods.balanceOf(config.ethAddress).call({}, function(err, result) {
+   tokenContract.methods.balanceOf(config.ethAddress).call({}, function(err, result) {
       if (err) {
          let error = {
             kMessage: "There was a problem retrieving the KOIN balance.",
@@ -207,7 +205,7 @@ function updateEtherBalance() {
 }
 
 function proofCallback(submission) {
-  if (contract !== null) {
+  if (tokenContract !== null) {
     updateTokenBalance();
 
     web3.eth.getBalance(getAddresses()[0], function (err, result) {
@@ -233,12 +231,8 @@ function errorCallback(error) {
   notify(Koinos.StateKey.ErrorReport, error);
 }
 
-function createPassword() {
-  return 'password';
-}
-
-function enterPassword() {
-  return 'password';
+function warningCallback(warning) {
+  notify(Koinos.StateKey.WarningReport, warning);
 }
 
 // Generate a new keystore
@@ -247,7 +241,8 @@ function openKeystore() {
    const keystorePath = path.join((electron.app || electron.remote.app).getPath('userData'), 'keystore.json');
    if (fs.existsSync(keystorePath)) {
       try {
-         ks = keystore.deserialize(fs.readFileSync(keystorePath));
+         userKeystore = keystore.deserialize(fs.readFileSync(keystorePath));
+         state.set(Koinos.StateKey.HasKeystore, true);
       } catch (err) {
         let error = {
           kMessage: "There was a problem deserializing the keystore.",
@@ -258,7 +253,7 @@ function openKeystore() {
    }
 }
 
-function createKeystore(password, seedPhrase) {
+function createKeystore(password, seedPhrase, cb) {
    if (!seedPhrase) {
       seedPhrase = keystore.generateRandomSeed();
    }
@@ -276,9 +271,7 @@ function createKeystore(password, seedPhrase) {
         notify(Koinos.StateKey.ErrorReport, error);
       }
       else {
-         ks = vault;
-
-         ks.keyFromPassword(password, function (err, pwDerivedKey) {
+         vault.keyFromPassword(password, function (err, pwDerivedKey) {
             if (err) {
              let error = {
                kMessage: "There was a problem unlocking the keystore.",
@@ -287,12 +280,12 @@ function createKeystore(password, seedPhrase) {
              notify(Koinos.StateKey.ErrorReport, error);
             }
             else {
-               ks.generateNewAddress(pwDerivedKey, 1);
-               console.log(getAddresses()[0]);
-               saveKeystore();
-               state.set(Koinos.StateKey.HasKeystore, true);
+               vault.generateNewAddress(pwDerivedKey, 1);
+               if (cb) {
+                  cb(vault);
+               }
             }
-      });
+         });
       }
    });
 
@@ -300,30 +293,30 @@ function createKeystore(password, seedPhrase) {
 }
 
 function saveKeystore() {
-  assert(ks !== null)
-  fs.writeFileSync(keystoreFile, ks.serialize());
+  assert(userKeystore !== null)
+  fs.writeFileSync(keystoreFile, userKeystore.serialize());
 }
 
 function getAddresses() {
-  assert(ks !== null)
-  return ks.getAddresses();
+  assert(userKeystore !== null)
+  return userKeystore.getAddresses();
 }
 
 async function signCallback(web3, txData) {
-  assert(ks !== null && derivedKey !== null)
+  assert(userKeystore !== null && derivedKey !== null)
   txData.nonce = await web3.eth.getTransactionCount(
     txData.from
   );
-   txData.gas = 500000;
-   let rawTx = new Tx(txData);
-   return '0x' + signing.signTx(ks, derivedKey, rawTx.serialize(), txData.from);
+
+  let rawTx = new Tx(txData);
+  return '0x' + signing.signTx(userKeystore, derivedKey, rawTx.serialize(), txData.from);
 }
 
 function exportKey(password, callback) {
-  assert(ks !== null)
+  assert(userKeystore !== null)
 
   let privKey;
-  ks.keyFromPassword(password, callback);
+  userKeystore.keyFromPassword(password, callback);
 }
 
 function stopMiner() {
@@ -332,7 +325,7 @@ function stopMiner() {
    }
 
    miner = null;
-   contract = null;
+   tokenContract = null;
    derivedKey = null;
    state.set(Koinos.StateKey.MinerActivated, false);
    notify(Koinos.StateKey.MinerActivated, state.get(Koinos.StateKey.MinerActivated));
@@ -374,47 +367,51 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, async (event, ...args) => {
 
 ipcMain.handle(Koinos.StateKey.GenerateKeys, (event, args) => {
   if (keyManagementWindow !== null) {
-    let seedPhrase = createKeystore(args, null);
-    keyManagementWindow.send(Koinos.StateKey.SeedPhrase, seedPhrase);
+    let seedPhrase = createKeystore(args, null, (vault) => {
+      userKeystore = vault;
+      state.set(Koinos.StateKey.HasKeystore, true);
+      keyManagementWindow.send(Koinos.StateKey.SeedPhrase, seedPhrase);
+    });
   }
 });
 
-ipcMain.handle(Koinos.StateKey.ManageKeys, (event, ...args) => {
-  if (keyManagementWindow !== null) {
-    keyManagementWindow.close();
+function launchKeyManagement() {
+  keyManagementWindow = new BrowserWindow({
+    width: 900,
+    height: 600,
+    titleBarStyle: "hidden",
+    resizable: false,
+    maximizable: false,
+    modal: true,
+    parent: mainWindow,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+    show: false
+  });
+
+  keyManagementWindow.on('close', function() {
     keyManagementWindow = null;
+  });
+
+  if (userKeystore !== null) {
+    keyManagementWindow.loadFile("components/manage-keys.html");
   }
   else {
-    keyManagementWindow = new BrowserWindow({
-      width: 900,
-      height: 600,
-      titleBarStyle: "hidden",
-      resizable: false,
-      maximizable: false,
-      webPreferences: {
-        nodeIntegration: true,
-      },
-      show: false
-    })
-
-    keyManagementWindow.on('close', function() {
-      keyManagementWindow = null;
-    });
-
-    if (ks !== null) {
-      keyManagementWindow.loadFile("components/manage-keys.html");
-    }
-    else {
-      keyManagementWindow.loadFile("components/generate-keys.html");
-    }
-
-    keyManagementWindow.once('ready-to-show', () => {
-      if (ks !== null ) {
-        keyManagementWindow.send(Koinos.StateKey.SigningAddress, web3.utils.toChecksumAddress(getAddresses()[0]));
-      }
-      keyManagementWindow.show();
-    });
+    keyManagementWindow.loadFile("components/generate-keys.html");
   }
+
+  keyManagementWindow.once('ready-to-show', () => {
+    if (state.get(Koinos.StateKey.HasKeystore)) {
+      keyManagementWindow.send(Koinos.StateKey.SigningAddress, web3.utils.toChecksumAddress(getAddresses()[0]));
+    }
+
+    keyManagementWindow.show();
+  });
+}
+
+ipcMain.handle(Koinos.StateKey.ManageKeys, (event, ...args) => {
+  launchKeyManagement();
 });
 
 ipcMain.on(Koinos.StateKey.ClosePasswordPrompt, async (event, password) => {
@@ -427,7 +424,7 @@ ipcMain.on(Koinos.StateKey.ClosePasswordPrompt, async (event, password) => {
     return;
   }
 
-  ks.keyFromPassword(password, async function (err, pwDerivedKey) {
+  userKeystore.keyFromPassword(password, async function (err, pwDerivedKey) {
     if (err) {
       let error = {
         kMessage: "There was a problem unlocking the keystore.",
@@ -436,7 +433,7 @@ ipcMain.on(Koinos.StateKey.ClosePasswordPrompt, async (event, password) => {
       notify(Koinos.StateKey.ErrorReport, error);
       return;
     }
-    if (!ks.isDerivedKeyCorrect(pwDerivedKey)) {
+    if (!userKeystore.isDerivedKeyCorrect(pwDerivedKey)) {
       let error = {
         kMessage: "The password is incorrect."
       };
@@ -479,7 +476,8 @@ ipcMain.on(Koinos.StateKey.ClosePasswordPrompt, async (event, password) => {
       signCallback,
       hashrateCallback,
       proofCallback,
-      errorCallback);
+      errorCallback,
+      warningCallback);
     miner.start();
     state.set(Koinos.StateKey.MinerActivated, true);
     writeConfiguration();
@@ -490,7 +488,7 @@ ipcMain.on(Koinos.StateKey.ClosePasswordPrompt, async (event, password) => {
 function promptPassword() {
   // create new window
   let passwordModalWindow = new BrowserWindow({
-    parent: win,
+    parent: mainWindow,
     width: 600,
     height: 400,
     frame: false,
@@ -520,23 +518,21 @@ ipcMain.handle(Koinos.StateKey.ExportKey, (event, arg) => {
 
       if (keyManagementWindow !== null) {
         keyManagementWindow.close();
-        keyManagementWindow = null;
       }
 
       console.log(err);
       notify(Koinos.StateKey.ErrorReport, error);
     }
     else {
-      if (ks.isDerivedKeyCorrect(pwDerivedKey)) {
-        keyManagementWindow.send(Koinos.StateKey.PrivateKey, ks.exportPrivateKey(ks.getAddresses()[0], pwDerivedKey));
+      if (userKeystore.isDerivedKeyCorrect(pwDerivedKey)) {
+        keyManagementWindow.send(Koinos.StateKey.PrivateKey, userKeystore.exportPrivateKey(userKeystore.getAddresses()[0], pwDerivedKey));
       }
       else {
-         if (keyManagementWindow !== null) {
-            keyManagementWindow.close();
-            keyManagementWindow = null;
-          }
+        if (keyManagementWindow !== null) {
+          keyManagementWindow.close();
+        }
 
-          notify(Koinos.StateKey.ErrorReport, {kMessage: "Password is incorrect"});
+        notify(Koinos.StateKey.ErrorReport, {kMessage: "Password is incorrect"});
       }
     }
   });
@@ -566,4 +562,95 @@ ipcMain.handle(Koinos.StateKey.ExportConfirmationModal, (event, ...args) => {
 
 ipcMain.handle(Koinos.StateKey.ConfirmExportKey, (event, ...args) => {
   keyManagementWindow.send(Koinos.StateKey.ConfirmExportKey);
+});
+
+ipcMain.handle(Koinos.StateKey.RecoverKeyWindow, (event, ...args) => {
+  let recoverKeyWindow = new BrowserWindow({
+    parent: mainWindow,
+    width: 900,
+    height: 600,
+    titleBarStyle: "hidden",
+    resizable: false,
+    maximizable: false,
+    modal: true,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+    show: false
+  });
+
+  recoverKeyWindow.loadFile("components/recover-keys.html");
+  recoverKeyWindow.once('ready-to-show', () => {
+    recoverKeyWindow.show();
+  });
+});
+
+ipcMain.handle(Koinos.StateKey.RecoverKey, (event, args) => {
+  if (!keystore.isSeedValid(args[1])) {
+    notify(Koinos.StateKey.ErrorReport, {kMessage: "Recovery phrase is not valid."});
+  }
+  else {
+    createKeystore(args[0], args[1], (vault) => {
+      userKeystore = vault;
+      state.set(Koinos.StateKey.HasKeystore, true);
+      saveKeystore();
+      launchKeyManagement();
+    });
+  }
+});
+
+ipcMain.handle(Koinos.StateKey.ConfirmSeedWindow, (event, ...args) => {
+  let confirmSeedWindow = new BrowserWindow({
+    parent: mainWindow,
+    width: 900,
+    height: 600,
+    titleBarStyle: "hidden",
+    resizable: false,
+    maximizable: false,
+    modal: true,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+    show: false
+  });
+
+  confirmSeedWindow.loadFile("components/confirm-seed.html");
+  confirmSeedWindow.once('ready-to-show', () => {
+    confirmSeedWindow.show();
+  });
+});
+
+ipcMain.handle(Koinos.StateKey.ConfirmSeed, (event, args) => {
+  userKeystore.keyFromPassword(args[0], function (err, pwDerivedKey) {
+    if (err) {
+      let error = {
+        kMessage: "There was a problem unlocking the keystore.",
+        error: err
+      };
+      notify("Koinos.StateKey.ErrorReport, error");
+    }
+    else {
+      if (!userKeystore.isDerivedKeyCorrect(pwDerivedKey)) {
+        notify(Koinos.StateKey.ErrorReport, {kMessage: "Password is incorrect."});
+        userKeystore = null;
+        state.set(Koinos.StateKey.HasKeystore, false);
+      }
+      else if (userKeystore.getSeed(pwDerivedKey) != args[1]) {
+        console.log(userKeystore.getSeed(pwDerivedKey));
+        console.log(args[1]);
+        notify(Koinos.StateKey.ErrorReport, {kMessage: "Recovery phrase is not valid."});
+        userKeystore = null;
+        state.set(Koinos.StateKey.HasKeystore, false);
+      }
+      else {
+        saveKeystore();
+        launchKeyManagement();
+      }
+    }
+  });
+});
+
+ipcMain.handle(Koinos.StateKey.CancelConfirmSeed, (event, ...args) => {
+  userKeystore = null;
+  state.set(Koinos.StateKey.HasKeystore, false);
 });

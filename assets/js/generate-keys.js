@@ -3,10 +3,13 @@ const Koinos = require('../assets/js/constants.js');
 let generated = false;
 
 function closeWindow() {
+  if (generated) {
+    ipcRenderer.invoke(Koinos.StateKey.CancelConfirmSeed);
+  }
   this.close();
 }
 
-function passwordsMatch(a,b) {
+function passwordsMatch(a, b) {
   if (a.length == b.length && a === b) {
     return true;
   }
@@ -35,29 +38,36 @@ function onPasswordKeyUp() {
   let message = document.getElementById(Koinos.Field.PasswordFeedback);
   if (!passwordIsRequiredLength(pass)) {
     message.innerHTML = "Password must be atleast 8 characters"
-    message.style.visibility = "visible"; 
-    message.style.background = "#c65656"
+    message.style.visibility = "visible";
+    message.style.color = "#c65656"
   }
   else if (!passwordsMatch(pass, passConfirm)) {
     message.innerHTML = "Passwords do not match"
-    message.style.visibility = "visible"; 
-    message.style.background = "#c65656"
+    message.style.visibility = "visible";
+    message.style.color = "#c65656"
   }
   else {
     message.innerHTML = "Password accepted"
-    message.style.visibility = "visible"; 
-    message.style.background = "#5fb56b";
+    message.style.visibility = "visible";
+    message.style.color = "#5fb56b";
   }
 }
 
 function generateKeys() {
-  if (generated) return;
+  if (generated) {
+    ipcRenderer.invoke(Koinos.StateKey.ConfirmSeedWindow);
+    this.close();
+    return;
+  };
+
+  if (!passwordIsValid()) return;
+
   let pass = document.getElementById(Koinos.Field.Password).value;
   ipcRenderer.invoke(Koinos.StateKey.GenerateKeys, pass);
 }
 
 ipcRenderer.on(Koinos.StateKey.SeedPhrase, (event, arg) => {
-  document.getElementById(Koinos.Field.GenerateButton).className += " grayed";
+  document.getElementById(Koinos.Field.RecoverButton).className += " grayed";
   let words = arg.split(" ");
 
   document.getElementById(Koinos.Field.Word1).innerHTML = "1. " + words[0];
@@ -73,6 +83,21 @@ ipcRenderer.on(Koinos.StateKey.SeedPhrase, (event, arg) => {
   document.getElementById(Koinos.Field.Word11).innerHTML = "11. " + words[10];
   document.getElementById(Koinos.Field.Word12).innerHTML = "12. " + words[11];
 
-  document.getElementById(Koinos.Field.TwelveWords).style.visibility = "visible";
+
+  document.getElementById(Koinos.Field.Warning).classList.add("fade-out");
+  setTimeout(() => {
+    document.getElementById(Koinos.Field.Warning).remove();
+  }, 1000);
+  setTimeout(() => {
+    document.getElementById(Koinos.Field.TwelveWords).style.visibility = "visible";
+    document.getElementById(Koinos.Field.TwelveWords).classList.add("fade-in");
+  }, 1000);
+
   generated = true;
 });
+
+function recoverKeys() {
+  if (generated) return;
+  ipcRenderer.invoke(Koinos.StateKey.RecoverKeyWindow);
+  this.close();
+}
