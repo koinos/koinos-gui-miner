@@ -22,8 +22,8 @@ function passwordIsRequiredLength(a) {
 }
 
 function passwordIsValid() {
-  let pass = document.getElementById(Koinos.Field.Password).value;
-  let passConfirm = document.getElementById(Koinos.Field.PasswordConfirm).value;
+  let pass = document.getElementById(Koinos.Field.GenerateKey.Password).value;
+  let passConfirm = document.getElementById(Koinos.Field.GenerateKey.PasswordConfirm).value;
 
   if (passwordsMatch(pass, passConfirm) && passwordIsRequiredLength(pass)) {
     return true;
@@ -33,9 +33,9 @@ function passwordIsValid() {
 }
 
 function onPasswordKeyUp() {
-  let pass = document.getElementById(Koinos.Field.Password).value;
-  let passConfirm = document.getElementById(Koinos.Field.PasswordConfirm).value;
-  let message = document.getElementById(Koinos.Field.PasswordFeedback);
+  let pass = document.getElementById(Koinos.Field.GenerateKey.Password).value;
+  let passConfirm = document.getElementById(Koinos.Field.GenerateKey.PasswordConfirm).value;
+  let message = document.getElementById(Koinos.Field.GenerateKey.PasswordFeedback);
   if (!passwordIsRequiredLength(pass)) {
     message.innerHTML = "Password must be atleast 8 characters"
     message.style.visibility = "visible";
@@ -62,35 +62,35 @@ function generateKeys() {
 
   if (!passwordIsValid()) return;
 
-  let pass = document.getElementById(Koinos.Field.Password).value;
+  let pass = document.getElementById(Koinos.Field.GenerateKey.Password).value;
   ipcRenderer.invoke(Koinos.StateKey.GenerateKeys, pass);
 }
 
 ipcRenderer.on(Koinos.StateKey.SeedPhrase, (event, arg) => {
-  document.getElementById(Koinos.Field.RecoverButton).className += " grayed";
+  document.getElementById(Koinos.Field.GenerateKey.RecoverButton).className += " grayed";
   let words = arg.split(" ");
 
-  document.getElementById(Koinos.Field.Word1).innerHTML = "1. " + words[0];
-  document.getElementById(Koinos.Field.Word2).innerHTML = "2. " + words[1];
-  document.getElementById(Koinos.Field.Word3).innerHTML = "3. " + words[2];
-  document.getElementById(Koinos.Field.Word4).innerHTML = "4. " + words[3];
-  document.getElementById(Koinos.Field.Word5).innerHTML = "5. " + words[4];
-  document.getElementById(Koinos.Field.Word6).innerHTML = "6. " + words[5];
-  document.getElementById(Koinos.Field.Word7).innerHTML = "7. " + words[6];
-  document.getElementById(Koinos.Field.Word8).innerHTML = "8. " + words[7];
-  document.getElementById(Koinos.Field.Word9).innerHTML = "9. " + words[8];
-  document.getElementById(Koinos.Field.Word10).innerHTML = "10. " + words[9];
-  document.getElementById(Koinos.Field.Word11).innerHTML = "11. " + words[10];
-  document.getElementById(Koinos.Field.Word12).innerHTML = "12. " + words[11];
+  document.getElementById(Koinos.Field.GenerateKey.Word1).innerHTML = "1. " + words[0];
+  document.getElementById(Koinos.Field.GenerateKey.Word2).innerHTML = "2. " + words[1];
+  document.getElementById(Koinos.Field.GenerateKey.Word3).innerHTML = "3. " + words[2];
+  document.getElementById(Koinos.Field.GenerateKey.Word4).innerHTML = "4. " + words[3];
+  document.getElementById(Koinos.Field.GenerateKey.Word5).innerHTML = "5. " + words[4];
+  document.getElementById(Koinos.Field.GenerateKey.Word6).innerHTML = "6. " + words[5];
+  document.getElementById(Koinos.Field.GenerateKey.Word7).innerHTML = "7. " + words[6];
+  document.getElementById(Koinos.Field.GenerateKey.Word8).innerHTML = "8. " + words[7];
+  document.getElementById(Koinos.Field.GenerateKey.Word9).innerHTML = "9. " + words[8];
+  document.getElementById(Koinos.Field.GenerateKey.Word10).innerHTML = "10. " + words[9];
+  document.getElementById(Koinos.Field.GenerateKey.Word11).innerHTML = "11. " + words[10];
+  document.getElementById(Koinos.Field.GenerateKey.Word12).innerHTML = "12. " + words[11];
 
 
-  document.getElementById(Koinos.Field.Warning).classList.add("fade-out");
+  document.getElementById(Koinos.Field.GenerateKey.Warning).classList.add("fade-out");
   setTimeout(() => {
-    document.getElementById(Koinos.Field.Warning).remove();
+    document.getElementById(Koinos.Field.GenerateKey.Warning).remove();
   }, 1000);
   setTimeout(() => {
-    document.getElementById(Koinos.Field.TwelveWords).style.visibility = "visible";
-    document.getElementById(Koinos.Field.TwelveWords).classList.add("fade-in");
+    document.getElementById(Koinos.Field.GenerateKey.RecoveryPhrase).style.visibility = "visible";
+    document.getElementById(Koinos.Field.GenerateKey.RecoveryPhrase).classList.add("fade-in");
   }, 1000);
 
   generated = true;

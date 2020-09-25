@@ -25,7 +25,7 @@
     }
 
 
-    input {
+    input.password {
       width: 20em;
       border-bottom: 1px #6f00f6 solid;
       margin: 0 10px;
@@ -36,7 +36,18 @@
       background-color: none;
     }
 
-    #password-feedback {
+    input.seed {
+      border: 1px #6f00f6 solid;
+      border-radius: 8px;
+      padding: 0.67em;
+      color: white;
+      font-size: 1em;
+      text-align: left;
+      background-color: none;
+      margin: .5em;
+    }
+
+    .password-feedback {
       margin: 0 auto;
       width: 80%;
       color: #ffffff;
@@ -48,10 +59,7 @@
       align-items: center;
     }
 
-    #close-button {
-      /* position: absolute;
-      bottom: 20px;
-      right: 180px; */
+    .close-button {
       background-color: #dd003f;
       color: white;
       padding: 10px 20px;
@@ -61,10 +69,7 @@
       cursor: pointer;
     }
 
-    #generate-button {
-      /* position: absolute;
-      bottom: 20px;
-      right: 20px; */
+    .next-button {
       background-color: #6F00F6;
       color: white;
       padding: 10px 20px;
@@ -74,10 +79,7 @@
       cursor: pointer;
     }
 
-    #recover-button {
-      /* position: absolute;
-      bottom: 20px;
-      right: 200px; */
+    .recover-button {
       background-color: #1f89c7;
       color: white;
       padding: 10px 20px;
@@ -105,7 +107,7 @@
       padding: 1.4em;
     }
 
-    #warning {
+    .warning {
       margin: 40px 0px;
       padding: 0 40px;
     }
@@ -120,7 +122,7 @@
       margin-bottom: 10px;
     }
 
-    #twelve-words {
+    .recovery-phrase {
       visibility: hidden;
       display: flex;
       text-align: left;
@@ -130,8 +132,12 @@
       margin-left: 80px;
     }
 
-    #secure-key {
+    #genkey-secure-key-message {
       width: 90%;
+    }
+
+    #confirm-recovery-page {
+      display: none;
     }
 
     .fade-in {
@@ -167,24 +173,24 @@
 </head>
 
 <body>
-  <div class="container">
+  <div id="generate-key-page" class="container">
     <div>
       <h2>Create Private Key</h2>
       <div class="form-area">
         <form action="">
-          <input id="password" type="password" placeholder="Password" onkeyup="onPasswordKeyUp()" autofocus>
-          <input id="password-confirm" type="password" placeholder="Confirm Password" onkeyup="onPasswordKeyUp()">
+          <input id="genkey-password" class="password" type="password" placeholder="Password" onkeyup="onPasswordKeyUp()" autofocus>
+          <input id="genkey-password-confirm" class="password" type="password" placeholder="Confirm Password" onkeyup="onPasswordKeyUp()">
           <div class="buttons">
-            <span id="recover-button" onclick="recoverKeys()">Recover Key</span>
-            <span id="close-button" onclick="closeWindow()">Cancel</span>
-            <span id="generate-button" onclick="generateKeys()">Next</span>
+            <span id="genkey-recover-button" class="recover-button" onclick="recoverKeys()">Recover Key</span>
+            <span id="genkey-close-button" class="close-button" onclick="closeWindow()">Cancel</span>
+            <span id="genkey-next-button" class="next-button" onclick="generateKeys()">Next</span>
           </div>
         </form>
       </div>
-      <div id="password-feedback">
+      <div id="genkey-password-feedback" class="password-feedback">
         &nbsp;
       </div>
-      <div id="warning">
+      <div id="genkey-warning" class="warning">
         <h2>Please Read Carefully!</h2>
         <p>We cannot recover your password! If you lose your password the only way to recover your account is with your
           12
@@ -193,36 +199,94 @@
           upcoming civil war, riots, corona virus, wild fires, hurricanes etc.
         </p>
       </div>
-      <div id="twelve-words">
+      <div id="genkey-recovery-phrase" class="recovery-phrase">
         <div>Your 12 Word Phrase:</div>
         <table>
           <tbody>
             <tr>
-              <td id="word1"></td>
-              <td id="word2"></td>
-              <td id="word3"></td>
+              <td id="genkey-word1"></td>
+              <td id="genkey-word2"></td>
+              <td id="genkey-word3"></td>
             </tr>
             <tr>
-              <td id="word4"></td>
-              <td id="word5"></td>
-              <td id="word6"></td>
+              <td id="genkey-word4"></td>
+              <td id="genkey-word5"></td>
+              <td id="genkey-word6"></td>
             </tr>
             <tr>
-              <td id="word7"></td>
-              <td id="word8"></td>
-              <td id="word9"></td>
+              <td id="genkey-word7"></td>
+              <td id="genkey-word8"></td>
+              <td id="genkey-word9"></td>
             </tr>
             <tr>
-              <td id="word10"></td>
-              <td id="word11"></td>
-              <td id="word12"></td>
+              <td id="genkey-word10"></td>
+              <td id="genkey-word11"></td>
+              <td id="genkey-word12"></td>
             </tr>
           </tbody>
         </table>
-        <div class="emphasize" id="secure-key">
-          Pleaase write down your twelve word phrase, it is the only way to recover your private key! Keep it in a safe
-          place, anyone with this phrase can unlock your wallet and take all the Koin. You will be
+        <div class="emphasize" id="genkey-secure-key-message">
+          Pleaase write down your twelve word recovery phrase, it is the only way to recover your private key! Keep it in
+          a safe place, anyone with this phrase can unlock your wallet and take all the Koin. You will be
           asked to confirm all twelve words on the next page.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="confirm-recovery-page" class="container">
+    <div class="form-area">
+      <div>
+        <input id="confrec-password" class="password" type="password" placeholder="Password">
+      </div>
+      <div class="buttons">
+        <span id="confrec-close-button" class="close-button" onclick="closeWindow()">Close</span>
+        <span id="confrec-confirm-button" class="next-button" onclick="confirmSeed()">Confirm</span>
+       </div>
+    </div>
+    <div>
+      <h2>Confirm Recovery Phrase</h2>
+      <div id="confrec-warning" class="warning">
+        <p>Please re-enter the 12 word recovery phrase provided to you upon key generation.
+        </p>
+      </div>
+      <div id="confrec-recovery-phrase">
+        <div id="confrec-word-container">
+          <div>
+            <input class="seed" id="confrec-word1" type="text" placeholder="Word 1" class="non-match">
+          </div>
+          <div>
+            <input class="seed" id="confrec-word2" type="text" placeholder="Word 2" class="word-match">
+          </div>
+          <div>
+            <input class="seed" id="confrec-word3" type="text" placeholder="Word 3">
+          </div>
+          <div>
+            <input class="seed" id="confrec-word4" type="text" placeholder="Word 4">
+          </div>
+          <div>
+            <input class="seed" id="confrec-word5" type="text" placeholder="Word 5">
+          </div>
+          <div>
+            <input class="seed" id="confrec-word6" type="text" placeholder="Word 6">
+          </div>
+          <div>
+            <input class="seed" id="confrec-word7" type="text" placeholder="Word 7">
+          </div>
+          <div>
+            <input class="seed" id="confrec-word8" type="text" placeholder="Word 8">
+          </div>
+          <div>
+            <input class="seed" id="confrec-word9" type="text" placeholder="Word 9">
+          </div>
+          <div>
+            <input class="seed" id="confrec-word10" type="text" placeholder="Word 10">
+          </div>
+          <div>
+            <input class="seed" id="confrec-word11" type="text" placeholder="Word 11">
+          </div>
+          <div>
+            <input class="seed" id="confrec-word12" type="text" placeholder="Word 12">
+          </div>
         </div>
       </div>
     </div>
