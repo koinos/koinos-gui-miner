@@ -27,7 +27,8 @@ module.exports = {
     RecoverKey: 'recover-key',
     ConfirmSeedWindow: 'confirm-seed-window',
     ConfirmSeed: 'confirm-seed',
-    CancelConfirmSeed: 'cancel-confirm-seed'
+    CancelConfirmSeed: 'cancel-confirm-seed',
+    TransitionToKeyManagement: 'transition-to-key-management'
   },
   TimeSpan: {
     SecondsPerDay: 86400,
@@ -39,6 +40,7 @@ module.exports = {
   Field: {
     GenerateKeyPage: "generate-key-page",
     ConfirmRecoveryPage: "confirm-recovery-page",
+    ManageKeyPage: "manage-key-page",
     Tip: "tip",
     CheckToggle: "check-toggle",
     EthAddress: "eth-address",
@@ -131,6 +133,18 @@ module.exports = {
       Word10: "confrec-word10",
       Word11: "confrec-word11",
       Word12: "confrec-word12"
+    },
+    ManageKey: {
+      PublicKey: "mankey-public-key",
+      Key: "mankey-key",
+      SigningAddress: "mankey-signing-address",
+      QRCode: "mankey-qr-code",
+      Password: "mankey-password",
+      ExportWarning: "mankey-export-warning",
+      PrivateKey: "mankey-private-key",
+      Message: "mankey-message",
+      RecoverButton: "mankey-recover-button",
+      CloseButton: "close-button"
     }
   }
 

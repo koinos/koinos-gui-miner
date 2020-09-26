@@ -634,6 +634,7 @@ ipcMain.handle(Koinos.StateKey.ConfirmSeed, (event, args) => {
         notify(Koinos.StateKey.ErrorReport, {kMessage: "Password is incorrect."});
         userKeystore = null;
         state.set(Koinos.StateKey.HasKeystore, false);
+        keyManagementWindow.close()
       }
       else if (userKeystore.getSeed(pwDerivedKey) != args[1]) {
         console.log(userKeystore.getSeed(pwDerivedKey));
@@ -641,10 +642,12 @@ ipcMain.handle(Koinos.StateKey.ConfirmSeed, (event, args) => {
         notify(Koinos.StateKey.ErrorReport, {kMessage: "Recovery phrase is not valid."});
         userKeystore = null;
         state.set(Koinos.StateKey.HasKeystore, false);
+        keyManagementWindow.close();
       }
       else {
         saveKeystore();
-        launchKeyManagement();
+        keyManagementWindow.send(Koinos.StateKey.SigningAddress, web3.utils.toChecksumAddress(getAddresses()[0]));
+        keyManagementWindow.send(Koinos.StateKey.TransitionToKeyManagement);
       }
     }
   });

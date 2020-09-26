@@ -1,5 +1,6 @@
 const { ipcRenderer } = require('electron');
 const Koinos = require('../assets/js/constants.js');
+const Qr = require('ethereum-qr-code');
 let generated = false;
 
 function closeWindow() {
@@ -55,9 +56,15 @@ function onPasswordKeyUp() {
 
 function generateKeys() {
   if (generated) {
-    ipcRenderer.invoke(Koinos.StateKey.ConfirmSeedWindow);
-    this.close();
-    return;
+   document.getElementById(Koinos.Field.GenerateKeyPage).classList.add("fade-out");
+   setTimeout(() => {
+     document.getElementById(Koinos.Field.GenerateKeyPage).style.display = "none";
+   }, 1000);
+   setTimeout(() => {
+     document.getElementById(Koinos.Field.ConfirmRecoveryPage).style.display = "inline";
+     document.getElementById(Koinos.Field.ConfirmRecoveryPage).classList.add("fade-in");
+   }, 1000);
+   return;
   };
 
   if (!passwordIsValid()) return;
@@ -96,8 +103,71 @@ ipcRenderer.on(Koinos.StateKey.SeedPhrase, (event, arg) => {
   generated = true;
 });
 
+function confirmSeed() {
+   let pass = document.getElementById(Koinos.Field.ConfirmRecovery.Password).value;
+   let seedPhrase = "";
+   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word1).value.trim()  + ' ';
+   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word2).value.trim()  + ' ';
+   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word3).value.trim()  + ' ';
+   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word4).value.trim()  + ' ';
+   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word5).value.trim()  + ' ';
+   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word6).value.trim()  + ' ';
+   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word7).value.trim()  + ' ';
+   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word8).value.trim()  + ' ';
+   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word9).value.trim()  + ' ';
+   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word10).value.trim() + ' ';
+   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word11).value.trim() + ' ';
+   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word12).value.trim();
+   ipcRenderer.invoke(Koinos.StateKey.ConfirmSeed, [pass, seedPhrase]);
+
+   generated = false;
+}
+
+ipcRenderer.on(Koinos.StateKey.TransitionToKeyManagement, (event, arg) => {
+  document.getElementById(Koinos.Field.ConfirmRecoveryPage).classList.add("fade-out");
+  setTimeout(() => {
+    document.getElementById(Koinos.Field.ConfirmRecoveryPage).style.display = "none";
+  }, 1000);
+  setTimeout(() => {
+    document.getElementById(Koinos.Field.ManageKeyPage).style.display = "inline";
+    document.getElementById(Koinos.Field.ManageKeyPage).classList.add("fade-in");
+  }, 1000);
+})
+
 function recoverKeys() {
   if (generated) return;
   ipcRenderer.invoke(Koinos.StateKey.RecoverKeyWindow);
   this.close();
 }
+
+ipcRenderer.on(Koinos.StateKey.SigningAddress, (event, arg) => {
+  document.getElementById(Koinos.Field.ManageKey.SigningAddress).innerHTML = arg;
+
+  const qr = new Qr();
+  const codeDetails = {
+    to: arg
+  };
+
+  const configDetails = {
+    size: 180,
+    selector: '#' + Koinos.Field.ManageKey.QRCode,
+    options: {
+      margin: 2,
+    }
+  };
+
+  qr.toCanvas(codeDetails, configDetails);
+});
+
+function exportKey() {
+  ipcRenderer.invoke(Koinos.StateKey.ExportConfirmationModal);
+}
+
+ipcRenderer.on(Koinos.StateKey.PrivateKey, (event, arg) => {
+  document.getElementById(Koinos.Field.ManageKey.PrivateKey).innerHTML = arg;
+});
+
+ipcRenderer.on(Koinos.StateKey.ConfirmExportKey, (event, ...args) => {
+  let pass = document.getElementById(Koinos.Field.ManageKey.Password).value;
+  ipcRenderer.invoke(Koinos.StateKey.ExportKey, pass);
+});

@@ -14,7 +14,9 @@
       Very Deep Purple: 0F091F
     */
     body {
-      -webkit-app-region: drag;
+      color: white;
+      -webkit-app-region: no-drag;
+      background-color: #0F091F;
     }
 
     .form-area {
@@ -45,6 +47,18 @@
       text-align: left;
       background-color: none;
       margin: .5em;
+    }
+
+    input.export-password {
+      width: 25em;
+      border-bottom: 1px #6f00f6 solid;
+      padding: 0.67em;
+      color: white;
+      font-size: 1em;
+      text-align: center;
+      background-color: none;
+      margin-right: 100px;
+      margin-bottom: 10px;
     }
 
     .password-feedback {
@@ -136,8 +150,85 @@
       width: 90%;
     }
 
+    .word-container {
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-wrap: wrap;
+      flex-wrap: wrap;
+      -webkit-align-items: center;
+      align-items: center;
+      -webkit-align-content: center;
+      align-content: center;
+    }
+
     #confirm-recovery-page {
       display: none;
+    }
+
+    #manage-key-page {
+      display: none;
+    }
+
+    .input-area {
+      margin-left: 50px;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    #mankey-public-key {
+      margin-bottom: 10px;
+    }
+
+    #mankey-key {
+      background: #6F00F6;
+      width: 100vw;
+      font-size: 1.2em;
+      padding: 20px;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+    }
+
+    #mankey-export-warning {
+      padding: .8em;
+      color: red;
+      font-size: 0.8em;
+      text-align: center;
+    }
+
+    #mankey-private-key {
+      margin-top: 20px;
+      text-align: center;
+      padding: 30px;
+      height: 30px;
+    }
+
+    #mankey-export-button {
+      position: relative;
+      background-color: #6F00F6;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      font-size: 1em;
+      margin-top: 1em;
+      cursor: pointer;
+      float: right;
+    }
+
+    #mankey-copy {
+      cursor: pointer;
+    }
+
+    #mankey-key div {
+      margin: 10px 30px;
+    }
+
+    .message {
+      margin-top: 30px;
+      font-size: .8em;
+      width: 400px;
+      margin-left: -400px;
     }
 
     .fade-in {
@@ -168,7 +259,7 @@
       }
     }
   </style>
-  <title>Create</title>
+  <title>Create</title
 
 </head>
 
@@ -250,7 +341,7 @@
         </p>
       </div>
       <div id="confrec-recovery-phrase">
-        <div id="confrec-word-container">
+        <div id="confrec-word-container" class="word-container">
           <div>
             <input class="seed" id="confrec-word1" type="text" placeholder="Word 1" class="non-match">
           </div>
@@ -290,6 +381,39 @@
         </div>
       </div>
     </div>
+  </div>
+  <div id="manage-key-page" class="container">
+    <div id="mankey-public-key">
+
+       <div id="mankey-key">
+         <div>Funding Address:</div>
+         <div id="mankey-signing-address" onClick='copyText(this)'></div>
+       </div>
+
+     </div>
+     <div id="mankey-qr-code"></div>
+     <div class="form-area">
+       <div>
+         <div>
+           <input id="mankey-password" class="password" type="password" placeholder="Password"><span id="export-button"
+             onclick="exportKey()">Export
+             Key</span>
+         </div>
+         <div id="mankey-export-warning" class="blink-me">WARNING: Exporting your key may put it at risk. Proceed with caution!
+         </div>
+         <div id="mankey-private-key"></div>
+       </div>
+       <div id="mankey-message" class="message">
+         <h2>Forgot your password?</h2>
+         <div>We cannot recover your password! If you lost your password the only way to recover your account is with
+           your 12 word phrase.
+         </div>
+       </div>
+       <div class="buttons">
+         <span id="mankey-recover-button" class="recover-button" onclick="recoverKeys()">Recover Key</span>
+         <span id="mankey-close-button" class="close-button" onclick="closeWindow()">Close</span>
+       </div>
+     </div>
   </div>
   <script src="../assets/js/generate-keys.js"></script>
 </body>
