@@ -1,4 +1,4 @@
-const { ipcRenderer } = require('electron');
+const { ipcRenderer, clipboard } = require('electron');
 const Koinos = require('../assets/js/constants.js');
 const Qr = require('ethereum-qr-code');
 let generated = false;
@@ -198,6 +198,10 @@ ipcRenderer.on(Koinos.StateKey.SigningAddress, (event, arg) => {
 
   qr.toCanvas(codeDetails, configDetails);
 });
+
+function copyAddress() {
+  clipboard.writeText(document.getElementById(Koinos.Field.ManageKey.SigningAddress).innerHTML);
+}
 
 function exportKey() {
   ipcRenderer.invoke(Koinos.StateKey.ExportConfirmationModal);
