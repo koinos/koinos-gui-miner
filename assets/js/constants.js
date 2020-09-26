@@ -61,6 +61,8 @@ module.exports = {
     HashrateSpinner: "hashrate-spinner",
     SvgButton: "svg-button",
     PowerButton: "power-button",
+    Password: 'password',
+    EnterButton: 'enter-button',
     Errors: "errors",
     ErrorMessage: "error-message",
     DocumentationLink: "documentation-link",
