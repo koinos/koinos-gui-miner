@@ -7,7 +7,7 @@
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "rm -f node_modules/keccak/bindings.js node_modules/secp256k1/bindings.js node_modules/eth-lightwallet/node_modules/keccak/bindings.js node_modules/eth-lightwallet/node_modules/secp256k1/bindings.js"
+    "postinstall": "rm -f node_modules/keccak/bindings.js node_modules/secp256k1/bindings.js node_modules/eth-lightwallet/node_modules/keccak/bindings.js node_modules/eth-lightwallet/node_modules/secp256k1/bindings.js node_modules/ethereumjs-util/node_modules/keccak/bindings.js node_modules/ethereumjs-util/node_modules/secp256k1/bindings.js"
   },
   "repository": {
     "type": "git",
