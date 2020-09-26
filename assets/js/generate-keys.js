@@ -2,6 +2,42 @@ const { ipcRenderer } = require('electron');
 const Koinos = require('../assets/js/constants.js');
 const Qr = require('ethereum-qr-code');
 let generated = false;
+let state = Koinos.StateKey.ManageKeyWindow.GenerateKey;
+let stateIDMap = new Map([
+  [Koinos.StateKey.ManageKeyWindow.GenerateKey,     Koinos.Field.GenerateKeyPage],
+  [Koinos.StateKey.ManageKeyWindow.ConfirmRecovery, Koinos.Field.ConfirmRecoveryPage],
+  [Koinos.StateKey.ManageKeyWindow.ManageKey,       Koinos.Field.ManageKeyPage]
+]);
+
+function animateStateTransition(nextState, timeout=1000) {
+  console.log(stateIDMap);
+  console.log(state);
+  console.log(nextState);
+  let previousStateID = stateIDMap.get(state);
+  let nextStateID = stateIDMap.get(nextState);
+
+  console.log(previousStateID);
+  console.log(nextStateID);
+
+  if (previousStateID === null || nextStateID === null) return;
+
+  document.getElementById(previousStateID).classList.add("fade-out");
+  setTimeout(() => {
+    document.getElementById(previousStateID).style.display = "none";
+  }, timeout);
+  setTimeout(() => {
+    document.getElementById(nextStateID).style.display = "inline";
+    document.getElementById(nextStateID).classList.add("fade-in");
+  }, timeout);
+
+  state = nextState;
+}
+
+ipcRenderer.on(Koinos.StateKey.SetKeyManageWindowState, (event, [newState, timeout]) => {
+  if (newState != state) {
+    animateStateTransition(newState, timeout);
+  }
+})
 
 function closeWindow() {
   if (generated) {
@@ -56,15 +92,8 @@ function onPasswordKeyUp() {
 
 function generateKeys() {
   if (generated) {
-   document.getElementById(Koinos.Field.GenerateKeyPage).classList.add("fade-out");
-   setTimeout(() => {
-     document.getElementById(Koinos.Field.GenerateKeyPage).style.display = "none";
-   }, 1000);
-   setTimeout(() => {
-     document.getElementById(Koinos.Field.ConfirmRecoveryPage).style.display = "inline";
-     document.getElementById(Koinos.Field.ConfirmRecoveryPage).classList.add("fade-in");
-   }, 1000);
-   return;
+    animateStateTransition(Koinos.StateKey.ManageKeyWindow.ConfirmRecovery);
+    return;
   };
 
   if (!passwordIsValid()) return;
@@ -122,17 +151,6 @@ function confirmSeed() {
 
    generated = false;
 }
-
-ipcRenderer.on(Koinos.StateKey.TransitionToKeyManagement, (event, arg) => {
-  document.getElementById(Koinos.Field.ConfirmRecoveryPage).classList.add("fade-out");
-  setTimeout(() => {
-    document.getElementById(Koinos.Field.ConfirmRecoveryPage).style.display = "none";
-  }, 1000);
-  setTimeout(() => {
-    document.getElementById(Koinos.Field.ManageKeyPage).style.display = "inline";
-    document.getElementById(Koinos.Field.ManageKeyPage).classList.add("fade-in");
-  }, 1000);
-})
 
 function recoverKeys() {
   if (generated) return;

@@ -28,7 +28,13 @@ module.exports = {
     ConfirmSeedWindow: 'confirm-seed-window',
     ConfirmSeed: 'confirm-seed',
     CancelConfirmSeed: 'cancel-confirm-seed',
-    TransitionToKeyManagement: 'transition-to-key-management'
+    SetKeyManageWindowState: 'set-key-manage-window-state',
+    ManageKeyWindow: {
+      GenerateKey: 'generate-key',
+      ConfirmRecovery: 'confirm-recovery',
+      ManageKey: 'manage-key',
+      RecoverKey: 'recover-key'
+    }
   },
   TimeSpan: {
     SecondsPerDay: 86400,

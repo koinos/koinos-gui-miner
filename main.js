@@ -394,16 +394,13 @@ function launchKeyManagement() {
     keyManagementWindow = null;
   });
 
-  if (userKeystore !== null) {
-    keyManagementWindow.loadFile("components/manage-keys.html");
-  }
-  else {
-    keyManagementWindow.loadFile("components/generate-keys.html");
-  }
+  keyManagementWindow.loadFile("components/generate-keys.html");
 
   keyManagementWindow.once('ready-to-show', () => {
     if (state.get(Koinos.StateKey.HasKeystore)) {
+      console.log("ManageKey");
       keyManagementWindow.send(Koinos.StateKey.SigningAddress, web3.utils.toChecksumAddress(getAddresses()[0]));
+      keyManagementWindow.send(Koinos.StateKey.SetKeyManageWindowState, [Koinos.StateKey.ManageKeyWindow.ManageKey, 0]);
     }
 
     keyManagementWindow.show();
@@ -646,8 +643,9 @@ ipcMain.handle(Koinos.StateKey.ConfirmSeed, (event, args) => {
       }
       else {
         saveKeystore();
+        console.log("Confirmed Recovery");
         keyManagementWindow.send(Koinos.StateKey.SigningAddress, web3.utils.toChecksumAddress(getAddresses()[0]));
-        keyManagementWindow.send(Koinos.StateKey.TransitionToKeyManagement);
+        keyManagementWindow.send(Koinos.StateKey.SetKeyManageWindowState, [Koinos.StateKey.ManageKeyWindow.ManageKey, 1000]);
       }
     }
   });
