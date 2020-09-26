@@ -11,14 +11,8 @@ let stateIDMap = new Map([
 ]);
 
 function animateStateTransition(nextState, timeout = 1000) {
-  console.log(stateIDMap);
-  console.log(state);
-  console.log(nextState);
   let previousStateID = stateIDMap.get(state);
   let nextStateID = stateIDMap.get(nextState);
-
-  console.log(previousStateID);
-  console.log(nextStateID);
 
   if (previousStateID === null || nextStateID === null) return;
 
@@ -27,7 +21,7 @@ function animateStateTransition(nextState, timeout = 1000) {
     document.getElementById(previousStateID).style.display = "none";
   }, timeout);
   setTimeout(() => {
-    document.getElementById(nextStateID).style.display = "inline";
+    document.getElementById(nextStateID).style.display = "inherit";
     document.getElementById(nextStateID).classList.add("fade-in");
   }, timeout);
 
