@@ -158,7 +158,6 @@ app.on('before-quit', () => {
     miner.stop();
     miner = null;
   }
-  process.kill(0);
 })
 
 // In this file you can include the rest of your app's specific main process
