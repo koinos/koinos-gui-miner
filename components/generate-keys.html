@@ -231,6 +231,10 @@
       margin-left: -400px;
     }
 
+    #recover-key-page {
+      display: none;
+    }
+
     .fade-in {
       animation: fadeIn ease 1s;
     }
@@ -272,7 +276,7 @@
           <input id="genkey-password" class="password" type="password" placeholder="Password" onkeyup="onPasswordKeyUp()" autofocus>
           <input id="genkey-password-confirm" class="password" type="password" placeholder="Confirm Password" onkeyup="onPasswordKeyUp()">
           <div class="buttons">
-            <span id="genkey-recover-button" class="recover-button" onclick="recoverKeys()">Recover Key</span>
+            <span id="genkey-recover-button" class="recover-button" onclick="openRecoverKeys()">Recover Key</span>
             <span id="genkey-close-button" class="close-button" onclick="closeWindow()">Cancel</span>
             <span id="genkey-next-button" class="next-button" onclick="generateKeys()">Next</span>
           </div>
@@ -343,10 +347,10 @@
       <div id="confrec-recovery-phrase">
         <div id="confrec-word-container" class="word-container">
           <div>
-            <input class="seed" id="confrec-word1" type="text" placeholder="Word 1" class="non-match">
+            <input class="seed" id="confrec-word1" type="text" placeholder="Word 1">
           </div>
           <div>
-            <input class="seed" id="confrec-word2" type="text" placeholder="Word 2" class="word-match">
+            <input class="seed" id="confrec-word2" type="text" placeholder="Word 2">
           </div>
           <div>
             <input class="seed" id="confrec-word3" type="text" placeholder="Word 3">
@@ -410,11 +414,71 @@
          </div>
        </div>
        <div class="buttons">
-         <span id="mankey-recover-button" class="recover-button" onclick="recoverKeys()">Recover Key</span>
+         <span id="mankey-recover-button" class="recover-button" onclick="openRecoverKeys()">Recover Key</span>
          <span id="mankey-close-button" class="close-button" onclick="closeWindow()">Close</span>
        </div>
      </div>
   </div>
+  <div id="recover-key-page" class="container">
+   <div>
+     <h2>Recover Private Key</h2>
+     <div class="form-area">
+       <form action="">
+         <input id="reckey-password" class="password" type="password" placeholder="Password" onkeyup="onPasswordKeyUp()" autofocus>
+         <input id="reckey-password-confirm" class="password" type="password" placeholder="Confirm Password" onkeyup="onPasswordKeyUp()">
+       </form>
+       <div class="buttons">
+         <span id="reckey-close-button" class="close-button" onclick="closeWindow()">Cancel</span>
+         <span id="reckey-recovery-button" class="next-button" onclick="recoverKeys()">Recover Key</span>
+       </div>
+     </div>
+     <div id="reckey-password-feedback">
+       &nbsp;
+     </div>
+     <div id="reckey-message" class="warning">
+       <p>Please enter Your 12 Word Recovery Phrase:</p>
+     </div>
+     <div id="reckey-recovery-phrase">
+       <div id="reckey-word-container" class="word-container">
+         <div>
+           <input class="seed" id="reckey-word1" type="text" placeholder="Word 1">
+         </div>
+         <div>
+           <input class="seed" id="reckey-word2" type="text" placeholder="Word 2">
+         </div>
+         <div>
+           <input class="seed" id="reckey-word3" type="text" placeholder="Word 3">
+         </div>
+         <div>
+           <input class="seed" id="reckey-word4" type="text" placeholder="Word 4">
+         </div>
+         <div>
+           <input class="seed" id="reckey-word5" type="text" placeholder="Word 5">
+         </div>
+         <div>
+           <input class="seed" id="reckey-word6" type="text" placeholder="Word 6">
+         </div>
+         <div>
+           <input class="seed" id="reckey-word7" type="text" placeholder="Word 7">
+         </div>
+         <div>
+           <input class="seed" id="reckey-word8" type="text" placeholder="Word 8">
+         </div>
+         <div>
+           <input class="seed" id="reckey-word9" type="text" placeholder="Word 9">
+         </div>
+         <div>
+           <input class="seed" id="reckey-word10" type="text" placeholder="Word 10">
+         </div>
+         <div>
+           <input class="seed" id="reckey-word11" type="text" placeholder="Word 11">
+         </div>
+         <div>
+           <input class="seed" id="reckey-word12" type="text" placeholder="Word 12">
+         </div>
+       </div>
+   </div>
+ </div>
   <script src="../assets/js/generate-keys.js"></script>
 </body>
 

@@ -6,7 +6,8 @@ let state = Koinos.StateKey.ManageKeyWindow.GenerateKey;
 let stateIDMap = new Map([
   [Koinos.StateKey.ManageKeyWindow.GenerateKey,     Koinos.Field.GenerateKeyPage],
   [Koinos.StateKey.ManageKeyWindow.ConfirmRecovery, Koinos.Field.ConfirmRecoveryPage],
-  [Koinos.StateKey.ManageKeyWindow.ManageKey,       Koinos.Field.ManageKeyPage]
+  [Koinos.StateKey.ManageKeyWindow.ManageKey,       Koinos.Field.ManageKeyPage],
+  [Koinos.StateKey.ManageKeyWindow.RecoverKey,      Koinos.Field.RecoverKeyPage]
 ]);
 
 function animateStateTransition(nextState, timeout=1000) {
@@ -59,8 +60,19 @@ function passwordIsRequiredLength(a) {
 }
 
 function passwordIsValid() {
-  let pass = document.getElementById(Koinos.Field.GenerateKey.Password).value;
-  let passConfirm = document.getElementById(Koinos.Field.GenerateKey.PasswordConfirm).value;
+  let page = null;
+  if (state == Koinos.StateKey.ManageKeyWindow.GenerateKey) {
+    page = Koinos.Field.GenerateKey;
+  }
+  else if (state == Koinos.StateKey.ManageKeyWindow.RecoverKey) {
+    page = Koinos.Field.RecoverKey;
+  }
+  else {
+    return;
+  }
+
+  let pass = document.getElementById(page.Password).value;
+  let passConfirm = document.getElementById(page.PasswordConfirm).value;
 
   if (passwordsMatch(pass, passConfirm) && passwordIsRequiredLength(pass)) {
     return true;
@@ -70,9 +82,20 @@ function passwordIsValid() {
 }
 
 function onPasswordKeyUp() {
-  let pass = document.getElementById(Koinos.Field.GenerateKey.Password).value;
-  let passConfirm = document.getElementById(Koinos.Field.GenerateKey.PasswordConfirm).value;
-  let message = document.getElementById(Koinos.Field.GenerateKey.PasswordFeedback);
+  let page = null;
+  if (state == Koinos.StateKey.ManageKeyWindow.GenerateKey) {
+    page = Koinos.Field.GenerateKey;
+  }
+  else if (state == Koinos.StateKey.ManageKeyWindow.RecoverKey) {
+    page = Koinos.Field.RecoverKey;
+  }
+  else {
+    return;
+  }
+
+  let pass = document.getElementById(page.Password).value;
+  let passConfirm = document.getElementById(page.PasswordConfirm).value;
+  let message = document.getElementById(page.PasswordFeedback);
   if (!passwordIsRequiredLength(pass)) {
     message.innerHTML = "Password must be atleast 8 characters"
     message.style.visibility = "visible";
@@ -152,10 +175,9 @@ function confirmSeed() {
    generated = false;
 }
 
-function recoverKeys() {
+function openRecoverKeys() {
   if (generated) return;
-  ipcRenderer.invoke(Koinos.StateKey.RecoverKeyWindow);
-  this.close();
+  animateStateTransition(Koinos.StateKey.ManageKeyWindow.RecoverKey);
 }
 
 ipcRenderer.on(Koinos.StateKey.SigningAddress, (event, arg) => {
@@ -189,3 +211,21 @@ ipcRenderer.on(Koinos.StateKey.ConfirmExportKey, (event, ...args) => {
   let pass = document.getElementById(Koinos.Field.ManageKey.Password).value;
   ipcRenderer.invoke(Koinos.StateKey.ExportKey, pass);
 });
+
+function recoverKeys() {
+  let pass = document.getElementById(Koinos.Field.RecoverKey.Password).value;
+  let seedPhrase = "";
+  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word1).value.trim()  + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word2).value.trim()  + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word3).value.trim()  + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word4).value.trim()  + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word5).value.trim()  + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word6).value.trim()  + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word7).value.trim()  + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word8).value.trim()  + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word9).value.trim()  + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word10).value.trim() + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word11).value.trim() + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word12).value.trim();
+  ipcRenderer.invoke(Koinos.StateKey.RecoverKey, [pass, seedPhrase]);
+}
