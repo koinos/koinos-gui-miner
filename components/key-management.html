@@ -107,30 +107,17 @@
       display: flex;
       flex-direction: row;
       justify-content: space-around;
-      width: 330px;
+      width: auto;
       position: absolute;
       bottom: 20px;
       right: 20px;
     }
 
-    .two-button {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      width: 200px;
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
-    }
-
-    .one-button {
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
-      width: 330px;
-      position: absolute;
-      bottom: 20px;
-      right: 50px;
+    .button-space {
+      padding: 10px 10px;
+      border: none;
+      font-size: 1em;
+      margin-top: 1em;
     }
 
     .container {
@@ -359,7 +346,9 @@
       </div>
       <div class="buttons">
         <span id="genkey-recover-button" class="recover-button" onclick="openRecoverKeys()">Recover Key</span>
+        <span class="button-space"></span>
         <span id="genkey-close-button" class="close-button" onclick="closeWindow()">Cancel</span>
+        <span class="button-space"></span>
         <span id="genkey-next-button" class="next-button" onclick="generateKeys()">Next</span>
       </div>
       <div id="genkey-recovery-phrase" class="recovery-phrase">
@@ -449,8 +438,9 @@
           </div>
         </div>
       </div>
-      <div class="two-button">
+      <div class="buttons">
         <span id="confrec-close-button" class="close-button" onclick="closeWindow()">Close</span>
+        <span class="button-space"></span>
         <span id="confrec-confirm-button" class="next-button" onclick="confirmSeed()">Confirm</span>
       </div>
     </div>
@@ -483,7 +473,7 @@
           your 12 word phrase.
         </div>
       </div>
-      <div class="one-button">
+      <div class="buttons">
         <span id="mankey-close-button" class="close-button" onclick="closeWindow()">Close</span>
       </div>
       <span id="mankey-recover-button" class="recover-button" onclick="openRecoverKeys()">Recover Key</span>
@@ -501,6 +491,7 @@
         </form>
         <div class="buttons">
           <span id="reckey-close-button" class="close-button" onclick="closeWindow()">Cancel</span>
+          <span class="button-space"></span>
           <span id="reckey-recovery-button" class="next-button" onclick="recoverKeys()">Recover Key</span>
         </div>
       </div>
