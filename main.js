@@ -394,7 +394,7 @@ ipcMain.handle(Koinos.StateKey.ManageKeys, (event, ...args) => {
     keyManagementWindow = null;
   });
 
-  keyManagementWindow.loadFile("components/generate-keys.html");
+  keyManagementWindow.loadFile("components/key-management.html");
 
   keyManagementWindow.once('ready-to-show', () => {
     if (state.get(Koinos.StateKey.HasKeystore)) {
