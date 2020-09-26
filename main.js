@@ -375,7 +375,7 @@ ipcMain.handle(Koinos.StateKey.GenerateKeys, (event, args) => {
   }
 });
 
-function launchKeyManagement() {
+ipcMain.handle(Koinos.StateKey.ManageKeys, (event, ...args) => {
   keyManagementWindow = new BrowserWindow({
     width: 900,
     height: 600,
@@ -394,24 +394,17 @@ function launchKeyManagement() {
     keyManagementWindow = null;
   });
 
-  if (userKeystore !== null) {
-    keyManagementWindow.loadFile("components/manage-keys.html");
-  }
-  else {
-    keyManagementWindow.loadFile("components/generate-keys.html");
-  }
+  keyManagementWindow.loadFile("components/key-management.html");
 
   keyManagementWindow.once('ready-to-show', () => {
     if (state.get(Koinos.StateKey.HasKeystore)) {
+      console.log("ManageKey");
       keyManagementWindow.send(Koinos.StateKey.SigningAddress, web3.utils.toChecksumAddress(getAddresses()[0]));
+      keyManagementWindow.send(Koinos.StateKey.SetKeyManageWindowState, [Koinos.StateKey.ManageKeyWindow.ManageKey, 0]);
     }
 
     keyManagementWindow.show();
   });
-}
-
-ipcMain.handle(Koinos.StateKey.ManageKeys, (event, ...args) => {
-  launchKeyManagement();
 });
 
 ipcMain.on(Koinos.StateKey.ClosePasswordPrompt, async (event, password) => {
@@ -564,26 +557,6 @@ ipcMain.handle(Koinos.StateKey.ConfirmExportKey, (event, ...args) => {
   keyManagementWindow.send(Koinos.StateKey.ConfirmExportKey);
 });
 
-ipcMain.handle(Koinos.StateKey.RecoverKeyWindow, (event, ...args) => {
-  let recoverKeyWindow = new BrowserWindow({
-    parent: mainWindow,
-    width: 900,
-    height: 600,
-    titleBarStyle: "hidden",
-    resizable: false,
-    maximizable: false,
-    modal: true,
-    webPreferences: {
-      nodeIntegration: true,
-    },
-    show: false
-  });
-
-  recoverKeyWindow.loadFile("components/recover-keys.html");
-  recoverKeyWindow.once('ready-to-show', () => {
-    recoverKeyWindow.show();
-  });
-});
 
 ipcMain.handle(Koinos.StateKey.RecoverKey, (event, args) => {
   if (!keystore.isSeedValid(args[1])) {
@@ -594,30 +567,10 @@ ipcMain.handle(Koinos.StateKey.RecoverKey, (event, args) => {
       userKeystore = vault;
       state.set(Koinos.StateKey.HasKeystore, true);
       saveKeystore();
-      launchKeyManagement();
+      keyManagementWindow.send(Koinos.StateKey.SigningAddress, web3.utils.toChecksumAddress(getAddresses()[0]));
+      keyManagementWindow.send(Koinos.StateKey.SetKeyManageWindowState, [Koinos.StateKey.ManageKeyWindow.ManageKey, 1000]);
     });
   }
-});
-
-ipcMain.handle(Koinos.StateKey.ConfirmSeedWindow, (event, ...args) => {
-  let confirmSeedWindow = new BrowserWindow({
-    parent: mainWindow,
-    width: 900,
-    height: 600,
-    titleBarStyle: "hidden",
-    resizable: false,
-    maximizable: false,
-    modal: true,
-    webPreferences: {
-      nodeIntegration: true,
-    },
-    show: false
-  });
-
-  confirmSeedWindow.loadFile("components/confirm-seed.html");
-  confirmSeedWindow.once('ready-to-show', () => {
-    confirmSeedWindow.show();
-  });
 });
 
 ipcMain.handle(Koinos.StateKey.ConfirmSeed, (event, args) => {
@@ -634,6 +587,7 @@ ipcMain.handle(Koinos.StateKey.ConfirmSeed, (event, args) => {
         notify(Koinos.StateKey.ErrorReport, {kMessage: "Password is incorrect."});
         userKeystore = null;
         state.set(Koinos.StateKey.HasKeystore, false);
+        keyManagementWindow.close()
       }
       else if (userKeystore.getSeed(pwDerivedKey) != args[1]) {
         console.log(userKeystore.getSeed(pwDerivedKey));
@@ -641,10 +595,12 @@ ipcMain.handle(Koinos.StateKey.ConfirmSeed, (event, args) => {
         notify(Koinos.StateKey.ErrorReport, {kMessage: "Recovery phrase is not valid."});
         userKeystore = null;
         state.set(Koinos.StateKey.HasKeystore, false);
+        keyManagementWindow.close();
       }
       else {
         saveKeystore();
-        launchKeyManagement();
+        keyManagementWindow.send(Koinos.StateKey.SigningAddress, web3.utils.toChecksumAddress(getAddresses()[0]));
+        keyManagementWindow.send(Koinos.StateKey.SetKeyManageWindowState, [Koinos.StateKey.ManageKeyWindow.ManageKey, 1000]);
       }
     }
   });
