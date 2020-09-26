@@ -2,8 +2,8 @@ const electron = require('electron');
 const { app, ipcMain, BrowserWindow } = require("electron");
 const { keystore, signing } = require('eth-lightwallet');
 const fs = require('fs');
-const abi = require('./abi.js');
 const path = require('path');
+const KnsToken = JSON.parse(fs.readFileSync(path.join(__dirname, 'KnsToken.json'), 'utf8'));
 const Koinos = require('./assets/js/constants.js');
 let Web3 = require('web3');
 let Tx = require('ethereumjs-tx').Transaction;
@@ -97,7 +97,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 660,
-    icon: path.join(__dirname, 'assets/icons/png/koinos-icon_512.png'),
+    icon: path.join(__dirname, 'assets/icons/png/512x512.png'),
     titleBarStyle: "hidden",
     resizable: false,
     maximizable: false,
@@ -449,7 +449,7 @@ ipcMain.on(Koinos.StateKey.ClosePasswordPrompt, async (event, password) => {
       return;
     }
 
-    contract = new web3.eth.Contract(abi, KnsTokenAddress);
+    tokenContract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress);
     updateTokenBalance();
     updateEtherBalance();
 
