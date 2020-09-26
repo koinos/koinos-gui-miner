@@ -97,7 +97,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 660,
-    icon: path.join(__dirname, 'assets/icons/png/koinos-icon_512.png'),
+    icon: path.join(__dirname, 'assets/icons/png/512x512.png'),
     titleBarStyle: "hidden",
     resizable: false,
     maximizable: false,
