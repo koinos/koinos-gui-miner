@@ -4,13 +4,13 @@ const Qr = require('ethereum-qr-code');
 let generated = false;
 let state = Koinos.StateKey.ManageKeyWindow.GenerateKey;
 let stateIDMap = new Map([
-  [Koinos.StateKey.ManageKeyWindow.GenerateKey,     Koinos.Field.GenerateKeyPage],
+  [Koinos.StateKey.ManageKeyWindow.GenerateKey, Koinos.Field.GenerateKeyPage],
   [Koinos.StateKey.ManageKeyWindow.ConfirmRecovery, Koinos.Field.ConfirmRecoveryPage],
-  [Koinos.StateKey.ManageKeyWindow.ManageKey,       Koinos.Field.ManageKeyPage],
-  [Koinos.StateKey.ManageKeyWindow.RecoverKey,      Koinos.Field.RecoverKeyPage]
+  [Koinos.StateKey.ManageKeyWindow.ManageKey, Koinos.Field.ManageKeyPage],
+  [Koinos.StateKey.ManageKeyWindow.RecoverKey, Koinos.Field.RecoverKeyPage]
 ]);
 
-function animateStateTransition(nextState, timeout=1000) {
+function animateStateTransition(nextState, timeout = 1000) {
   console.log(stateIDMap);
   console.log(state);
   console.log(nextState);
@@ -143,9 +143,9 @@ ipcRenderer.on(Koinos.StateKey.SeedPhrase, (event, arg) => {
   document.getElementById(Koinos.Field.GenerateKey.Word12).innerHTML = "12. " + words[11];
 
 
-  document.getElementById(Koinos.Field.GenerateKey.Warning).classList.add("fade-out");
+  document.getElementById(Koinos.Field.GenerateKey.Frame1).classList.add("fade-out");
   setTimeout(() => {
-    document.getElementById(Koinos.Field.GenerateKey.Warning).remove();
+    document.getElementById(Koinos.Field.GenerateKey.Frame1).remove();
   }, 1000);
   setTimeout(() => {
     document.getElementById(Koinos.Field.GenerateKey.RecoveryPhrase).style.visibility = "visible";
@@ -156,23 +156,23 @@ ipcRenderer.on(Koinos.StateKey.SeedPhrase, (event, arg) => {
 });
 
 function confirmSeed() {
-   let pass = document.getElementById(Koinos.Field.ConfirmRecovery.Password).value;
-   let seedPhrase = "";
-   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word1).value.trim()  + ' ';
-   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word2).value.trim()  + ' ';
-   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word3).value.trim()  + ' ';
-   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word4).value.trim()  + ' ';
-   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word5).value.trim()  + ' ';
-   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word6).value.trim()  + ' ';
-   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word7).value.trim()  + ' ';
-   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word8).value.trim()  + ' ';
-   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word9).value.trim()  + ' ';
-   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word10).value.trim() + ' ';
-   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word11).value.trim() + ' ';
-   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word12).value.trim();
-   ipcRenderer.invoke(Koinos.StateKey.ConfirmSeed, [pass, seedPhrase]);
+  let pass = document.getElementById(Koinos.Field.ConfirmRecovery.Password).value;
+  let seedPhrase = "";
+  seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word1).value.trim() + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word2).value.trim() + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word3).value.trim() + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word4).value.trim() + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word5).value.trim() + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word6).value.trim() + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word7).value.trim() + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word8).value.trim() + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word9).value.trim() + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word10).value.trim() + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word11).value.trim() + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word12).value.trim();
+  ipcRenderer.invoke(Koinos.StateKey.ConfirmSeed, [pass, seedPhrase]);
 
-   generated = false;
+  generated = false;
 }
 
 function openRecoverKeys() {
@@ -215,15 +215,15 @@ ipcRenderer.on(Koinos.StateKey.ConfirmExportKey, (event, ...args) => {
 function recoverKeys() {
   let pass = document.getElementById(Koinos.Field.RecoverKey.Password).value;
   let seedPhrase = "";
-  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word1).value.trim()  + ' ';
-  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word2).value.trim()  + ' ';
-  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word3).value.trim()  + ' ';
-  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word4).value.trim()  + ' ';
-  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word5).value.trim()  + ' ';
-  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word6).value.trim()  + ' ';
-  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word7).value.trim()  + ' ';
-  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word8).value.trim()  + ' ';
-  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word9).value.trim()  + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word1).value.trim() + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word2).value.trim() + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word3).value.trim() + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word4).value.trim() + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word5).value.trim() + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word6).value.trim() + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word7).value.trim() + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word8).value.trim() + ' ';
+  seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word9).value.trim() + ' ';
   seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word10).value.trim() + ' ';
   seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word11).value.trim() + ' ';
   seedPhrase += document.getElementById(Koinos.Field.RecoverKey.Word12).value.trim();

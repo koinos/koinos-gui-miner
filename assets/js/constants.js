@@ -77,7 +77,8 @@ module.exports = {
       NextButton: "genkey-next-button",
       PasswordFeedback: "genkey-password-feedback",
       RecoveryPhrase: "genkey-recovery-phrase",
-      Warning : "genkey-warning",
+      Warning: "genkey-warning",
+      Frame1: "frame-1",
       Word1: "genkey-word1",
       Word2: "genkey-word2",
       Word3: "genkey-word3",
@@ -91,7 +92,7 @@ module.exports = {
       Word11: "genkey-word11",
       Word12: "genkey-word12",
       SecureKeyMessage: "genkey-secure-key-message"
-     },
+    },
     ConfirmRecovery: {
       Password: "confrec-password",
       CloseButton: "confrec-close-button",
