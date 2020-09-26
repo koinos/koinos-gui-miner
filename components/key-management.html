@@ -157,7 +157,7 @@
       text-align: left !important;
     }
 
-    #genkey-secure-key-message {
+    #generate-secure-key-message {
       width: 90%;
     }
 
@@ -189,11 +189,11 @@
       flex-direction: column;
     }
 
-    #mankey-public-key {
+    #manage-public-key {
       margin-bottom: 10px;
     }
 
-    #mankey-key {
+    #manage-key {
       background: #6F00F6;
       font-size: 1.2em;
       padding: 20px;
@@ -202,21 +202,21 @@
       justify-content: center;
     }
 
-    #mankey-export-warning {
+    #manage-export-warning {
       padding: .8em;
       color: red;
       font-size: 0.8em;
       text-align: center;
     }
 
-    #mankey-private-key {
+    #manage-private-key {
       margin-top: 20px;
       text-align: center;
       padding: 30px;
       height: 30px;
     }
 
-    #mankey-export-button {
+    #manage-export-button {
       position: relative;
       background-color: #6F00F6;
       color: white;
@@ -228,11 +228,11 @@
       float: right;
     }
 
-    #mankey-copy {
+    #manage-copy {
       cursor: pointer;
     }
 
-    #mankey-key div {
+    #manage-key div {
       margin: 10px 30px;
     }
 
@@ -247,24 +247,24 @@
       display: none;
     }
 
-    #mankey-qr-code {
+    #manage-qr-code {
       position: absolute;
       bottom: 160px;
       right: 120px;
     }
 
-    #mankey-message {
+    #manage-message {
       position: absolute;
       bottom: 90px;
     }
 
-    #mankey-recover-button {
+    #manage-recover-button {
       left: 50px;
       position: absolute;
       bottom: 20px;
     }
 
-    #mankey-password {
+    #manage-password {
       width: 400px;
     }
 
@@ -322,17 +322,17 @@
         <div class="form-area">
           <div id="">
             <form action="">
-              <input id="genkey-password" class="password" type="password" placeholder="Password"
+              <input id="generate-password" class="password" type="password" placeholder="Password"
                 onkeyup="onPasswordKeyUp()" autofocus>
-              <input id="genkey-password-confirm" class="password" type="password" placeholder="Confirm Password"
+              <input id="generate-password-confirm" class="password" type="password" placeholder="Confirm Password"
                 onkeyup="onPasswordKeyUp()">
             </form>
           </div>
         </div>
-        <div id="genkey-password-feedback" class="password-feedback">
+        <div id="generate-password-feedback" class="password-feedback">
           &nbsp;
         </div>
-        <div id="genkey-warning" class="warning">
+        <div id="generate-warning" class="warning">
           <h2>Please Read Carefully!</h2>
           <p>We cannot recover your password! If you lose your password the only way to recover your account is with
             your
@@ -345,39 +345,39 @@
         </div>
       </div>
       <div class="buttons">
-        <span id="genkey-recover-button" class="recover-button" onclick="openRecoverKeys()">Recover Key</span>
+        <span id="generate-recover-button" class="recover-button" onclick="openRecoverKeys()">Recover Key</span>
         <span class="button-space"></span>
-        <span id="genkey-close-button" class="close-button" onclick="closeWindow()">Cancel</span>
+        <span id="generate-close-button" class="close-button" onclick="closeWindow()">Cancel</span>
         <span class="button-space"></span>
-        <span id="genkey-next-button" class="next-button" onclick="generateKeys()">Next</span>
+        <span id="generate-next-button" class="next-button" onclick="generateKeys()">Next</span>
       </div>
-      <div id="genkey-recovery-phrase" class="recovery-phrase">
+      <div id="generate-recovery-phrase" class="recovery-phrase">
         <div>Your 12 Word Phrase:</div>
         <table>
           <tbody>
             <tr>
-              <td id="genkey-word1"></td>
-              <td id="genkey-word2"></td>
-              <td id="genkey-word3"></td>
+              <td id="generate-word1"></td>
+              <td id="generate-word2"></td>
+              <td id="generate-word3"></td>
             </tr>
             <tr>
-              <td id="genkey-word4"></td>
-              <td id="genkey-word5"></td>
-              <td id="genkey-word6"></td>
+              <td id="generate-word4"></td>
+              <td id="generate-word5"></td>
+              <td id="generate-word6"></td>
             </tr>
             <tr>
-              <td id="genkey-word7"></td>
-              <td id="genkey-word8"></td>
-              <td id="genkey-word9"></td>
+              <td id="generate-word7"></td>
+              <td id="generate-word8"></td>
+              <td id="generate-word9"></td>
             </tr>
             <tr>
-              <td id="genkey-word10"></td>
-              <td id="genkey-word11"></td>
-              <td id="genkey-word12"></td>
+              <td id="generate-word10"></td>
+              <td id="generate-word11"></td>
+              <td id="generate-word12"></td>
             </tr>
           </tbody>
         </table>
-        <div class="emphasize" id="genkey-secure-key-message">
+        <div class="emphasize" id="generate-secure-key-message">
           Pleaase write down your twelve word recovery phrase, it is the only way to recover your private key! Keep it
           in
           a safe place, anyone with this phrase can unlock your wallet and take all the Koin. You will be
@@ -391,93 +391,93 @@
       <h2>Confirm Recovery Phrase</h2>
       <div class="form-area">
         <div>
-          <input id="confrec-password" class="password" type="password" placeholder="Password">
+          <input id="confirm-password" class="password" type="password" placeholder="Password">
         </div>
       </div>
-      <div id="confrec-warning" class="warning">
+      <div id="confirm-warning" class="warning">
         <p>Please re-enter the 12 word recovery phrase provided to you upon key generation.
         </p>
       </div>
-      <div id="confrec-recovery-phrase">
-        <div id="confrec-word-container" class="word-container">
+      <div id="confirm-recovery-phrase">
+        <div id="confirm-word-container" class="word-container">
           <div>
-            <input class="seed" id="confrec-word1" type="text" placeholder="Word 1">
+            <input class="seed" id="confirm-word1" type="text" placeholder="Word 1">
           </div>
           <div>
-            <input class="seed" id="confrec-word2" type="text" placeholder="Word 2">
+            <input class="seed" id="confirm-word2" type="text" placeholder="Word 2">
           </div>
           <div>
-            <input class="seed" id="confrec-word3" type="text" placeholder="Word 3">
+            <input class="seed" id="confirm-word3" type="text" placeholder="Word 3">
           </div>
           <div>
-            <input class="seed" id="confrec-word4" type="text" placeholder="Word 4">
+            <input class="seed" id="confirm-word4" type="text" placeholder="Word 4">
           </div>
           <div>
-            <input class="seed" id="confrec-word5" type="text" placeholder="Word 5">
+            <input class="seed" id="confirm-word5" type="text" placeholder="Word 5">
           </div>
           <div>
-            <input class="seed" id="confrec-word6" type="text" placeholder="Word 6">
+            <input class="seed" id="confirm-word6" type="text" placeholder="Word 6">
           </div>
           <div>
-            <input class="seed" id="confrec-word7" type="text" placeholder="Word 7">
+            <input class="seed" id="confirm-word7" type="text" placeholder="Word 7">
           </div>
           <div>
-            <input class="seed" id="confrec-word8" type="text" placeholder="Word 8">
+            <input class="seed" id="confirm-word8" type="text" placeholder="Word 8">
           </div>
           <div>
-            <input class="seed" id="confrec-word9" type="text" placeholder="Word 9">
+            <input class="seed" id="confirm-word9" type="text" placeholder="Word 9">
           </div>
           <div>
-            <input class="seed" id="confrec-word10" type="text" placeholder="Word 10">
+            <input class="seed" id="confirm-word10" type="text" placeholder="Word 10">
           </div>
           <div>
-            <input class="seed" id="confrec-word11" type="text" placeholder="Word 11">
+            <input class="seed" id="confirm-word11" type="text" placeholder="Word 11">
           </div>
           <div>
-            <input class="seed" id="confrec-word12" type="text" placeholder="Word 12">
+            <input class="seed" id="confirm-word12" type="text" placeholder="Word 12">
           </div>
         </div>
       </div>
       <div class="buttons">
-        <span id="confrec-close-button" class="close-button" onclick="closeWindow()">Close</span>
+        <span id="confirm-close-button" class="close-button" onclick="closeWindow()">Close</span>
         <span class="button-space"></span>
-        <span id="confrec-confirm-button" class="next-button" onclick="confirmSeed()">Confirm</span>
+        <span id="confirm-confirm-button" class="next-button" onclick="confirmSeed()">Confirm</span>
       </div>
     </div>
   </div>
   <div id="manage-key-page" class="container">
-    <div id="mankey-public-key">
+    <div id="manage-public-key">
 
-      <div id="mankey-key">
+      <div id="manage-key">
         <div>Funding Address:</div>
-        <div id="mankey-signing-address"></div>
-        <img src="../assets/images/content_copy-24px.svg" alt="" class="mankey-copy-address" onClick="copyAddress()">
+        <div id="manage-signing-address"></div>
+        <img src="../assets/images/content_copy-24px.svg" alt="" class="manage-copy-address" onClick="copyAddress()">
       </div>
 
     </div>
-    <div id="mankey-qr-code"></div>
+    <div id="manage-qr-code"></div>
     <div class="form-area">
       <div id="key-area">
         <div>
-          <input id="mankey-password" class="password" type="password" placeholder="Password"><span id="export-button"
+          <input id="manage-password" class="password" type="password" placeholder="Password"><span id="export-button"
             onclick="exportKey()">Export
             Key</span>
         </div>
-        <div id="mankey-export-warning" class="blink-me">WARNING: Exporting your key may put it at risk. Proceed with
+        <div id="manage-export-warning" class="blink-me">WARNING: Exporting your key may put it at risk. Proceed with
           caution!
         </div>
-        <div id="mankey-private-key"></div>
+        <div id="manage-private-key"></div>
       </div>
-      <div id="mankey-message" class="message">
+      <div id="manage-message" class="message">
         <h2>Forgot your password?</h2>
         <div>We cannot recover your password! If you lost your password the only way to recover your account is with
           your 12 word phrase.
         </div>
       </div>
       <div class="buttons">
-        <span id="mankey-close-button" class="close-button" onclick="closeWindow()">Close</span>
+        <span id="manage-close-button" class="close-button" onclick="closeWindow()">Close</span>
       </div>
-      <span id="mankey-recover-button" class="recover-button" onclick="openRecoverKeys()">Recover Key</span>
+      <span id="manage-recover-button" class="recover-button" onclick="openRecoverKeys()">Recover Key</span>
     </div>
   </div>
   <div id="recover-key-page" class="container">
@@ -485,60 +485,60 @@
       <h2>Recover Private Key</h2>
       <div class="form-area">
         <form action="">
-          <input id="reckey-password" class="password" type="password" placeholder="Password"
+          <input id="recover-password" class="password" type="password" placeholder="Password"
             onkeyup="onPasswordKeyUp()" autofocus>
-          <input id="reckey-password-confirm" class="password" type="password" placeholder="Confirm Password"
+          <input id="recover-password-confirm" class="password" type="password" placeholder="Confirm Password"
             onkeyup="onPasswordKeyUp()">
         </form>
         <div class="buttons">
-          <span id="reckey-close-button" class="close-button" onclick="closeWindow()">Cancel</span>
+          <span id="recover-close-button" class="close-button" onclick="closeWindow()">Cancel</span>
           <span class="button-space"></span>
-          <span id="reckey-recovery-button" class="next-button" onclick="recoverKeys()">Recover Key</span>
+          <span id="recover-recovery-button" class="next-button" onclick="recoverKeys()">Recover Key</span>
         </div>
       </div>
-      <div id="reckey-password-feedback">
+      <div id="recover-password-feedback">
         &nbsp;
       </div>
-      <div id="reckey-message" class="warning">
+      <div id="recover-message" class="warning">
         <p>Please enter Your 12 Word Recovery Phrase:</p>
       </div>
-      <div id="reckey-recovery-phrase">
-        <div id="reckey-word-container" class="word-container">
+      <div id="recover-recovery-phrase">
+        <div id="recover-word-container" class="word-container">
           <div>
-            <input class="seed" id="reckey-word1" type="text" placeholder="Word 1">
+            <input class="seed" id="recover-word1" type="text" placeholder="Word 1">
           </div>
           <div>
-            <input class="seed" id="reckey-word2" type="text" placeholder="Word 2">
+            <input class="seed" id="recover-word2" type="text" placeholder="Word 2">
           </div>
           <div>
-            <input class="seed" id="reckey-word3" type="text" placeholder="Word 3">
+            <input class="seed" id="recover-word3" type="text" placeholder="Word 3">
           </div>
           <div>
-            <input class="seed" id="reckey-word4" type="text" placeholder="Word 4">
+            <input class="seed" id="recover-word4" type="text" placeholder="Word 4">
           </div>
           <div>
-            <input class="seed" id="reckey-word5" type="text" placeholder="Word 5">
+            <input class="seed" id="recover-word5" type="text" placeholder="Word 5">
           </div>
           <div>
-            <input class="seed" id="reckey-word6" type="text" placeholder="Word 6">
+            <input class="seed" id="recover-word6" type="text" placeholder="Word 6">
           </div>
           <div>
-            <input class="seed" id="reckey-word7" type="text" placeholder="Word 7">
+            <input class="seed" id="recover-word7" type="text" placeholder="Word 7">
           </div>
           <div>
-            <input class="seed" id="reckey-word8" type="text" placeholder="Word 8">
+            <input class="seed" id="recover-word8" type="text" placeholder="Word 8">
           </div>
           <div>
-            <input class="seed" id="reckey-word9" type="text" placeholder="Word 9">
+            <input class="seed" id="recover-word9" type="text" placeholder="Word 9">
           </div>
           <div>
-            <input class="seed" id="reckey-word10" type="text" placeholder="Word 10">
+            <input class="seed" id="recover-word10" type="text" placeholder="Word 10">
           </div>
           <div>
-            <input class="seed" id="reckey-word11" type="text" placeholder="Word 11">
+            <input class="seed" id="recover-word11" type="text" placeholder="Word 11">
           </div>
           <div>
-            <input class="seed" id="reckey-word12" type="text" placeholder="Word 12">
+            <input class="seed" id="recover-word12" type="text" placeholder="Word 12">
           </div>
         </div>
       </div>
