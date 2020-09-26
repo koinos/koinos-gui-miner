@@ -139,7 +139,7 @@ ipcRenderer.on(Koinos.StateKey.SeedPhrase, (event, arg) => {
 
   document.getElementById(Koinos.Field.GenerateKey.Frame1).classList.add("fade-out");
   setTimeout(() => {
-    document.getElementById(Koinos.Field.GenerateKey.Frame1).remove();
+    document.getElementById(Koinos.Field.GenerateKey.Frame1).style.display = "none";
   }, 1000);
   setTimeout(() => {
     document.getElementById(Koinos.Field.GenerateKey.RecoveryPhrase).style.visibility = "visible";
@@ -150,7 +150,7 @@ ipcRenderer.on(Koinos.StateKey.SeedPhrase, (event, arg) => {
 });
 
 function confirmSeed() {
-  let pass = document.getElementById(Koinos.Field.ConfirmRecovery.Password).value;
+  let pass = document.getElementById(Koinos.Field.GenerateKey.Password).value;
   let seedPhrase = "";
   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word1).value.trim() + ' ';
   seedPhrase += document.getElementById(Koinos.Field.ConfirmRecovery.Word2).value.trim() + ' ';

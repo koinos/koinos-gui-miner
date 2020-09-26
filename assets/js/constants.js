@@ -96,7 +96,6 @@ module.exports = {
       SecureKeyMessage: "generate-secure-key-message"
     },
     ConfirmRecovery: {
-      Password: "confirm-password",
       CloseButton: "confirm-close-button",
       ConfirmButton: "confirm-confirm-button",
       Warning: "confirm-warning",
