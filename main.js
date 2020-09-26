@@ -36,7 +36,8 @@ let config = {
   proofPer: "day",
   gasMultiplier: 1,
   gasPriceLimit: 1000000000000,
-  tipPercent: 5
+  tipPercent: 5,
+  endpointTimeout: 3000
 };
 
 const KnsTokenAddress = '0x50294550A127570587a2d4871874E69D7F8115D5';
@@ -439,13 +440,27 @@ ipcMain.on(Koinos.StateKey.ClosePasswordPrompt, async (event, password) => {
     web3 = new Web3(config.endpoint);
 
     try {
-      await web3.eth.net.isListening();
+      await Promise.race([
+        web3.eth.net.isListening(),
+        new Promise(function(resolve, reject) {
+            setTimeout(function() {
+                reject("Timed out while attempting to connect to Ethereum Endpoint.");
+            }, config.endpointTimeout);
+        })
+      ]);
     }
     catch(e) {
-      notify(Koinos.StateKey.ErrorReport, {
-        kMessage: "The provided Ethereum endpoint is not valid.",
-        exception: e
-      });
+      if (typeof e === 'string' || e instanceof String) {
+        notify(Koinos.StateKey.ErrorReport, {
+          kMessage: e
+        });
+      }
+      else {
+        notify(Koinos.StateKey.ErrorReport, {
+          kMessage: "The provided Ethereum Endpoint is not valid.",
+          exception: e
+        });
+      }
       return;
     }
 
