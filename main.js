@@ -97,7 +97,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 660,
-    icon: path.join(__dirname, 'assets/icons/png/512x512.png'),
+    icon: path.join(__dirname, process.platform === "win32" ? 'assets/icons/win/icon.ico' : 'assets/icons/png/64x64.png'),
     titleBarStyle: "hidden",
     resizable: false,
     maximizable: false,
