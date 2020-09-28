@@ -168,40 +168,39 @@ function hashrateCallback(hashrate) {
   notify(Koinos.StateKey.HashrateReportString, KoinosMiner.formatHashrate(hashrate));
 }
 
-function updateTokenBalance() {
+async function updateTokenBalance() {
    if (tokenContract === null)
       return;
 
-   tokenContract.methods.balanceOf(config.ethAddress).call({}, function(err, result) {
-      if (err) {
-         let error = {
-            kMessage: "There was a problem retrieving the KOIN balance.",
-            error: err
-         };
-         console.log(err);
-         notify(Koinos.StateKey.ErrorReport, error);
-      }
-      else {
-         notify(Koinos.StateKey.KoinBalanceUpdate, result);
-      }
-   });
+   try {
+      let result = await tokenContract.methods.balanceOf(config.ethAddress).call({});
+      notify(Koinos.StateKey.KoinBalanceUpdate, result);
+   }
+   catch(err) {
+      let error = {
+         kMessage: "There was a problem retrieving the KOIN balance.",
+         error: err
+      };
+      console.log(err);
+      notify(Koinos.StateKey.ErrorReport, error);
+   }
 }
 
-function updateEtherBalance() {
-  if (getAddresses()[0] === null)
-    return;
+async function updateEtherBalance() {
+   if (getAddresses()[0] === null)
+      return;
 
-  web3.eth.getBalance(getAddresses()[0], function(err, result) {
-    if (err) {
+   try {
+      let result = web3.eth.getBalance(getAddresses()[0]);
+      notify(Koinos.StateKey.EthBalanceUpdate, [result, 0]);
+   }
+   catch(err) {
       let error = {
         kMessage: "There was a problem retrieving the Ether balance.",
         error: err
       };
       notify(Koinos.StateKey.ErrorReport, error);
-    } else {
-      notify(Koinos.StateKey.EthBalanceUpdate, [result, 0]);
-    }
-  });
+   }
 }
 
 function proofCallback(submission) {
