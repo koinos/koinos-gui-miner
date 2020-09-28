@@ -232,6 +232,19 @@
       cursor: pointer;
     }
 
+   #manage-copy-confirm {
+     position: absolute;
+     color: white;
+     right: 30px;
+     top: 120px;
+     /*padding: 0.67em;*/
+     visibility: hidden;
+   }
+
+   .copy-confirm-fade-out {
+     animation: fadeOut ease 3.1s;
+   }
+
     #manage-key div {
       margin: 10px 30px;
     }
@@ -469,6 +482,7 @@
           your 12 word phrase.
         </div>
       </div>
+      <div id="manage-copy-confirm">Address Copied!</div>
       <div class="buttons">
         <span id="manage-close-button" class="close-button" onclick="closeWindow()">Close</span>
       </div>

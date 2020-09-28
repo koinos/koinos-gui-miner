@@ -27,6 +27,7 @@ module.exports = {
     ConfirmSeed: 'confirm-seed',
     CancelConfirmSeed: 'cancel-confirm-seed',
     SetKeyManageWindowState: 'set-key-manage-window-state',
+    ConfirmAddressCopied: 'confirm-address-copied',
     ManageKeyWindow: {
       GenerateKey: 'generate-key',
       ConfirmRecovery: 'confirm-recovery',
@@ -124,7 +125,9 @@ module.exports = {
       PrivateKey: "manage-private-key",
       Message: "manage-message",
       RecoverButton: "manage-recover-button",
-      CloseButton: "close-button"
+      CloseButton: "manage-close-button",
+      Copy: "manage-copy-confirm",
+      CopyConfirm: "manage-copy-confirm"
     },
     RecoverKey: {
       Password: 'recover-password',
