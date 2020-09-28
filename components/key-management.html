@@ -204,16 +204,13 @@
 
     #manage-export-warning {
       padding: .8em;
-      color: red;
+      color: gray;
       font-size: 0.8em;
       text-align: center;
     }
 
     #manage-private-key {
-      margin-top: 20px;
-      text-align: center;
-      padding: 30px;
-      height: 30px;
+      padding: 10px;
     }
 
     #manage-export-button {
@@ -249,39 +246,34 @@
 
     #manage-qr-code {
       position: absolute;
-      bottom: 160px;
-      right: 120px;
-    }
-
-    #manage-message {
-      position: absolute;
-      bottom: 90px;
-    }
-
-    #manage-recover-button {
-      left: 50px;
-      position: absolute;
-      bottom: 20px;
+      bottom: 200px;
+      left: 400px;
     }
 
     #manage-password {
-      width: 400px;
+      width: 250px;
     }
 
     #key-area {
       position: absolute;
       left: 30px;
-      margin-top: 30px;
+      bottom: 10px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
     }
 
     #export-button {
-      background: #6f00f6;
-      border: 1px #6f00f6 solid;
-      padding: 10px 30px;
-      color: white;
-      position: absolute;
-      left: 20px;
-      top: 100px;
+      color: #6f00f6;
+      border: 1px solid #6f00f6;
+      padding: 10px 20px;
+      font-size: 1em;
+      margin-top: 1em;
+      cursor: pointer;
+    }
+
+    .w-250 {
+      width: 250px;
     }
 
     .fade-in {
@@ -315,6 +307,8 @@
   <title>Create</title </head>
 
 <body>
+
+  <!-- generate key page -->
   <div id="generate-key-page" class="container">
     <div>
       <h2>Create Private Key</h2>
@@ -386,6 +380,8 @@
       </div>
     </div>
   </div>
+
+  <!-- confirm recovery page -->
   <div id="confirm-recovery-page">
     <div class="container confirm-area">
       <h2>Confirm Recovery Phrase</h2>
@@ -440,105 +436,100 @@
       </div>
     </div>
   </div>
+
+  <!-- manage key page -->
   <div id="manage-key-page" class="container">
-    <div id="manage-public-key">
-
-      <div id="manage-key">
-        <div>Funding Address:</div>
-        <div id="manage-signing-address"></div>
-        <img src="../assets/images/content_copy-24px.svg" alt="" class="manage-copy-address" onClick="copyAddress()">
+    <div class="">
+      <div id="manage-public-key">
+        <div id="manage-key">
+          <div>Funding Address:</div>
+          <div id="manage-signing-address"></div>
+          <img src="../assets/images/content_copy-24px.svg" alt="" class="manage-copy-address" onClick="copyAddress()">
+        </div>
       </div>
-
-    </div>
-    <div id="manage-qr-code"></div>
-    <div class="form-area">
+      <div id="manage-qr-code"></div>
       <div id="key-area">
+        <div id="manage-private-key"></div>
         <div>
-          <input id="manage-password" class="password" type="password" placeholder="Password"><span id="export-button"
-            onclick="exportKey()">Export
-            Key</span>
+          <input id="manage-password" class="password" type="password" placeholder="Password">
+          <span id="export-button" onclick="exportKey()">Export Key</span>
         </div>
         <div id="manage-export-warning" class="blink-me">WARNING: Exporting your key may put it at risk. Proceed with
           caution!
         </div>
-        <div id="manage-private-key"></div>
+
       </div>
-      <div id="manage-message" class="message">
-        <h2>Forgot your password?</h2>
-        <div>We cannot recover your password! If you lost your password the only way to recover your account is with
-          your 12 word phrase.
-        </div>
-      </div>
-      <div class="buttons">
+      <div class="buttons w-250">
+        <span id="manage-recover-button" class="recover-button" onclick="openRecoverKeys()">Recover Key</span>
         <span id="manage-close-button" class="close-button" onclick="closeWindow()">Close</span>
       </div>
-      <span id="manage-recover-button" class="recover-button" onclick="openRecoverKeys()">Recover Key</span>
     </div>
   </div>
+
+  <!-- recover key pagee -->
   <div id="recover-key-page" class="container">
-    <div>
-      <h2>Recover Private Key</h2>
-      <div class="form-area">
-        <form action="">
-          <input id="recover-password" class="password" type="password" placeholder="Password"
-            onkeyup="onPasswordKeyUp()" autofocus>
-          <input id="recover-password-confirm" class="password" type="password" placeholder="Confirm Password"
-            onkeyup="onPasswordKeyUp()">
-        </form>
-        <div class="buttons">
-          <span id="recover-close-button" class="close-button" onclick="closeWindow()">Cancel</span>
-          <span class="button-space"></span>
-          <span id="recover-recovery-button" class="next-button" onclick="recoverKeys()">Recover Key</span>
+    <h2>Recover Private Key</h2>
+    <div class="form-area">
+      <form action="">
+        <input id="recover-password" class="password" type="password" placeholder="Password" onkeyup="onPasswordKeyUp()"
+          autofocus>
+        <input id="recover-password-confirm" class="password" type="password" placeholder="Confirm Password"
+          onkeyup="onPasswordKeyUp()">
+      </form>
+      <div class="buttons">
+        <span id="recover-close-button" class="close-button" onclick="closeWindow()">Cancel</span>
+        <span class="button-space"></span>
+        <span id="recover-recovery-button" class="next-button" onclick="recoverKeys()">Recover Key</span>
+      </div>
+    </div>
+    <div id="recover-password-feedback">
+      &nbsp;
+    </div>
+    <div id="recover-message" class="warning">
+      <p>Please enter Your 12 Word Recovery Phrase:</p>
+    </div>
+    <div id="recover-recovery-phrase">
+      <div id="recover-word-container" class="word-container">
+        <div>
+          <input class="seed" id="recover-word1" type="text" placeholder="Word 1">
         </div>
-      </div>
-      <div id="recover-password-feedback">
-        &nbsp;
-      </div>
-      <div id="recover-message" class="warning">
-        <p>Please enter Your 12 Word Recovery Phrase:</p>
-      </div>
-      <div id="recover-recovery-phrase">
-        <div id="recover-word-container" class="word-container">
-          <div>
-            <input class="seed" id="recover-word1" type="text" placeholder="Word 1">
-          </div>
-          <div>
-            <input class="seed" id="recover-word2" type="text" placeholder="Word 2">
-          </div>
-          <div>
-            <input class="seed" id="recover-word3" type="text" placeholder="Word 3">
-          </div>
-          <div>
-            <input class="seed" id="recover-word4" type="text" placeholder="Word 4">
-          </div>
-          <div>
-            <input class="seed" id="recover-word5" type="text" placeholder="Word 5">
-          </div>
-          <div>
-            <input class="seed" id="recover-word6" type="text" placeholder="Word 6">
-          </div>
-          <div>
-            <input class="seed" id="recover-word7" type="text" placeholder="Word 7">
-          </div>
-          <div>
-            <input class="seed" id="recover-word8" type="text" placeholder="Word 8">
-          </div>
-          <div>
-            <input class="seed" id="recover-word9" type="text" placeholder="Word 9">
-          </div>
-          <div>
-            <input class="seed" id="recover-word10" type="text" placeholder="Word 10">
-          </div>
-          <div>
-            <input class="seed" id="recover-word11" type="text" placeholder="Word 11">
-          </div>
-          <div>
-            <input class="seed" id="recover-word12" type="text" placeholder="Word 12">
-          </div>
+        <div>
+          <input class="seed" id="recover-word2" type="text" placeholder="Word 2">
+        </div>
+        <div>
+          <input class="seed" id="recover-word3" type="text" placeholder="Word 3">
+        </div>
+        <div>
+          <input class="seed" id="recover-word4" type="text" placeholder="Word 4">
+        </div>
+        <div>
+          <input class="seed" id="recover-word5" type="text" placeholder="Word 5">
+        </div>
+        <div>
+          <input class="seed" id="recover-word6" type="text" placeholder="Word 6">
+        </div>
+        <div>
+          <input class="seed" id="recover-word7" type="text" placeholder="Word 7">
+        </div>
+        <div>
+          <input class="seed" id="recover-word8" type="text" placeholder="Word 8">
+        </div>
+        <div>
+          <input class="seed" id="recover-word9" type="text" placeholder="Word 9">
+        </div>
+        <div>
+          <input class="seed" id="recover-word10" type="text" placeholder="Word 10">
+        </div>
+        <div>
+          <input class="seed" id="recover-word11" type="text" placeholder="Word 11">
+        </div>
+        <div>
+          <input class="seed" id="recover-word12" type="text" placeholder="Word 12">
         </div>
       </div>
     </div>
-    <script src="../assets/js/key-management.js"></script>
+  </div>
+  <script src="../assets/js/key-management.js"></script>
 </body>
 
 </html>
