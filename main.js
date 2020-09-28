@@ -8,6 +8,7 @@ const Koinos = require('./assets/js/constants.js');
 let Web3 = require('web3');
 let Tx = require('ethereumjs-tx').Transaction;
 let KoinosMiner = require('koinos-miner');
+let { Looper } = require("koinos-miner/looper.js");
 const { assert } = require("console");
 const { create } = require('domain');
 let miner = null;
@@ -17,6 +18,7 @@ let mainWindow = null;
 let tokenContract = null;
 let web3 = null;
 var keyManagementWindow = null;
+let guiUpdateBlockchainMs = 30*1000;
 
 const configFile = path.join((electron.app || electron.remote.app).getPath('userData'), 'config.json');
 const keystoreFile = path.join((electron.app || electron.remote.app).getPath('userData'), 'keystore.json');
@@ -154,6 +156,7 @@ app.on("activate", () => {
 })
 
 app.on('before-quit', () => {
+  // Should this call stopMiner() ?
   if (miner !== null) {
     miner.stop();
     miner = null;
@@ -201,6 +204,20 @@ async function updateEtherBalance() {
       };
       notify(Koinos.StateKey.ErrorReport, error);
    }
+}
+
+async function guiUpdateBlockchain() {
+   await updateTokenBalance();
+   await updateEtherBalance();
+}
+
+function guiUpdateBlockchainError(e) {
+   let error = {
+      kMessage: "Could not update the blockchain.",
+      exception: e
+      };
+   console.log( "[JS] Exception in guiUpdateBlockchainLoop():", e);
+   notify(Koinos.StateKey.ErrorReport, error);
 }
 
 function proofCallback(submission) {
@@ -322,6 +339,7 @@ function stopMiner() {
    if (miner !== null) {
       miner.stop();
    }
+   guiBlockchainUpdateLoop.stop();    // async fire-and-forget
 
    miner = null;
    tokenContract = null;
@@ -463,8 +481,7 @@ ipcMain.on(Koinos.StateKey.ClosePasswordPrompt, async (event, password) => {
     }
 
     tokenContract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress);
-    updateTokenBalance();
-    updateEtherBalance();
+    await updateBlockchain();
 
     let proofPeriod = config.proofPer === "day" ? Koinos.TimeSpan.SecondsPerDay : Koinos.TimeSpan.SecondsPerWeek;
     proofPeriod /= config.proofFrequency;
@@ -485,6 +502,7 @@ ipcMain.on(Koinos.StateKey.ClosePasswordPrompt, async (event, password) => {
       errorCallback,
       warningCallback);
     miner.start();
+    guiBlockchainUpdateLoop.start();
     state.set(Koinos.StateKey.MinerActivated, true);
     writeConfiguration();
     notify(Koinos.StateKey.MinerActivated, state.get(Koinos.StateKey.MinerActivated));
@@ -623,3 +641,5 @@ ipcMain.handle(Koinos.StateKey.CancelConfirmSeed, (event, ...args) => {
   userKeystore = null;
   state.set(Koinos.StateKey.HasKeystore, false);
 });
+
+let guiBlockchainUpdateLoop = new Looper( guiUpdateBlockchain, guiUpdateBlockchainMs = 30*1000, guiUpdateBlockchainError );
