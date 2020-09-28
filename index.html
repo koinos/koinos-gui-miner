@@ -36,15 +36,22 @@
       background-color: rgba(0, 0, 0, 0.9);
       z-index: 2;
       cursor: pointer;
+    }
+    #countdown-area {
+      position: absolute;
+      text-align: center;
+      width: 100%;
+      height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: center; 
-      text-align: center;
+      align-items: center;
+      flex-direction: column;
     }
     #cancel-countdown {
       position: absolute;
       bottom: 40px;
       text-decoration: underline;
+      text-align: center;
     }
   </style>
 </head>
@@ -89,7 +96,7 @@
             class="check-toggle">
           </span>
         </label>
-        <div class="thank-you"> <a href="https://openorchard.io">OpenOrchard</a> thanks you!</div>
+        <div class="thank-you">OpenOrchard thanks you!</div>
       </div>
     </div>
   </div>
@@ -173,11 +180,11 @@
       </div>
     </div>
   </div>
-  <div id="overlay" onclick="off()">
-    <div>
+  <div id="overlay">
+    <div id="countdown-area">
       <p>Mining will automatically begin in</p>
       <h2>2 hours, 26 minutes, and 46 seconds</h2>
-      <span id="cancel-countdown" >Cancel</span>
+      <span id="cancel-countdown" onclick="off()">Cancel</span>
     </div>
   </div>
   <script src="assets/js/d3.min.js"></script>
@@ -191,7 +198,6 @@
       document.getElementById("overlay").style.display = "none";
     }
   </script>
-
 </body>
 
 </html>
