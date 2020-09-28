@@ -89,13 +89,35 @@ function onWarningReport(e) {
   }
 }
 
+function formatRemianingTime(time) {
+  if (time > 86400 * 7) {
+    return (time / (86400 * 7)).toFixed(2) + " Weeks";
+  }
+  else if (time > 86400) {
+    return (time / 86400).toFixed(2) + " Days";
+  }
+  else if (time > 3600) {
+    return (time / 3600).toFixed(2) + " Hours";
+  }
+  else {
+    return (tome / 60).toFixed(2) + " Minutes";
+  }
+}
+
 function onEthBalanceUpdate(b) {
   let wei = b[0];
   let cost = b[1];
 
   if (cost > 0) {
     let numProofs = Math.floor(wei/cost);
-    document.getElementById(Koinos.Field.EthBalanceSub).innerHTML = "Approx. <br/>" + numProofs + " Proofs Left";
+
+    let remainingProofTime =
+      (numProofs * ( document.getElementById(Koinos.Field.CheckDay).classList.contains("checked") ? 1 : 7 ) * 86400)
+      / document.getElementById(Koinos.Field.ProofFrequency).value;
+    let red = 255 - Math.floor(Math.max(Math.min(remainingProofTime - 86400, 86400), 0) * 255.0 / 86400.0);
+    let green = Math.floor(Math.max(Math.min(remainingProofTime - 28800, 57600), 0) * 255.0 / 57600);
+    document.getElementById(Koinos.Field.EthBalanceSub).innerHTML = "Approx. <br/>" + formatRemianingTime(remainingProofTime) + " Left";
+    document.getElementById(Koinos.Field.EthBalanceSub).style.color = "rgb(" + red + "," + green + ",0)";
   }
   else {
     document.getElementById(Koinos.Field.EthBalanceSub).innerHTML = "";

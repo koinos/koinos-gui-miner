@@ -204,7 +204,7 @@ function updateEtherBalance() {
   });
 }
 
-function proofCallback(submission) {
+function proofCallback(receipt, gasPrice) {
   if (tokenContract !== null) {
     updateTokenBalance();
 
@@ -216,12 +216,7 @@ function proofCallback(submission) {
         }
         notify(Koinos.StateKey.ErrorReport, error);
       } else {
-        let lastEthBalance = state.get(Koinos.StateKey.EthBalanceUpdate)[0];
-        let lastProofCost = state.get(Koinos.StateKey.EthBalanceUpdate)[1];
-        if (lastEthBalance > 0 && lastEthBalance != result) {
-          lastProofCost = lastEthBalance - result;
-        }
-        notify(Koinos.StateKey.EthBalanceUpdate, [result, lastProofCost]);
+        notify(Koinos.StateKey.EthBalanceUpdate, [result, receipt.gasUsed * gasPrice]);
       }
     });
   }
