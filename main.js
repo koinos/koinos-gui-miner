@@ -597,19 +597,10 @@ ipcMain.handle(Koinos.StateKey.ConfirmSeed, (event, args) => {
       notify("Koinos.StateKey.ErrorReport, error");
     }
     else {
-      if (!userKeystore.isDerivedKeyCorrect(pwDerivedKey)) {
-        notify(Koinos.StateKey.ErrorReport, {kMessage: "Password is incorrect."});
-        userKeystore = null;
-        state.set(Koinos.StateKey.HasKeystore, false);
-        keyManagementWindow.close()
-      }
-      else if (userKeystore.getSeed(pwDerivedKey) != args[1]) {
+      if (userKeystore.getSeed(pwDerivedKey) != args[1]) {
         console.log(userKeystore.getSeed(pwDerivedKey));
         console.log(args[1]);
-        notify(Koinos.StateKey.ErrorReport, {kMessage: "Recovery phrase is not valid."});
-        userKeystore = null;
-        state.set(Koinos.StateKey.HasKeystore, false);
-        keyManagementWindow.close();
+        keyManagementWindow.send(Koinos.StateKey.IncorrectSeed);
       }
       else {
         saveKeystore();

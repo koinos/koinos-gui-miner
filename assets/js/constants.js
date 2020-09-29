@@ -25,6 +25,7 @@ module.exports = {
     ConfirmExportKey: 'confirm-export-key',
     RecoverKey: 'recover-key',
     ConfirmSeed: 'confirm-seed',
+    IncorrectSeed: 'incorrect-seed',
     CancelConfirmSeed: 'cancel-confirm-seed',
     SetKeyManageWindowState: 'set-key-manage-window-state',
     ManageKeyWindow: {
@@ -112,7 +113,8 @@ module.exports = {
       Word9: "confirm-word9",
       Word10: "confirm-word10",
       Word11: "confirm-word11",
-      Word12: "confirm-word12"
+      Word12: "confirm-word12",
+      SeedFeedback: "confirm-seed-feedback"
     },
     ManageKey: {
       PublicKey: "manage-public-key",

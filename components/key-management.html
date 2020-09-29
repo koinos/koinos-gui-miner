@@ -178,6 +178,18 @@
       display: none;
     }
 
+   #confirm-seed-feedback {
+      margin: 0 auto;
+      width: 80%;
+      color: #c65656;
+      border-radius: 5px;
+      text-align: center;
+      visibility: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     #manage-key-page {
       display: none;
     }
@@ -433,8 +445,11 @@
           </div>
         </div>
       </div>
+      <div id="confirm-seed-feedback" class="seed-feedback">
+        Recovery phrase is incorrect.
+      </div>
       <div class="buttons">
-        <span id="confirm-close-button" class="close-button" onclick="closeWindow()">Close</span>
+        <span id="confirm-close-button" class="close-button" onclick="closeWindow()">Cancel</span>
         <span class="button-space"></span>
         <span id="confirm-confirm-button" class="next-button" onclick="confirmSeed()">Confirm</span>
       </div>
