@@ -27,6 +27,7 @@ module.exports = {
     ConfirmSeed: 'confirm-seed',
     CancelConfirmSeed: 'cancel-confirm-seed',
     SetKeyManageWindowState: 'set-key-manage-window-state',
+    DisableKeyRecovery: 'disable-key-recovery',
     ManageKeyWindow: {
       GenerateKey: 'generate-key',
       ConfirmRecovery: 'confirm-recovery',

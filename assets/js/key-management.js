@@ -2,6 +2,7 @@ const { ipcRenderer, clipboard } = require('electron');
 const Koinos = require('../assets/js/constants.js');
 const Qr = require('ethereum-qr-code');
 let generated = false;
+let recoveryDisabled = false;
 let state = Koinos.StateKey.ManageKeyWindow.GenerateKey;
 let stateIDMap = new Map([
   [Koinos.StateKey.ManageKeyWindow.GenerateKey, Koinos.Field.GenerateKeyPage],
@@ -33,6 +34,11 @@ ipcRenderer.on(Koinos.StateKey.SetKeyManageWindowState, (event, [newState, timeo
     animateStateTransition(newState, timeout);
   }
 })
+
+ipcRenderer.on(Koinos.StateKey.DisableKeyRecovery, (event, args) => {
+  document.getElementById(Koinos.Field.ManageKey.RecoverButton).className += " grayed";
+  recoveryDisabled = true;
+});
 
 function closeWindow() {
   if (generated) {
@@ -171,6 +177,7 @@ function confirmSeed() {
 
 function openRecoverKeys() {
   if (generated) return;
+  if (recoveryDisabled) return;
   animateStateTransition(Koinos.StateKey.ManageKeyWindow.RecoverKey);
 }
 
