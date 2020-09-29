@@ -3,5 +3,5 @@
 npm install -g electron-packager
 npm install -g electron-installer-dmg
 brew update
-brew install gcc
+brew upgrade gcc
 
