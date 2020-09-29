@@ -127,7 +127,6 @@ module.exports = {
       Message: "manage-message",
       RecoverButton: "manage-recover-button",
       CloseButton: "manage-close-button",
-      Copy: "manage-copy-confirm",
       CopyConfirm: "manage-copy-confirm"
     },
     RecoverKey: {
