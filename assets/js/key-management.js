@@ -91,7 +91,7 @@ function onPasswordKeyUp() {
   let passConfirm = document.getElementById(page.PasswordConfirm).value;
   let message = document.getElementById(page.PasswordFeedback);
   if (!passwordIsRequiredLength(pass)) {
-    message.innerHTML = "Password must be atleast 8 characters"
+    message.innerHTML = "Password must be at least 8 characters"
     message.style.visibility = "visible";
     message.style.color = "#c65656"
   }

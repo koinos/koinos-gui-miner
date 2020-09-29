@@ -213,7 +213,7 @@ function proofCallback(submission) {
         let error = {
           kMessage: "Could not retrieve remaining Ether balance from the sender address.",
           exception: err
-        }
+        };
         notify(Koinos.StateKey.ErrorReport, error);
       } else {
         let lastEthBalance = state.get(Koinos.StateKey.EthBalanceUpdate)[0];
@@ -293,17 +293,17 @@ function createKeystore(password, seedPhrase, cb) {
 }
 
 function saveKeystore() {
-  assert(userKeystore !== null)
+  assert(userKeystore !== null);
   fs.writeFileSync(keystoreFile, userKeystore.serialize());
 }
 
 function getAddresses() {
-  assert(userKeystore !== null)
+  assert(userKeystore !== null);
   return userKeystore.getAddresses();
 }
 
 async function signCallback(web3, txData) {
-  assert(userKeystore !== null && derivedKey !== null)
+  assert(userKeystore !== null && derivedKey !== null);
   txData.nonce = await web3.eth.getTransactionCount(
     txData.from
   );
@@ -313,7 +313,7 @@ async function signCallback(web3, txData) {
 }
 
 function exportKey(password, callback) {
-  assert(userKeystore !== null)
+  assert(userKeystore !== null);
 
   let privKey;
   userKeystore.keyFromPassword(password, callback);
