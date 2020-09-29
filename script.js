@@ -1,6 +1,9 @@
 const { ipcRenderer } = require('electron');
 const { shell } = require('electron');
 const Koinos = require('./assets/js/constants.js');
+const colorsys = require('colorsys');
+const timeStartHSV = colorsys.rgbToHsv({r: 95, g: 181, b: 107});
+const timeEndHSV = colorsys.rgbToHsv({r: 198, g: 86, b: 86});
 let minerIsRunning = false;
 var currentHashrate = null;
 
@@ -114,10 +117,16 @@ function onEthBalanceUpdate(b) {
     let remainingProofTime =
       (numProofs * ( document.getElementById(Koinos.Field.CheckDay).classList.contains("checked") ? 1 : 7 ) * 86400)
       / document.getElementById(Koinos.Field.ProofFrequency).value;
-    let red = 255 - Math.floor(Math.max(Math.min(remainingProofTime - 86400, 86400), 0) * 255.0 / 86400.0);
-    let green = Math.floor(Math.max(Math.min(remainingProofTime - 28800, 57600), 0) * 255.0 / 57600);
+    // Gradient is 24 hours from 8 remaining to 40 remaining.
+    let percentGradient = 1 - Math.min(Math.max(remainingProofTime - 28800, 0), 115200) / 86400.0;
+    let hsv = {
+      h: Math.floor((timeEndHSV.h - timeStartHSV.h) * percentGradient + timeStartHSV.h),
+      s: Math.floor((timeEndHSV.s - timeStartHSV.s) * percentGradient + timeStartHSV.s),
+      v: Math.floor((timeEndHSV.v - timeStartHSV.v) * percentGradient + timeStartHSV.v)
+    };
+
     document.getElementById(Koinos.Field.EthBalanceSub).innerHTML = "Approx. <br/>" + formatRemianingTime(remainingProofTime) + " Left";
-    document.getElementById(Koinos.Field.EthBalanceSub).style.color = "rgb(" + red + "," + green + ",0)";
+    document.getElementById(Koinos.Field.EthBalanceSub).style.color = colorsys.stringify(colorsys.hsvToRgb(hsv));
   }
   else {
     document.getElementById(Koinos.Field.EthBalanceSub).innerHTML = "";
