@@ -31,16 +31,31 @@ function onStateRestoration(s) {
   const errorMessage = document.getElementById(Koinos.Field.Errors);
   const documentation = document.getElementById(Koinos.Field.DocumentationLink);
   const openGithub = document.getElementById(Koinos.Field.GitHubIcon);
+  const warningGithubIcon = document.getElementById(Koinos.Field.WarningGitHubIcon);
   const errorClose = document.getElementById(Koinos.Field.ErrorClose);
   const warningMessage = document.getElementById(Koinos.Field.Warnings);
   const warningClose = document.getElementById(Koinos.Field.WarningClose);
+  const logo = document.getElementById(Koinos.Field.Logo);
+  const company = document.getElementById(Koinos.Field.Company);
+
+  company.addEventListener('click', e => {
+    shell.openExternal('https://www.openorchard.io/');
+  });
+
+  logo.addEventListener('click', e => {
+    shell.openExternal('https://www.koinos.io/');
+  });
 
   documentation.addEventListener('click', e => {
-    shell.openExternal('https://koinos.io');
+    shell.openExternal('https://github.com/open-orchard/koinos-gui-miner/blob/master/README.md');
+  });
+
+  warningGithubIcon.addEventListener('click', e => {
+    shell.openExternal('https://github.com/open-orchard/koinos-gui-miner/issues');
   });
 
   openGithub.addEventListener('click', e => {
-    shell.openExternal('https://github.com/open-orchard/koinos-gui-miner');
+    shell.openExternal('https://github.com/open-orchard/koinos-gui-miner/issues');
   });
 
   errorClose.addEventListener('click', e => {
@@ -270,12 +285,12 @@ function onActivateCountdown(time) {
 }
 
 function isValidEndpoint(endpoint) {
-  return (/^(http|https|ws):\/\/[-a-zA-Z0-9.:]+$/i.test(endpoint));
+  return (/^(https?|wss?):\/\/[^\s$.?#].[^\s]*$/i.test(endpoint));
 }
 
 function isEthereumAddress(address) {
   return (/^(0x){1}[0-9a-fA-F]{40}$/i.test(address));
-};
+}
 
 function toggleMiner() {
   let ethAddress = document.getElementById(Koinos.Field.EthAddress).value;

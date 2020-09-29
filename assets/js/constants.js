@@ -46,6 +46,8 @@ module.exports = {
     WeiPerEth: 1000000000000000000
   },
   Field: {
+    Logo: "logo",
+    Company: "company",
     GenerateKeyPage: "generate-key-page",
     ConfirmRecoveryPage: "confirm-recovery-page",
     ManageKeyPage: "manage-key-page",
@@ -74,6 +76,7 @@ module.exports = {
     ErrorMessage: "error-message",
     DocumentationLink: "documentation-link",
     GitHubIcon: "github-icon",
+    WarningGitHubIcon: "warning-github-icon",
     ErrorClose: "error-close",
     Warnings: "warnings",
     WarningMessage: "warning-message",
