@@ -24,6 +24,35 @@
       color: #6F00F6;
       font-size: .7em;
     }
+    #overlay {
+      position: fixed;
+      display: none;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.9);
+      z-index: 2;
+      cursor: pointer;
+    }
+    #countdown-area {
+      position: absolute;
+      text-align: center;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    #cancel-countdown {
+      position: absolute;
+      bottom: 40px;
+      text-decoration: underline;
+      text-align: center;
+    }
   </style>
 </head>
 
@@ -73,7 +102,7 @@
   </div>
   <div class="top-grid">
     <div class="brand">
-      <img src="assets/images/koinos-logo.svg" alt="" />
+      <img src="assets/images/koinos-logo.svg" alt="" onclick="on()"/>
     </div>
     <div class="eth-start">
       <input id="eth-address" type="text" placeholder="ETH Address"
@@ -151,10 +180,24 @@
       </div>
     </div>
   </div>
+  <div id="overlay">
+    <div id="countdown-area">
+      <p>Mining will automatically begin in</p>
+      <h2>2 hours, 26 minutes, and 46 seconds</h2>
+      <span id="cancel-countdown" onclick="off()">Cancel</span>
+    </div>
+  </div>
   <script src="assets/js/d3.min.js"></script>
   <script src="assets/js/graph.js"></script>
   <script src="script.js"></script>
-
+  <script>
+    function on () {
+      document.getElementById("overlay").style.display = "block";
+    }
+    function off () {
+      document.getElementById("overlay").style.display = "none";
+    }
+  </script>
 </body>
 
 </html>
