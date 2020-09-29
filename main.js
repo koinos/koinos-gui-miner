@@ -446,7 +446,7 @@ ipcMain.on(Koinos.StateKey.ClosePasswordPrompt, async (event, password) => {
 
     try {
       await Promise.race([
-        web3.eth.net.isListening(),
+        web3.eth.getNodeInfo(),
         new Promise(function (resolve, reject) {
           setTimeout(function () {
             reject("Timed out while attempting to connect to Ethereum Endpoint.");
