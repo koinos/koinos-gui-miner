@@ -6,12 +6,18 @@ const timeStartHSV = colorsys.rgbToHsv({r: 95, g: 181, b: 107});
 const timeEndHSV = colorsys.rgbToHsv({r: 198, g: 86, b: 86});
 let minerIsRunning = false;
 var currentHashrate = null;
+let countdown = 0;
+var counterFunc = null;
 
 function onStateRestoration(s) {
   // Restore state
   onMinerActivated(s.get(Koinos.StateKey.MinerActivated));
   onKoinBalanceUpdate(s.get(Koinos.StateKey.KoinBalanceUpdate));
   onEthBalanceUpdate(s.get(Koinos.StateKey.EthBalanceUpdate));
+
+  if (s.get(Koinos.StateKey.ActivateCountdown) > 0) {
+    onActivateCountdown(s.get(Koinos.StateKey.ActivateCountdown));
+  }
 
   // Restore configuration
   let config = s.get(Koinos.StateKey.Configuration);
@@ -71,6 +77,20 @@ function getProofPer() {
   else {
     return "week";
   }
+}
+
+function secondsToDhms(seconds) {
+  seconds = Number(seconds);
+  let d = Math.floor(seconds / (3600*24));
+  let h = Math.floor(seconds % (3600*24) / 3600);
+  let m = Math.floor(seconds % 3600 / 60);
+  let s = Math.floor(seconds % 60);
+
+  let dDisplay = d > 0 ? d + (d == 1 ? " day" : " days") : "";
+  let hDisplay = h > 0 ? ((d) ? ", ": "") + h + (h == 1 ? " hour" : " hours") : "";
+  let mDisplay = m > 0 ? ((d|h) ? ", ": "") + m + (m == 1 ? " minute" : " minutes") : "";
+  let sDisplay = s > 0 ? ((d|h|m) ? ", ": "") + s + (s == 1 ? " second" : " seconds") : "";
+  return dDisplay + hDisplay + mDisplay + sDisplay;
 }
 
 function onErrorReport(e) {
@@ -226,6 +246,27 @@ function hashrateSpinner(state) {
   }
 }
 
+function overlayCancel () {
+  document.getElementById(Koinos.Field.Overlay).style.display = "none";
+  clearInterval(counterFunc);
+  ipcRenderer.invoke(Koinos.StateKey.StopMiner);
+}
+
+function onActivateCountdown(time) {
+  countdown = time;
+  document.getElementById(Koinos.Field.Countdown).innerHTML = secondsToDhms(countdown);
+  document.getElementById(Koinos.Field.Overlay).style.display = "block";
+  counterFunc = setInterval(function() {
+    document.getElementById(Koinos.Field.Countdown).innerHTML = secondsToDhms(countdown);
+    countdown--;
+
+    if (countdown < 0) {
+      clearInterval(counterFunc);
+      document.getElementById(Koinos.Field.Overlay).style.display = "none";
+    }
+  }, 1000);
+}
+
 function isValidEndpoint(endpoint) {
   return (/^(http|https|ws):\/\/[-a-zA-Z0-9.:]+$/i.test(endpoint));
 }
@@ -289,4 +330,8 @@ ipcRenderer.on(Koinos.StateKey.ErrorReport, (event, arg) => {
 
 ipcRenderer.on(Koinos.StateKey.WarningReport, (event, arg) => {
   onWarningReport(arg);
+});
+
+ipcRenderer.on(Koinos.StateKey.ActivateCountdown, (event, arg) => {
+  onActivateCountdown(arg);
 });

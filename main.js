@@ -94,6 +94,10 @@ function writeConfiguration() {
   saveKeystore();
 }
 
+function now() {
+  return Math.floor(Date.now() / 1000);
+}
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1200,
@@ -118,6 +122,12 @@ function createWindow() {
   mainWindow.loadFile("index.html");
 
   mainWindow.webContents.on('did-finish-load', function () {
+    if (miner !== null) {
+      state.set(Koinos.StateKey.ActivateCountdown, miner.getMiningStartTime() - now());
+    }
+    else {
+      state.set(Koinos.StateKey.ActivateCountdown, 0);
+    }
     mainWindow.send(Koinos.StateKey.RestoreState, state);
   });
 
@@ -481,10 +491,15 @@ ipcMain.on(Koinos.StateKey.ClosePasswordPrompt, async (event, password) => {
       proofCallback,
       errorCallback,
       warningCallback);
+    await miner.awaitInitialization();
     miner.start();
     state.set(Koinos.StateKey.MinerActivated, true);
     writeConfiguration();
     notify(Koinos.StateKey.MinerActivated, state.get(Koinos.StateKey.MinerActivated));
+    let timeNow = now();
+    if (miner.getMiningStartTime() > timeNow) {
+      notify(Koinos.StateKey.ActivateCountdown, miner.getMiningStartTime() - timeNow);
+    }
   });
 });
 
