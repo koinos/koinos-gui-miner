@@ -179,6 +179,7 @@ function onMinerActivated(state) {
     document.getElementById(Koinos.Field.ProofFrequency).className += " grayed";
     document.getElementById(Koinos.Field.CheckDay).className += " grayed";
     document.getElementById(Koinos.Field.CheckWeek).className += " grayed";
+    document.getElementById(Koinos.Field.CircleGlow).className += " blob";
   }
   else {
     document.getElementById(Koinos.Field.Tip).removeAttribute("disabled");
@@ -191,6 +192,7 @@ function onMinerActivated(state) {
     document.getElementById(Koinos.Field.ProofFrequency).classList.remove("grayed");
     document.getElementById(Koinos.Field.CheckDay).classList.remove("grayed");
     document.getElementById(Koinos.Field.CheckWeek).classList.remove("grayed");
+    document.getElementById(Koinos.Field.CircleGlow).classList.remove("blob");
 
     document.getElementById(Koinos.Field.HashrateCurrent).innerHTML = "0.0";
     document.getElementById(Koinos.Field.HashrateSuffix).innerHTML = "";

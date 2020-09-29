@@ -56,6 +56,7 @@ module.exports = {
     CheckToggle: "check-toggle",
     EthAddress: "eth-address",
     EthEndpoint: "eth-endpoint",
+    CircleGlow: "circle-glow",
     ProofFrequency: "proof-frequency",
     KoinBalance: "koin-balance",
     EthBalance: "eth-balance",
