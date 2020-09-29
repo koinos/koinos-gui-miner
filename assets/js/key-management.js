@@ -175,6 +175,12 @@ function confirmSeed() {
   generated = false;
 }
 
+ipcRenderer.on(Koinos.StateKey.IncorrectSeed, (event, arg) => {
+  document.getElementById(Koinos.Field.ConfirmRecovery.SeedFeedback).style.visibility = "visible";
+
+  generated = true;
+});
+
 function openRecoverKeys() {
   if (generated) return;
   if (recoveryDisabled) return;
