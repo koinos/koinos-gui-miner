@@ -92,7 +92,7 @@ function onWarningReport(e) {
   }
 }
 
-function formatRemianingTime(time) {
+function formatRemainingTime(time) {
   if (time > 86400 * 7) {
     return (time / (86400 * 7)).toFixed(2) + " Weeks";
   }
@@ -103,7 +103,7 @@ function formatRemianingTime(time) {
     return (time / 3600).toFixed(2) + " Hours";
   }
   else {
-    return (tome / 60).toFixed(2) + " Minutes";
+    return (time / 60).toFixed(2) + " Minutes";
   }
 }
 
@@ -125,7 +125,7 @@ function onEthBalanceUpdate(b) {
       v: Math.floor((timeEndHSV.v - timeStartHSV.v) * percentGradient + timeStartHSV.v)
     };
 
-    document.getElementById(Koinos.Field.EthBalanceSub).innerHTML = "Approx. <br/>" + formatRemianingTime(remainingProofTime) + " Left";
+    document.getElementById(Koinos.Field.EthBalanceSub).innerHTML = "Approx. <br/>" + formatRemainingTime(remainingProofTime) + " Left";
     document.getElementById(Koinos.Field.EthBalanceSub).style.color = colorsys.stringify(colorsys.hsvToRgb(hsv));
   }
   else {
