@@ -214,7 +214,7 @@ function updateEtherBalance() {
   });
 }
 
-function proofCallback(submission) {
+function proofCallback(receipt, gasPrice) {
   if (tokenContract !== null) {
     updateTokenBalance();
 
@@ -226,12 +226,7 @@ function proofCallback(submission) {
         };
         notify(Koinos.StateKey.ErrorReport, error);
       } else {
-        let lastEthBalance = state.get(Koinos.StateKey.EthBalanceUpdate)[0];
-        let lastProofCost = state.get(Koinos.StateKey.EthBalanceUpdate)[1];
-        if (lastEthBalance > 0 && lastEthBalance != result) {
-          lastProofCost = lastEthBalance - result;
-        }
-        notify(Koinos.StateKey.EthBalanceUpdate, [result, lastProofCost]);
+        notify(Koinos.StateKey.EthBalanceUpdate, [result, receipt.gasUsed * gasPrice]);
       }
     });
   }
@@ -408,9 +403,11 @@ ipcMain.handle(Koinos.StateKey.ManageKeys, (event, ...args) => {
 
   keyManagementWindow.once('ready-to-show', () => {
     if (state.get(Koinos.StateKey.HasKeystore)) {
-      console.log("ManageKey");
       keyManagementWindow.send(Koinos.StateKey.SigningAddress, web3.utils.toChecksumAddress(getAddresses()[0]));
       keyManagementWindow.send(Koinos.StateKey.SetKeyManageWindowState, [Koinos.StateKey.ManageKeyWindow.ManageKey, 0]);
+    }
+    if (state.get(Koinos.StateKey.MinerActivated)) {
+      keyManagementWindow.send(Koinos.StateKey.DisableKeyRecovery);
     }
 
     keyManagementWindow.show();
@@ -611,19 +608,8 @@ ipcMain.handle(Koinos.StateKey.ConfirmSeed, (event, args) => {
       notify("Koinos.StateKey.ErrorReport, error");
     }
     else {
-      if (!userKeystore.isDerivedKeyCorrect(pwDerivedKey)) {
-        notify(Koinos.StateKey.ErrorReport, { kMessage: "Password is incorrect." });
-        userKeystore = null;
-        state.set(Koinos.StateKey.HasKeystore, false);
-        keyManagementWindow.close()
-      }
-      else if (userKeystore.getSeed(pwDerivedKey) != args[1]) {
-        console.log(userKeystore.getSeed(pwDerivedKey));
-        console.log(args[1]);
-        notify(Koinos.StateKey.ErrorReport, { kMessage: "Recovery phrase is not valid." });
-        userKeystore = null;
-        state.set(Koinos.StateKey.HasKeystore, false);
-        keyManagementWindow.close();
+      if (userKeystore.getSeed(pwDerivedKey) != args[1]) {
+        keyManagementWindow.send(Koinos.StateKey.IncorrectSeed);
       }
       else {
         saveKeystore();

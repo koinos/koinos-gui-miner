@@ -29,10 +29,11 @@
     "electron": "^10.1.0"
   },
   "dependencies": {
+    "colorsys": "^1.0.22",
     "eth-lightwallet": "^4.0.0",
     "ethereum-qr-code": "^0.3.0",
+    "ethereumjs-tx": "^2.1.2",
     "koinos-miner": "git@github.com:open-orchard/koinos-miner.git",
-    "web3": "^1.2.11",
-    "ethereumjs-tx": "^2.1.2"
+    "web3": "^1.2.11"
   }
 }

@@ -1,6 +1,9 @@
 const { ipcRenderer } = require('electron');
 const { shell } = require('electron');
 const Koinos = require('./assets/js/constants.js');
+const colorsys = require('colorsys');
+const timeStartHSV = colorsys.rgbToHsv({r: 95, g: 181, b: 107});
+const timeEndHSV = colorsys.rgbToHsv({r: 198, g: 86, b: 86});
 let minerIsRunning = false;
 var currentHashrate = null;
 let countdown = 0;
@@ -109,13 +112,41 @@ function onWarningReport(e) {
   }
 }
 
+function formatRemainingTime(time) {
+  if (time > 86400 * 7) {
+    return (time / (86400 * 7)).toFixed(2) + " Weeks";
+  }
+  else if (time > 86400) {
+    return (time / 86400).toFixed(2) + " Days";
+  }
+  else if (time > 3600) {
+    return (time / 3600).toFixed(2) + " Hours";
+  }
+  else {
+    return (time / 60).toFixed(2) + " Minutes";
+  }
+}
+
 function onEthBalanceUpdate(b) {
   let wei = b[0];
   let cost = b[1];
 
   if (cost > 0) {
     let numProofs = Math.floor(wei/cost);
-    document.getElementById(Koinos.Field.EthBalanceSub).innerHTML = "Approx. <br/>" + numProofs + " Proofs Left";
+
+    let remainingProofTime =
+      (numProofs * ( document.getElementById(Koinos.Field.CheckDay).classList.contains("checked") ? 1 : 7 ) * 86400)
+      / document.getElementById(Koinos.Field.ProofFrequency).value;
+    // Gradient is 24 hours from 8 remaining to 40 remaining.
+    let percentGradient = 1 - Math.min(Math.max(remainingProofTime - 28800, 0), 115200) / 86400.0;
+    let hsv = {
+      h: Math.floor((timeEndHSV.h - timeStartHSV.h) * percentGradient + timeStartHSV.h),
+      s: Math.floor((timeEndHSV.s - timeStartHSV.s) * percentGradient + timeStartHSV.s),
+      v: Math.floor((timeEndHSV.v - timeStartHSV.v) * percentGradient + timeStartHSV.v)
+    };
+
+    document.getElementById(Koinos.Field.EthBalanceSub).innerHTML = "Approx. <br/>" + formatRemainingTime(remainingProofTime) + " Left";
+    document.getElementById(Koinos.Field.EthBalanceSub).style.color = colorsys.stringify(colorsys.hsvToRgb(hsv));
   }
   else {
     document.getElementById(Koinos.Field.EthBalanceSub).innerHTML = "";

@@ -179,6 +179,18 @@
       display: none;
     }
 
+   #confirm-seed-feedback {
+      margin: 0 auto;
+      width: 80%;
+      color: #c65656;
+      border-radius: 5px;
+      text-align: center;
+      visibility: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     #manage-key-page {
       display: none;
     }
@@ -228,6 +240,19 @@
     #manage-copy {
       cursor: pointer;
     }
+
+   #manage-copy-confirm {
+     position: absolute;
+     color: white;
+     right: 30px;
+     top: 120px;
+     /*padding: 0.67em;*/
+     visibility: hidden;
+   }
+
+   .copy-confirm-fade-out {
+     animation: fadeOut ease 3.1s;
+   }
 
     #manage-key div {
       margin: 10px 30px;
@@ -425,8 +450,11 @@
           </div>
         </div>
       </div>
+      <div id="confirm-seed-feedback" class="seed-feedback">
+        Recovery phrase is incorrect.
+      </div>
       <div class="buttons">
-        <span id="confirm-close-button" class="close-button" onclick="closeWindow()">Close</span>
+        <span id="confirm-close-button" class="close-button" onclick="closeWindow()">Cancel</span>
         <span class="button-space"></span>
         <span id="confirm-confirm-button" class="next-button" onclick="confirmSeed()">Confirm</span>
       </div>
@@ -455,6 +483,7 @@
         </div>
 
       </div>
+      <div id="manage-copy-confirm">Address Copied!</div>
       <div class="buttons">
         <span id="manage-recover-button" class="recover-button" onclick="openRecoverKeys()">Recover Key</span>
         <span class="button-space"></span>
