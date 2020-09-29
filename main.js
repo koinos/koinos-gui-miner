@@ -398,9 +398,11 @@ ipcMain.handle(Koinos.StateKey.ManageKeys, (event, ...args) => {
 
   keyManagementWindow.once('ready-to-show', () => {
     if (state.get(Koinos.StateKey.HasKeystore)) {
-      console.log("ManageKey");
       keyManagementWindow.send(Koinos.StateKey.SigningAddress, web3.utils.toChecksumAddress(getAddresses()[0]));
       keyManagementWindow.send(Koinos.StateKey.SetKeyManageWindowState, [Koinos.StateKey.ManageKeyWindow.ManageKey, 0]);
+    }
+    if (state.get(Koinos.StateKey.MinerActivated)) {
+      keyManagementWindow.send(Koinos.StateKey.DisableKeyRecovery);
     }
 
     keyManagementWindow.show();
