@@ -202,6 +202,14 @@ ipcRenderer.on(Koinos.StateKey.SigningAddress, (event, arg) => {
 
 function copyAddress() {
   clipboard.writeText(document.getElementById(Koinos.Field.ManageKey.SigningAddress).innerHTML);
+  document.getElementById(Koinos.Field.ManageKey.CopyConfirm).style.visibility = "visible";
+  setTimeout(() => {
+    document.getElementById(Koinos.Field.ManageKey.CopyConfirm).classList.add("copy-confirm-fade-out");
+  }, 2000);
+  setTimeout(() => {
+    document.getElementById(Koinos.Field.ManageKey.CopyConfirm).style.visibility = "hidden";
+    document.getElementById(Koinos.Field.ManageKey.CopyConfirm).classList.remove("copy-confirm-fade-out");
+  }, 5000);
 }
 
 function exportKey() {
