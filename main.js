@@ -125,6 +125,7 @@ function createWindow() {
     mainWindow.show()
   });
 
+  mainWindow.setMenuBarVisibility(false);
   // Open the DevTools.
   //win.webContents.openDevTools();
 }
