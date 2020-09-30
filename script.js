@@ -14,6 +14,7 @@ function onStateRestoration(s) {
   onMinerActivated(s.get(Koinos.StateKey.MinerActivated));
   onKoinBalanceUpdate(s.get(Koinos.StateKey.KoinBalanceUpdate));
   onEthBalanceUpdate(s.get(Koinos.StateKey.EthBalanceUpdate));
+  setAppVersion(s.get(Koinos.StateKey.Version));
 
   if (s.get(Koinos.StateKey.ActivateCountdown) > 0) {
     onActivateCountdown(s.get(Koinos.StateKey.ActivateCountdown));
@@ -65,6 +66,14 @@ function onStateRestoration(s) {
   warningClose.addEventListener('click', e => {
     warningMessage.style.display = "none";
   });
+}
+
+function setAppVersion(version) {
+  let v = "Koinos Miner: " + version;
+  v += ", Node: " + process.versions.node;
+  v += ", Chrome: " + process.versions.chrome;
+  v += ", Electon: " + process.versions.electron;
+  document.getElementById(Koinos.Field.VersionInfo).innerHTML = v;
 }
 
 function toggleProofPeriod(which) {
