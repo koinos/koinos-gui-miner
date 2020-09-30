@@ -263,8 +263,20 @@ function hashrateSpinner(state) {
   }
 }
 
+function fadeOut(element) {
+  document.getElementById(element).classList.remove("fade-in");
+  document.getElementById(element).classList += " fade-out";
+  setTimeout(function() { document.getElementById(element).style.display = "none"; }, 1000);
+}
+
+function fadeIn(element) {
+  document.getElementById(element).style.display = "block";
+  document.getElementById(element).classList.remove("fade-out");
+  document.getElementById(element).classList += " fade-in";
+}
+
 function overlayCancel () {
-  document.getElementById(Koinos.Field.Overlay).style.display = "none";
+  fadeOut(Koinos.Field.Overlay);
   clearInterval(counterFunc);
   ipcRenderer.invoke(Koinos.StateKey.StopMiner);
 }
@@ -272,14 +284,14 @@ function overlayCancel () {
 function onActivateCountdown(time) {
   countdown = time;
   document.getElementById(Koinos.Field.Countdown).innerHTML = secondsToDhms(countdown);
-  document.getElementById(Koinos.Field.Overlay).style.display = "block";
+  fadeIn(Koinos.Field.Overlay);
   counterFunc = setInterval(function() {
     document.getElementById(Koinos.Field.Countdown).innerHTML = secondsToDhms(countdown);
     countdown--;
 
     if (countdown < 0) {
       clearInterval(counterFunc);
-      document.getElementById(Koinos.Field.Overlay).style.display = "none";
+      fadeOut(Koinos.Field.Overlay);
     }
   }, 1000);
 }
