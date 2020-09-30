@@ -232,6 +232,10 @@ function onKoinBalanceUpdate(balance) {
   document.getElementById(Koinos.Field.KoinBalance).innerHTML = result;
 }
 
+function now() {
+  return Math.floor(Date.now() / 1000);
+}
+
 function powerButton(state) {
   let btn = document.getElementById(Koinos.Field.SvgButton).classList;
   let btnOn = document.getElementById(Koinos.Field.PowerButton).classList;
@@ -281,19 +285,21 @@ function overlayCancel () {
   ipcRenderer.invoke(Koinos.StateKey.StopMiner);
 }
 
-function onActivateCountdown(time) {
-  countdown = time;
-  document.getElementById(Koinos.Field.Countdown).innerHTML = secondsToDhms(countdown);
-  fadeIn(Koinos.Field.Overlay);
-  counterFunc = setInterval(function() {
+function onActivateCountdown(startTime) {
+  if (startTime > now()) {
+    countdown = startTime - now();
     document.getElementById(Koinos.Field.Countdown).innerHTML = secondsToDhms(countdown);
-    countdown--;
+    fadeIn(Koinos.Field.Overlay);
+    counterFunc = setInterval(function() {
+      document.getElementById(Koinos.Field.Countdown).innerHTML = secondsToDhms(countdown);
+      countdown = startTime - now();
 
-    if (countdown < 0) {
-      clearInterval(counterFunc);
-      fadeOut(Koinos.Field.Overlay);
-    }
-  }, 1000);
+      if (countdown < 0) {
+        clearInterval(counterFunc);
+        fadeOut(Koinos.Field.Overlay);
+      }
+    }, 1000);
+  }
 }
 
 function isValidEndpoint(endpoint) {
