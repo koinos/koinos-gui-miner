@@ -153,6 +153,7 @@ ipcRenderer.on(Koinos.StateKey.SeedPhrase, (event, arg) => {
   }, 1000);
 
   generated = true;
+  document.getElementById(Koinos.Field.ManageKey.GenerateConfirm).style.visibility = "visible";
 });
 
 function confirmSeed() {
