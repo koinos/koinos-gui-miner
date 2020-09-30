@@ -4,6 +4,7 @@ module.exports = {
     HashrateReportString: 'hashrate-report-string',
     KoinBalanceUpdate: 'koin-balance-update',
     EthBalanceUpdate: 'eth-balance-update',
+    Version: 'version',
     ErrorReport: 'error-report',
     WarningReport: 'warning-report',
     ActivateCountdown: 'activate-countdown',
@@ -81,6 +82,7 @@ module.exports = {
     Warnings: "warnings",
     WarningMessage: "warning-message",
     WarningClose: "warning-close",
+    VersionInfo: "version-info",
     GenerateKey: {
       Password: "generate-password",
       PasswordConfirm: "generate-password-confirm",

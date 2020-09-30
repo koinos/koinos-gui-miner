@@ -25,7 +25,8 @@ let state = new Map([
   [Koinos.StateKey.MinerActivated, false],
   [Koinos.StateKey.KoinBalanceUpdate, 0],
   [Koinos.StateKey.EthBalanceUpdate, [0, 0]],
-  [Koinos.StateKey.HasKeystore, false]
+  [Koinos.StateKey.HasKeystore, false],
+  [Koinos.StateKey.Version, app.getVersion()]
 ]);
 
 let config = {
