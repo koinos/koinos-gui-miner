@@ -112,6 +112,8 @@ function createWindow() {
     show: false
   });
 
+  mainWindow.setMenuBarVisibility(false);
+
   state.set(Koinos.StateKey.Configuration, readConfiguration());
 
   if (fs.existsSync(keystoreFile)) {
