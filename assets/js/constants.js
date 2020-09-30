@@ -6,6 +6,7 @@ module.exports = {
     EthBalanceUpdate: 'eth-balance-update',
     ErrorReport: 'error-report',
     WarningReport: 'warning-report',
+    ActivateCountdown: 'activate-countdown',
     MinerActivated: 'miner-activated',
     ToggleMiner: 'toggle-miner',
     StopMiner: 'stop-miner',
@@ -25,8 +26,11 @@ module.exports = {
     ConfirmExportKey: 'confirm-export-key',
     RecoverKey: 'recover-key',
     ConfirmSeed: 'confirm-seed',
+    IncorrectSeed: 'incorrect-seed',
     CancelConfirmSeed: 'cancel-confirm-seed',
     SetKeyManageWindowState: 'set-key-manage-window-state',
+    ConfirmAddressCopied: 'confirm-address-copied',
+    DisableKeyRecovery: 'disable-key-recovery',
     ManageKeyWindow: {
       GenerateKey: 'generate-key',
       ConfirmRecovery: 'confirm-recovery',
@@ -42,14 +46,19 @@ module.exports = {
     WeiPerEth: 1000000000000000000
   },
   Field: {
+    Logo: "logo",
+    Company: "company",
     GenerateKeyPage: "generate-key-page",
     ConfirmRecoveryPage: "confirm-recovery-page",
     ManageKeyPage: "manage-key-page",
     RecoverKeyPage: "recover-key-page",
     Tip: "tip",
+    Overlay: "overlay",
+    Countdown: "countdown",
     CheckToggle: "check-toggle",
     EthAddress: "eth-address",
     EthEndpoint: "eth-endpoint",
+    CircleGlow: "circle-glow",
     ProofFrequency: "proof-frequency",
     KoinBalance: "koin-balance",
     EthBalance: "eth-balance",
@@ -67,6 +76,7 @@ module.exports = {
     ErrorMessage: "error-message",
     DocumentationLink: "documentation-link",
     GitHubIcon: "github-icon",
+    WarningGitHubIcon: "warning-github-icon",
     ErrorClose: "error-close",
     Warnings: "warnings",
     WarningMessage: "warning-message",
@@ -112,7 +122,8 @@ module.exports = {
       Word9: "confirm-word9",
       Word10: "confirm-word10",
       Word11: "confirm-word11",
-      Word12: "confirm-word12"
+      Word12: "confirm-word12",
+      SeedFeedback: "confirm-seed-feedback"
     },
     ManageKey: {
       PublicKey: "manage-public-key",
@@ -124,7 +135,8 @@ module.exports = {
       PrivateKey: "manage-private-key",
       Message: "manage-message",
       RecoverButton: "manage-recover-button",
-      CloseButton: "close-button"
+      CloseButton: "manage-close-button",
+      CopyConfirm: "manage-copy-confirm"
     },
     RecoverKey: {
       Password: 'recover-password',

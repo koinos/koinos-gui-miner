@@ -8,6 +8,34 @@
   <link rel="stylesheet" href="assets/css/normalize.css" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <style>
+    .fade-in {
+      animation: fadeIn ease 1s;
+    }
+
+    .fade-out {
+      animation: fadeOut ease 1s;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeOut {
+      0% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
     #chart {
       text-align: center;
       margin-top: 40px;
@@ -23,6 +51,38 @@
       text-align: right;
       color: #6F00F6;
       font-size: .7em;
+    }
+    #overlay {
+      position: fixed;
+      display: none;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.9);
+      z-index: 2;
+      cursor: pointer;
+    }
+    #countdown-area {
+      position: absolute;
+      text-align: center;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    #cancel-countdown {
+      position: absolute;
+      bottom: 40px;
+      text-decoration: underline;
+      text-align: center;
+    }
+    #company,#logo {
+      cursor: pointer;
     }
   </style>
 </head>
@@ -67,13 +127,13 @@
             class="check-toggle">
           </span>
         </label>
-        <div class="thank-you">OpenOrchard thanks you!</div>
+        <div id="company" class="thank-you">Visit OpenOrchard.io »</div>
       </div>
     </div>
   </div>
   <div class="top-grid">
     <div class="brand">
-      <img src="assets/images/koinos-logo.svg" alt="" />
+      <img id="logo" src="assets/images/koinos-logo.svg" alt=""/>
     </div>
     <div class="eth-start">
       <input id="eth-address" type="text" placeholder="ETH Address"
@@ -99,7 +159,7 @@
 
     <div class="hashrate">
       <img src="assets/images/glow-circle.svg" alt="" class="circle" />
-      <div class="blob"></div>
+      <div id="circle-glow" class=""></div>
       <div id="hashrate-spinner" style="display: none;" class="spinner">
         <div class="bounce1"></div>
         <div class="bounce2"></div>
@@ -111,22 +171,22 @@
       </div>
     </div>
     <div class="info">
-      Node:
+      Koinos Miner:
+      <script>
+        document.write(process.env.npm_package_version)
+      </script>, Node:
       <script>
         document.write(process.versions.node)
-      </script>
-      , Chrome:
+      </script>, Chrome:
       <script>
         document.write(process.versions.chrome)
-      </script>
-      , Electron:
+      </script>, Electron:
       <script>
         document.write(process.versions.electron)
-      </script>
-      .
+      </script>.
     </div>
     <span class="version">
-      <span id="documentation-link" onclick="launchModal()">Documentation</span>
+      <span id="documentation-link">Documentation</span>
     </span>
     <div id="errors" class="errors flicker-in" style="display:none;">
       <div id="error-close">
@@ -151,10 +211,16 @@
       </div>
     </div>
   </div>
+  <div id="overlay">
+    <div id="countdown-area">
+      <p>Mining will automatically begin in</p>
+      <h2 id="countdown">...</h2>
+      <span id="cancel-countdown" onclick="overlayCancel()">Cancel</span>
+    </div>
+  </div>
   <script src="assets/js/d3.min.js"></script>
   <script src="assets/js/graph.js"></script>
   <script src="script.js"></script>
-
 </body>
 
 </html>
