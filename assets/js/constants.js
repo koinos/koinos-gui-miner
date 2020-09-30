@@ -28,7 +28,6 @@ module.exports = {
     RecoverKey: 'recover-key',
     ConfirmSeed: 'confirm-seed',
     IncorrectSeed: 'incorrect-seed',
-    CancelConfirmSeed: 'cancel-confirm-seed',
     SetKeyManageWindowState: 'set-key-manage-window-state',
     ConfirmAddressCopied: 'confirm-address-copied',
     DisableKeyRecovery: 'disable-key-recovery',

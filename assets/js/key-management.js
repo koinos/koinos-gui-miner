@@ -41,9 +41,6 @@ ipcRenderer.on(Koinos.StateKey.DisableKeyRecovery, (event, args) => {
 });
 
 function closeWindow() {
-  if (generated) {
-    ipcRenderer.invoke(Koinos.StateKey.CancelConfirmSeed);
-  }
   this.close();
 }
 
