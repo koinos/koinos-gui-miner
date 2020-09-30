@@ -8,6 +8,7 @@ const Koinos = require('./assets/js/constants.js');
 let Web3 = require('web3');
 let Tx = require('ethereumjs-tx').Transaction;
 let KoinosMiner = require('koinos-miner');
+let { Looper } = require("koinos-miner/looper.js");
 const { assert } = require("console");
 const { create } = require('domain');
 let miner = null;
@@ -17,6 +18,8 @@ let mainWindow = null;
 let tokenContract = null;
 let web3 = null;
 var keyManagementWindow = null;
+let guiUpdateBlockchainMs = 30*1000;
+let lastGasCost = 0;
 
 const configFile = path.join((electron.app || electron.remote.app).getPath('userData'), 'config.json');
 const keystoreFile = path.join((electron.app || electron.remote.app).getPath('userData'), 'keystore.json');
@@ -161,6 +164,7 @@ app.on("activate", () => {
 })
 
 app.on('before-quit', () => {
+  // Should this call stopMiner() ?
   if (miner !== null) {
     miner.stop();
     miner = null;
@@ -175,40 +179,52 @@ function hashrateCallback(hashrate) {
   notify(Koinos.StateKey.HashrateReportString, KoinosMiner.formatHashrate(hashrate));
 }
 
-function updateTokenBalance() {
-  if (tokenContract === null)
-    return;
+async function updateTokenBalance() {
+   if (tokenContract === null)
+      return;
 
-  tokenContract.methods.balanceOf(config.ethAddress).call({}, function (err, result) {
-    if (err) {
-      let error = {
-        kMessage: "There was a problem retrieving the KOIN balance.",
-        error: err
-      };
-      console.log(err);
-      notify(Koinos.StateKey.ErrorReport, error);
-    }
-    else {
+   try {
+      let result = await tokenContract.methods.balanceOf(config.ethAddress).call({});
       notify(Koinos.StateKey.KoinBalanceUpdate, result);
-    }
-  });
+   }
+   catch(err) {
+      let error = {
+         kMessage: "There was a problem retrieving the KOIN balance.",
+         error: err
+      };
+      notify(Koinos.StateKey.ErrorReport, error);
+   }
 }
 
-function updateEtherBalance() {
-  if (getAddresses()[0] === null)
-    return;
+async function updateEtherBalance() {
+   if (getAddresses()[0] === null)
+      return;
 
-  web3.eth.getBalance(getAddresses()[0], function (err, result) {
-    if (err) {
+   try {
+      let result = await web3.eth.getBalance(getAddresses()[0]);
+      notify(Koinos.StateKey.EthBalanceUpdate, [result, lastGasCost]);
+   }
+   catch(err) {
       let error = {
         kMessage: "There was a problem retrieving the Ether balance.",
         error: err
       };
       notify(Koinos.StateKey.ErrorReport, error);
-    } else {
-      notify(Koinos.StateKey.EthBalanceUpdate, [result, 0]);
-    }
-  });
+   }
+}
+
+async function guiUpdateBlockchain() {
+   await updateTokenBalance();
+   await updateEtherBalance();
+}
+
+function guiUpdateBlockchainError(e) {
+   let error = {
+      kMessage: "Could not update the blockchain.",
+      exception: e
+      };
+   console.log( "[JS] Exception in guiUpdateBlockchainLoop():", e);
+   notify(Koinos.StateKey.ErrorReport, error);
 }
 
 function proofCallback(receipt, gasPrice) {
@@ -223,7 +239,8 @@ function proofCallback(receipt, gasPrice) {
         };
         notify(Koinos.StateKey.ErrorReport, error);
       } else {
-        notify(Koinos.StateKey.EthBalanceUpdate, [result, receipt.gasUsed * gasPrice]);
+        lastGasCost = receipt.gasUsed * gasPrice;
+        notify(Koinos.StateKey.EthBalanceUpdate, [result, lastGasCost]);
       }
     });
   }
@@ -322,18 +339,20 @@ function exportKey(password, callback) {
 }
 
 function stopMiner() {
-  if (miner !== null) {
-    miner.stop();
-  }
+   if (miner !== null) {
+      miner.stop();
+   }
+   guiBlockchainUpdateLoop.try_stop();    // async fire-and-forget
 
-  miner = null;
-  tokenContract = null;
-  derivedKey = null;
-  state.set(Koinos.StateKey.MinerActivated, false);
-  notify(Koinos.StateKey.MinerActivated, state.get(Koinos.StateKey.MinerActivated));
+   miner = null;
+   tokenContract = null;
+   derivedKey = null;
+   state.set(Koinos.StateKey.MinerActivated, false);
+   notify(Koinos.StateKey.MinerActivated, state.get(Koinos.StateKey.MinerActivated));
 }
 
 ipcMain.handle(Koinos.StateKey.StopMiner, (event, ...args) => {
+  console.log("Koinos.StateKey.StopMiner")
   stopMiner();
 });
 
@@ -358,10 +377,13 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, async (event, ...args) => {
       promptPassword();
     }
     else {
+      console.log("Koinos.StateKey.ToggleMiner");
       stopMiner();
     }
   }
   catch (err) {
+    console.log(err);
+    console.log("Koinos.StateKey.ToggleMiner Error");
     stopMiner();
     notify(Koinos.StateKey.ErrorReport, err);
   }
@@ -467,8 +489,7 @@ ipcMain.on(Koinos.StateKey.ClosePasswordPrompt, async (event, password) => {
     }
 
     tokenContract = new web3.eth.Contract(KnsToken.abi, KnsTokenAddress);
-    updateTokenBalance();
-    updateEtherBalance();
+    await guiUpdateBlockchain();
 
     let proofPeriod = config.proofPer === "day" ? Koinos.TimeSpan.SecondsPerDay : Koinos.TimeSpan.SecondsPerWeek;
     proofPeriod /= config.proofFrequency;
@@ -490,6 +511,7 @@ ipcMain.on(Koinos.StateKey.ClosePasswordPrompt, async (event, password) => {
       warningCallback);
     await miner.awaitInitialization();
     miner.start();
+    guiBlockchainUpdateLoop.start();
     state.set(Koinos.StateKey.MinerActivated, true);
     writeConfiguration();
     notify(Koinos.StateKey.MinerActivated, state.get(Koinos.StateKey.MinerActivated));
@@ -618,3 +640,5 @@ ipcMain.handle(Koinos.StateKey.CancelConfirmSeed, (event, ...args) => {
   userKeystore = null;
   state.set(Koinos.StateKey.HasKeystore, false);
 });
+
+let guiBlockchainUpdateLoop = new Looper( guiUpdateBlockchain, guiUpdateBlockchainMs = 30*1000, guiUpdateBlockchainError );
