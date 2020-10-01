@@ -137,7 +137,8 @@ module.exports = {
       Message: "manage-message",
       RecoverButton: "manage-recover-button",
       CloseButton: "manage-close-button",
-      CopyConfirm: "manage-copy-confirm"
+      CopyConfirm: "manage-copy-confirm",
+      GenerateConfirm: "manage-generate-confirm"
     },
     RecoverKey: {
       Password: 'recover-password',
