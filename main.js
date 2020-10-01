@@ -415,7 +415,7 @@ ipcMain.handle(Koinos.StateKey.ManageKeys, (event, ...args) => {
     show: false
   });
 
-  mainWindow.setMenuBarVisibility(false);
+  keyManagementWindow.setMenuBarVisibility(false);
 
   keyManagementWindow.on('close', function () {
     if (!state.has(Koinos.StateKey.HasKeystore)) {
@@ -543,7 +543,7 @@ function promptPassword() {
     show: false
   });
 
-  mainWindow.setMenuBarVisibility(false);
+  passwordModalWindow.setMenuBarVisibility(false);
 
   passwordModalWindow.loadFile("components/password-modal.html");
   passwordModalWindow.once('ready-to-show', () => {
@@ -597,7 +597,7 @@ ipcMain.handle(Koinos.StateKey.ExportConfirmationModal, (event, ...args) => {
     show: false
   });
 
-  mainWindow.setMenuBarVisibility(false);
+  exportKeyConfirmationModal.setMenuBarVisibility(false);
 
   exportKeyConfirmationModal.loadFile("components/export-confirmation.html");
   exportKeyConfirmationModal.once('ready-to-show', () => {
