@@ -395,7 +395,6 @@ ipcMain.handle(Koinos.StateKey.GenerateKeys, (event, args) => {
   if (keyManagementWindow !== null) {
     let seedPhrase = createKeystore(args, null, (vault) => {
       userKeystore = vault;
-      state.set(Koinos.StateKey.HasKeystore, true);
       keyManagementWindow.send(Koinos.StateKey.SeedPhrase, seedPhrase);
     });
   }
@@ -417,6 +416,10 @@ ipcMain.handle(Koinos.StateKey.ManageKeys, (event, ...args) => {
   });
 
   keyManagementWindow.on('close', function () {
+    if (!state.has(Koinos.StateKey.HasKeystore)) {
+      keystore = null;
+    }
+
     keyManagementWindow = null;
   });
 
@@ -631,16 +634,12 @@ ipcMain.handle(Koinos.StateKey.ConfirmSeed, (event, args) => {
       }
       else {
         saveKeystore();
+        state.set(Koinos.StateKey.HasKeystore, true);
         keyManagementWindow.send(Koinos.StateKey.SigningAddress, web3.utils.toChecksumAddress(getAddresses()[0]));
         keyManagementWindow.send(Koinos.StateKey.SetKeyManageWindowState, [Koinos.StateKey.ManageKeyWindow.ManageKey, 1000]);
       }
     }
   });
-});
-
-ipcMain.handle(Koinos.StateKey.CancelConfirmSeed, (event, ...args) => {
-  userKeystore = null;
-  state.set(Koinos.StateKey.HasKeystore, false);
 });
 
 let guiBlockchainUpdateLoop = new Looper( guiUpdateBlockchain, guiUpdateBlockchainMs = 30*1000, guiUpdateBlockchainError );
