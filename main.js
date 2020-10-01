@@ -44,8 +44,8 @@ let config = {
   endpointTimeout: 3000
 };
 
-const KnsTokenAddress = '0xeD7904C3Df0b8c835A1700fb36663Bc877F0faF9';
-const KnsTokenMiningAddress = '0xB49E92f04141546A5670538Be83235679C3C77aB';
+const KnsTokenAddress = '0x7addb886A2f29D65A97c362e32B2A75b6397748b';
+const KnsTokenMiningAddress = '0x480B9989f62Ac453620aCf573A7bca86Ae19E9f7';
 
 const TipAddresses = [
   "0xC07d28f95FC1486088590a0667257b14d695a93b",
