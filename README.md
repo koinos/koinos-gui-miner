@@ -1,6 +1,6 @@
 # Koinos Miner
 ## Table of Contents
-  - [Installation](#installation)
+  - [Getting Started](#getting-started)
   - [Koinos Miner Overview](#koinos-miner-overview)
     - [Ethereum Endpoint](#ethereum-endpoint)
     - [Proof Frequency](#proof-frequency)
@@ -13,10 +13,13 @@
   - [Koinos Airdrop](#koinos-airdrop)
   - [License](#license)
 
-### Installation
-The Koinos miner application is available for Mac, Windows, and Linux. Get the latest release [(Here)](https://github.com/open-orchard/koinos-gui-miner/releases/). 
+### Getting Started
 
-After donloading and installing the app you will be greeted with the main screen 
+To get started mining Koin head over to our [(releases page)](https://github.com/open-orchard/koinos-gui-miner/releases) and download the miner for your operating system.  
+
+Once installed click the Key [(*Figure 1.7*)](#figure-1) button in the navbar and follow the prompts to generate your private key and 12 word pharase (read the warnings carefully). Once the private key is generated you will have an ethereum address [(*Figure 2.1*)]() where you can send funds to in order to pay the transaction fees. 
+
+![(*Figure 2.1*)](assets/images/funding-page.png)
 
 ### Koinos Miner Overview
 
@@ -33,7 +36,7 @@ The Ether Balance indicator shows the user the remaining balance of the funding 
 [(*Figure 1.3*)](#figure-1)
 
 #### Dev Tip
-Koinos is being developed by [Open Orchard, Inc](https://openorchard.io). There will be no Initial Coin Offering (ICO) or alternative form of token distribution. All tokens will be equitably distributed to all participants via the mining process. By tipping Open Orchard, you will contribute to the development of the Koinos project. Open Orchard thanks you!  
+Koinos is being developed by [Open Orchard, Inc](https://openorchard.io). There will be no Initial Coin Offering (ICO) or alternative form of token distribution. All tokens will be equitably distributed to all participants via the mining process. By tipping Open Orchard, you will contribute to the development of the Koinos project. OpenOrchard thanks you!  
 [(*Figure 1.4*)](#figure-1)
 
 #### Recipient Address
@@ -53,7 +56,7 @@ Copy your address from Metamask and paste it in the address field on the main mi
 With this configuration, you will pay for proofs with the account generated in the miner and send tokens directly to the account controlled by Metamask. Your KOIN will be controlled by a more secure key and Metamask can export that key, which will be required to redeem your KOIN when Koinos mainnet launches.
 Finally, before mining, you will need to fund the miner. You can view the address of the key generated on the miner by clicking `Keys` again. We recommend funding the miner with minimal ETH as it is needed to mine.
 The miner estimates how many proofs you can mine before running out so you can keep the miner topped off.  
-[(figure 1.7)](#figure-1)
+[(*Figure 1.7*)](#figure-1)
 
 ##### Figure 1
 ![Koinos Miner Diagram](assets/images/koinos-miner-diagram.jpg)
