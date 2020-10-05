@@ -3,6 +3,7 @@
 - [Koinos Miner](#koinos-miner)
   - [Table of Contents](#table-of-contents)
     - [Koinos Miner Overview](#koinos-miner-overview)
+        - [Figure 1](#figure-1)
       - [Ethereum Endpoint](#ethereum-endpoint)
       - [Proof Frequency](#proof-frequency)
       - [Ether Balance](#ether-balance)
@@ -10,43 +11,49 @@
       - [Recipient Address](#recipient-address)
       - [Power Button](#power-button)
     - [Key Management](#key-management)
-        - [Figure 1](#figure-1)
     - [Mining Behavior](#mining-behavior)
     - [Koinos Airdrop](#koinos-airdrop)
     - [License](#license)
 
 ### Koinos Miner Overview
 
+##### Figure 1
+![Koinos Miner Diagram](assets/images/koinos-miner-diagram.jpg)
+
 #### Ethereum Endpoint 
-The Ethereum Endpoint [(Figure 1.1)](#figure-1) enables the Koinos Miner to submit transactions for inclusion on the Ethereum blockchain. A user can choose to run their own Ethereum node using an application like `geth` or opt to use a publicly available Ethereum node. When running your own `geth` node, the user would provide the input `http://localhost:8545` where `8545` is the port number in which `geth` is listening. Using a publicly available endpoint simplifies the process of setting up the miner but one must keep in mind any rate limiting that may affect proof submissions.
+The Ethereum Endpoint enables the Koinos Miner to submit transactions for inclusion on the Ethereum blockchain. A user can choose to run their own Ethereum node using an application like `geth` or opt to use a publicly available Ethereum node. When running your own `geth` node, the user would provide the input `http://localhost:8545` where `8545` is the port number in which `geth` is listening. Using a publicly available endpoint simplifies the process of setting up the miner but one must keep in mind any rate limiting that may affect proof submissions.
+[(*Figure 1.1*)](#figure-1)
 
 #### Proof Frequency
-The Proof Frequency [(Figure 1.2)](#figure-1) indicates how often the miner will attempt to find and submit proofs. Everytime a proof is found a transaction is submitted for inclusion on the Ethereum blockchain. Ethereum transactions are not free therefore the less frequently one submits proofs the less ether it will cost to mine KOIN. The frequency in which a user decides to submit proofs does not necessarily imply the amount of KOIN rewarded. When decreasing the proof frequency the miner will increase the difficulty which attempts to balance KOIN rewarded based on effort. For more information see [Mining Behavior](#mining-behavior).
+The Proof Frequency indicates how often the miner will attempt to find and submit proofs. Everytime a proof is found a transaction is submitted for inclusion on the Ethereum blockchain. Ethereum transactions are not free therefore the less frequently one submits proofs the less ether it will cost to mine KOIN. The frequency in which a user decides to submit proofs does not necessarily imply the amount of KOIN rewarded. When decreasing the proof frequency the miner will increase the difficulty which attempts to balance KOIN rewarded based on effort. For more information see [Mining Behavior](#mining-behavior).
+[(*Figure 1.2*)](#figure-1)
 
 #### Ether Balance
-The Ether Balance indicator [(Figure 1.3)](#figure-1) shows the user the remaining balance of the funding address. Using the cost of the last proof submission, the indicator will attempt to approximate how much mining time is remaining before the funding account needs to be replenished.
+The Ether Balance indicator shows the user the remaining balance of the funding address. Using the cost of the last proof submission, the indicator will attempt to approximate how much mining time is remaining before the funding account needs to be replenished.
+[(*Figure 1.3*)](#figure-1)
 
 #### Dev Tip
-Koinos is being developed by [Open Orchard, Inc](https://openorchard.io). There will be no Initial Coin Offering (ICO) or alternative form of token distribution. All tokens will be equitably distributed to all participants via the mining process. By tipping Open Orchard [(Figure 1.4)](#figure-1), you will contribute to the development of the Koinos project. Open Orchard thanks you!
+Koinos is being developed by [Open Orchard, Inc](https://openorchard.io). There will be no Initial Coin Offering (ICO) or alternative form of token distribution. All tokens will be equitably distributed to all participants via the mining process. By tipping Open Orchard, you will contribute to the development of the Koinos project. Open Orchard thanks you! 
+[(*Figure 1.4*)](#figure-1)
 
 #### Recipient Address
-The Recipient Address [(Figure 1.5)](#figure-1) is the Ethereum Address in which KOIN will be rewarded. It is recommended that the Recipient Address is different than the Funding Address. For more information on this topic [Key Management](#key-management).
+The Recipient Address is the Ethereum Address in which KOIN will be rewarded. It is recommended that the Recipient Address is different than the Funding Address. For more information on this topic [Key Management](#key-management).
+[(*Figure 1.5*)](#figure-1)
 
 #### Power Button
-The Power Button [(Figure 1.1)](#figure-1) is used to toggle the miner on and off. When the user has supplied all the necessary configuration and presses the power button mining will begin, feedback will be presented to the user regarding any invalid parameters, or a countdown will be presented if the user attempts to mine before the predetermined start time.
+The Power Button is used to toggle the miner on and off. When the user has supplied all the necessary configuration and presses the power button mining will begin, feedback will be presented to the user regarding any invalid parameters, or a countdown will be presented if the user attempts to mine before the predetermined start time. 
+[(*Figure 1.1*)](#figure-1)
 
 ### Key Management
 Koinos is using a memory hard proof of work for the initial distribution of the Koinos core token (KOIN). This mining takes place via smart contracts on Ethereum. To mine, you'll need some Ether and a couple of Ethereum addresses.
 We recommend using two Ethereum addresses. One of them will be generated in the miner itself, and the other is created via another Ethereum wallet such as Metamask or MyEtherWallet.
 Your Metamask address will be used as the destination for your KOIN as well as an intermediary account to fund your mining. Metamask has considerable [documention](https://metamask.zendesk.com/hc/en-us/articles/360028141672-How-to-send-deposit-tokens-to-your-MetaMask-Wallet) on how to use their software.
-When you start the Koinos miner, click the `Keys` button [(figure 1.7)](#figure-1) in the top bar. This will open a dialogue to generate a key in the miner. You will want to write down the 12 word recovery phrase to prevent loss of access to the account. You can use the same 12 word recovery phrase to recover this address in Metamask.
+When you start the Koinos miner, click the `Keys` button in the top bar. This will open a dialogue to generate a key in the miner. You will want to write down the 12 word recovery phrase to prevent loss of access to the account. You can use the same 12 word recovery phrase to recover this address in Metamask.
 Copy your address from Metamask and paste it in the address field on the main miner window.
 With this configuration, you will pay for proofs with the account generated in the miner and send tokens directly to the account controlled by Metamask. Your KOIN will be controlled by a more secure key and Metamask can export that key, which will be required to redeem your KOIN when Koinos mainnet launches.
 Finally, before mining, you will need to fund the miner. You can view the address of the key generated on the miner by clicking `Keys` again. We recommend funding the miner with minimal ETH as it is needed to mine.
 The miner estimates how many proofs you can mine before running out so you can keep the miner topped off.
-
-##### Figure 1
-![Koinos Miner Diagram](assets/images/koinos-miner-diagram.jpg)
+[(figure 1.7)](#figure-1)
 
 ### Mining Behavior
 Mining KOIN is a bit different than mining other cryptocurrencies. For starters, mining KOIN is separate from block production.
