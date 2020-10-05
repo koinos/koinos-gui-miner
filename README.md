@@ -19,7 +19,7 @@
 
 ### Installation
 
-[![Releases](https://img.shields.io/github/downloads/open-orchard/koinos-gui-miner/total.svg)][Releases]
+![Releases](https://img.shields.io/github/downloads/open-orchard/koinos-gui-miner/total.svg)
 
 Standalone **executables** for *Linux*, *macOS* and *Windows* are provided in
 the [Releases] section.
