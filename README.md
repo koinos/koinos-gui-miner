@@ -34,23 +34,23 @@ Download the package for your operating system and run the installer.
 
 To get started mining KOIN head over to our [(releases page)](https://github.com/open-orchard/koinos-gui-miner/releases) and download the miner for your operating system.  
 
-Once installed click the Key button [*Figure 1.7*](#figure-1) in the navbar and follow the prompts to generate your private key and 12 word pharase (read the warnings carefully). Once the private key is generated you will have an ethereum address where you can send funds to in order to pay the transaction fees.  [(*Figure 2.1*)](#figure-2.1)  
+Once installed click the Key button [(*Figure 1.7*)](#figure-1) in the navbar and follow the prompts to generate your private key and 12 word pharase (read the warnings carefully). Once the private key is generated you will have an ethereum address where you can send funds to in order to pay the transaction fees.  [(*Figure 0.1*)](#figure-0.1)  
   
 
 <a name="figure-2.1"></a>
 <div align="center">
   <img src="assets/images/funding-page.png">
-  <em>Figure 2.1</em>
+  <em>Figure 0.1</em>
 </div>
 <br/>
 <br/>
 
-Enter the Ethereum address where the KOIN will be deposited once mined in the "Recepient Address" field. Adjust the proof frequency as desired and click the power button. Once the miner is connected to the network and mining the screen should display a hash rate and the graph will adjust accordingly. [(*Figure 2.2*)](#figure-2.2)  
+Enter the Ethereum address where the KOIN will be deposited once mined in the "Recepient Address" field. Adjust the proof frequency as desired and click the power button. Once the miner is connected to the network and mining the screen should display a hash rate and the graph will adjust accordingly. [(*Figure 0.2*)](#figure-0.2)  
 
-<a name="figure-2.2"></a>
+<a name="figure-0.2"></a>
 <div align="center">
   <img src="assets/images/mining.png">
-  <em>Figure 2.2</em>
+  <em>Figure 0.2</em>
 </div>
 
 
