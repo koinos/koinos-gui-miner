@@ -45,6 +45,7 @@ Finally, before mining, you will need to fund the miner. You can view the addres
 The miner estimates how many proofs you can mine before running out so you can keep the miner topped off.
 
 ![Koinos Miner Diagram](assets/images/koinos-miner-diagram.jpg)
+Figure 1
 
 ### Mining Behavior
 Mining KOIN is a bit different than mining other cryptocurrencies. For starters, mining KOIN is separate from block production.
