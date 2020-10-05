@@ -17,8 +17,9 @@
 
 To get started mining Koin head over to our [(releases page)](https://github.com/open-orchard/koinos-gui-miner/releases) and download the miner for your operating system.  
 
-Once installed click the Key [(*Figure 1.7*)](#figure-1) button in the navbar and follow the prompts to generate your private key and 12 word pharase (read the warnings carefully). Once the private key is generated you will have an ethereum address [(*Figure 2.1*)]() where you can send funds to in order to pay the transaction fees. 
+Once installed click the Key [(*Figure 1.7*)](#figure-1) button in the navbar and follow the prompts to generate your private key and 12 word pharase (read the warnings carefully). Once the private key is generated you will have an ethereum address [(*Figure 2.1*)](#figure-2.1) where you can send funds to in order to pay the transaction fees. 
 
+<a name="figure-2"></a>
 <div align="center">
   <img src="assets/images/funding-page.png">
   <emphasize>Figure 2.1</emphasize>
