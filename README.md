@@ -40,7 +40,7 @@ Once installed click the Key button [*Figure 1.7*](#figure-1) in the navbar and 
 <a name="figure-2.1"></a>
 <div align="center">
   <img src="assets/images/funding-page.png">
-  <emphasize>Figure 2.1</emphasize>
+  <em>Figure 2.1</em>
 </div>
 <br/>
 <br/>
@@ -50,7 +50,7 @@ Enter the Ethereum address where the KOIN will be deposited once mined in the "R
 <a name="figure-2.2"></a>
 <div align="center">
   <img src="assets/images/mining.png">
-  <emphasize>Figure 2.2</emphasize>
+  <em>Figure 2.2</em>
 </div>
 
 
@@ -94,7 +94,7 @@ The miner estimates how many proofs you can mine before running out so you can k
 <a name="figure-1"></a>
 <div align="center">
   <img src="assets/images/koinos-miner-diagram.jpg">
-  <emphasize>Figure 1</emphasize>
+  <em>Figure 1</em>
 </div>
 
 
