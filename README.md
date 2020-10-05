@@ -21,8 +21,8 @@
 
 ![Releases](https://img.shields.io/github/downloads/open-orchard/koinos-gui-miner/total.svg)
 
-Standalone **executables** for *Linux*, *macOS* and *Windows* are provided in
-the [Releases] section.
+Standalone **executables** for *Linux*, *macOS* and *Windows* are provided on
+the [Releases](https://github.com/open-orchard/koinos-gui-miner/releases) page.
 Download the package for your operating system and run the installer.
 
 | Builds | Release | Date |
@@ -31,8 +31,6 @@ Download the package for your operating system and run the installer.
 | Stable | [![GitHub release](https://img.shields.io/github/release/open-orchard/koinos-gui-miner.svg)](https://github.com/open-orchard/koinos-gui-miner/releases/latest) | [![GitHub Release Date](https://img.shields.io/github/release-date/open-orchard/koinos-gui-miner.svg)](https://github.com/open-orchard/koinos-gui-miner/releases/latest) |
 
 ### Getting Started
-
-To get started mining KOIN head over to our [(releases page)](https://github.com/open-orchard/koinos-gui-miner/releases) and download the miner for your operating system.  
 
 Once installed click the Key button [(*Figure 1.7*)](#figure-1) in the navbar and follow the prompts to generate your private key and 12 word pharase (read the warnings carefully). Once the private key is generated you will have an ethereum address where you can send funds to in order to pay the transaction fees.  [(*Figure 0.1*)](#figure-0.1)  
   
