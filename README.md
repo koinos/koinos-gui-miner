@@ -1,4 +1,6 @@
 # Koinos Miner
+[![Build Status](https://travis-ci.com/open-orchard/koinos-gui-miner.svg?token=299mUDbUKyJPxqjj5R9G&branch=master)](https://travis-ci.com/open-orchard/koinos-gui-miner)
+
 ## Table of Contents
   - [Installation](#installation)
   - [Getting Started](#getting-started)
