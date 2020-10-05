@@ -17,7 +17,7 @@
 
 To get started mining Koin head over to our [(releases page)](https://github.com/open-orchard/koinos-gui-miner/releases) and download the miner for your operating system.  
 
-Once installed click the Key [(*Figure 1.7*)](#figure-1) button in the navbar and follow the prompts to generate your private key and 12 word pharase (read the warnings carefully). Once the private key is generated you will have an ethereum address [(*Figure 2.1*)](#figure-2.1) where you can send funds to in order to pay the transaction fees. 
+Once installed click the Key button [*Figure 1.7*](#figure-1) in the navbar and follow the prompts to generate your private key and 12 word pharase (read the warnings carefully). Once the private key is generated you will have an ethereum address [(*Figure 2.1*)](#figure-2.1) where you can send funds to in order to pay the transaction fees. 
 
 <a name="figure-2"></a>
 <div align="center">
@@ -50,7 +50,7 @@ The Recipient Address is the Ethereum Address in which KOIN will be rewarded. It
 
 #### Power Button
 The Power Button is used to toggle the miner on and off. When the user has supplied all the necessary configuration and presses the power button mining will begin, feedback will be presented to the user regarding any invalid parameters, or a countdown will be presented if the user attempts to mine before the predetermined start time.  
-[(*Figure 1.1*)](#figure-1)
+[(*Figure 1.6*)](#figure-1)
 
 ### Key Management
 Koinos is using a memory hard proof of work for the initial distribution of the Koinos core token (KOIN). This mining takes place via smart contracts on Ethereum. To mine, you'll need some Ether and a couple of Ethereum addresses.
