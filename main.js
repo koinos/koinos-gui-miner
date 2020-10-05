@@ -354,7 +354,6 @@ function stopMiner() {
 }
 
 ipcMain.handle(Koinos.StateKey.StopMiner, (event, ...args) => {
-  console.log("Koinos.StateKey.StopMiner")
   stopMiner();
 });
 
@@ -379,13 +378,11 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, async (event, ...args) => {
       promptPassword();
     }
     else {
-      console.log("Koinos.StateKey.ToggleMiner");
       stopMiner();
     }
   }
   catch (err) {
     console.log(err);
-    console.log("Koinos.StateKey.ToggleMiner Error");
     stopMiner();
     notify(Koinos.StateKey.ErrorReport, err);
   }
