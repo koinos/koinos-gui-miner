@@ -9,7 +9,6 @@
     - [Recipient Address](#recipient-address)
     - [Power Button](#power-button)
   - [Key Management](#key-management)
-      - [Figure 1](#figure-1)
   - [Mining Behavior](#mining-behavior)
   - [Koinos Airdrop](#koinos-airdrop)
   - [License](#license)
