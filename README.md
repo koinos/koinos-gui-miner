@@ -37,7 +37,7 @@ To get started mining KOIN head over to our [(releases page)](https://github.com
 Once installed click the Key button [(*Figure 1.7*)](#figure-1) in the navbar and follow the prompts to generate your private key and 12 word pharase (read the warnings carefully). Once the private key is generated you will have an ethereum address where you can send funds to in order to pay the transaction fees.  [(*Figure 0.1*)](#figure-0.1)  
   
 
-<a name="figure-2.1"></a>
+<a name="figure-0.1"></a>
 <div align="center">
   <img src="assets/images/funding-page.png">
   <em>Figure 0.1</em>
