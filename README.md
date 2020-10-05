@@ -10,6 +10,7 @@
       - [Recipient Address](#recipient-address)
       - [Power Button](#power-button)
     - [Key Management](#key-management)
+        - [Figure 1](#figure-1)
     - [Mining Behavior](#mining-behavior)
     - [Koinos Airdrop](#koinos-airdrop)
     - [License](#license)
@@ -20,7 +21,7 @@
 The Ethereum Endpoint (figure 1.1) enables the Koinos Miner to submit transactions for inclusion on the Ethereum blockchain. A user can choose to run their own Ethereum node using an application like `geth` or opt to use a publicly available Ethereum node. When running your own `geth` node, the user would provide the input `http://localhost:8545` where `8545` is the port number in which `geth` is listening. Using a publicly available endpoint simplifies the process of setting up the miner but one must keep in mind any rate limiting that may affect proof submissions.
 
 #### Proof Frequency
-The Proof Frequency (figure 1.2) indicates how often the miner will attempt to find and submit proofs. Everytime a proof is found a transaction is submitted for inclusion on the Ethereum blockchain. Ethereum transactions are not free therefore the less frequently one submits proofs the less ether it will cost to mine KOIN. The frequency in which a user decides to submit proofs does not necessarily imply the amount of KOIN rewarded. When decreasing the proof frequency the miner will increase the difficulty which attempts to balance KOIN rewarded based on effort. For more information see [Mining Behavior](#mining-behavior).
+The Proof Frequency [(figure 1)](figure-1) indicates how often the miner will attempt to find and submit proofs. Everytime a proof is found a transaction is submitted for inclusion on the Ethereum blockchain. Ethereum transactions are not free therefore the less frequently one submits proofs the less ether it will cost to mine KOIN. The frequency in which a user decides to submit proofs does not necessarily imply the amount of KOIN rewarded. When decreasing the proof frequency the miner will increase the difficulty which attempts to balance KOIN rewarded based on effort. For more information see [Mining Behavior](#mining-behavior).
 
 #### Ether Balance
 The Ether Balance indicator (figure 1.3) shows the user the remaining balance of the funding address. Using the cost of the last proof submission, the indicator will attempt to approximate how much mining time is remaining before the funding account needs to be replenished.
@@ -44,8 +45,8 @@ With this configuration, you will pay for proofs with the account generated in t
 Finally, before mining, you will need to fund the miner. You can view the address of the key generated on the miner by clicking `Keys` again. We recommend funding the miner with minimal ETH as it is needed to mine.
 The miner estimates how many proofs you can mine before running out so you can keep the miner topped off.
 
+##### Figure 1
 ![Koinos Miner Diagram](assets/images/koinos-miner-diagram.jpg)
-Figure 1
 
 ### Mining Behavior
 Mining KOIN is a bit different than mining other cryptocurrencies. For starters, mining KOIN is separate from block production.
