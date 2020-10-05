@@ -91,7 +91,7 @@ The miner estimates how many proofs you can mine before running out so you can k
 
 <a name="figure-1"></a>
 <div align="center">
-  <img src="assets/images/koinos-miner-diagram.jpg">
+  <img src="assets/images/koinos-miner-diagram.png">
   <em>Figure 1</em>
 </div>
 
