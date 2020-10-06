@@ -8,7 +8,7 @@
 ## Table of Contents
   - [Installation](#installation)
   - [Getting Started](#getting-started)
-  - [Koinos Miner Overview](#koinos-miner-overview)
+  - [Configuration Overview](#configuration-overview)
     - [Ethereum Endpoint](#ethereum-endpoint)
     - [Proof Frequency](#proof-frequency)
     - [Ether Balance](#ether-balance)
@@ -36,7 +36,7 @@ Download the package for your operating system and run the installer.
 
 ## Getting Started
 
-Once installed click the Key button [(*Figure 1.7*)](#figure-1) in the navbar and follow the prompts to generate your private key and 12 word pharase (read the warnings carefully). Once the private key is generated you will have an ethereum address where you can send funds to in order to pay the transaction fees.  [(*Figure 0.1*)](#figure-0.1)  
+Once installed click the Key button [(*Figure 1.7*)](#figure-1) in the navbar and follow the prompts to generate your private key and 12 word pharase (read the warnings carefully). Once the private key is generated you will have an ethereum address where you can send funds to in order to pay the transaction fees.  [(*Figure 0.1*)](#figure-0.1)
   
 
 <a name="figure-0.1"></a>
@@ -47,7 +47,7 @@ Once installed click the Key button [(*Figure 1.7*)](#figure-1) in the navbar an
 <br/>
 <br/>
 
-Enter the Ethereum address where the KOIN will be deposited once mined in the "Recepient Address" field. Adjust the proof frequency as desired and click the power button. Once the miner is connected to the network and mining the screen should display a hash rate and the graph will adjust accordingly. [(*Figure 0.2*)](#figure-0.2)  
+Enter the Ethereum address where the KOIN will be deposited once mined in the "Recipient Address" field. Adjust the proof frequency as desired and click the power button. Once the miner is connected to the network and mining the screen should display a hash rate and the graph will adjust accordingly. [(*Figure 0.2*)](#figure-0.2)
 
 <a name="figure-0.2"></a>
 <div align="center">
@@ -56,7 +56,7 @@ Enter the Ethereum address where the KOIN will be deposited once mined in the "R
 </div>
 
 
-## Koinos Miner Overview
+## Configuration Overview
 
 ### Ethereum Endpoint 
 The Ethereum Endpoint enables the Koinos Miner to submit transactions for inclusion on the Ethereum blockchain. A user can choose to run their own Ethereum node using an application like `geth` or opt to use a publicly available Ethereum node. When running your own `geth` node, the user would provide the input `http://localhost:8545` where `8545` is the port number in which `geth` is listening. Using a publicly available endpoint simplifies the process of setting up the miner but one must keep in mind any rate limiting that may affect proof submissions.  
