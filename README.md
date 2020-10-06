@@ -1,3 +1,5 @@
+![Koinos Miner](assets/icons/png/64x64.png)  
+
 # Koinos Miner
 [![Build Status](https://travis-ci.com/open-orchard/koinos-gui-miner.svg?token=299mUDbUKyJPxqjj5R9G&branch=master)](https://travis-ci.com/open-orchard/koinos-gui-miner)
 
