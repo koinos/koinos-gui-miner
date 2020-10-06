@@ -7,6 +7,7 @@
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "preinstall": "npx npm-force-resolutions",
     "postinstall": "rm -f node_modules/keccak/bindings.js node_modules/secp256k1/bindings.js node_modules/eth-lightwallet/node_modules/keccak/bindings.js node_modules/eth-lightwallet/node_modules/secp256k1/bindings.js node_modules/ethereumjs-util/node_modules/keccak/bindings.js node_modules/ethereumjs-util/node_modules/secp256k1/bindings.js"
   },
   "repository": {
@@ -35,5 +36,9 @@
     "ethereumjs-tx": "^2.1.2",
     "koinos-miner": "https://github.com/open-orchard/koinos-miner.git",
     "web3": "^1.2.11"
+  },
+  "resolutions": {
+    "elliptic": ">=6.5.3",
+    "lodash": ">=4.17.19"
   }
 }
