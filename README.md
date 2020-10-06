@@ -1,5 +1,7 @@
 # Koinos Miner
 [![Build Status](https://travis-ci.com/open-orchard/koinos-gui-miner.svg?token=299mUDbUKyJPxqjj5R9G&branch=master)](https://travis-ci.com/open-orchard/koinos-gui-miner)
+[![GitHub Issues](https://img.shields.io/github/issues/open-orchard/koinos-gui-miner.svg)](https://github.com/open-orchard/koinos-gui-miner/issues)
+[![GitHub License](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://github.com/open-orchard/koinos-gui-miner/blob/master/LICENSE.md)
 
 ## Table of Contents
   - [Installation](#installation)
