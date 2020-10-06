@@ -35,8 +35,8 @@ let state = new Map([
 let config = {
   ethAddress: "",
   developerTip: true,
-  endpoint: "http://localhost:8545",
-  proofFrequency: 60,
+  endpoint: "wss://main-rpc.linkpool.io/ws",
+  proofFrequency: 4,
   proofPer: "day",
   gasMultiplier: 1,
   gasPriceLimit: 1000000000000,
