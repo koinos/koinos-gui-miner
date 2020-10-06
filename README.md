@@ -1,3 +1,5 @@
+![Koinos Miner](assets/icons/png/64x64.png)  
+
 # Koinos Miner
 [![Build Status](https://travis-ci.com/open-orchard/koinos-gui-miner.svg?token=299mUDbUKyJPxqjj5R9G&branch=master)](https://travis-ci.com/open-orchard/koinos-gui-miner)
 [![GitHub Issues](https://img.shields.io/github/issues/open-orchard/koinos-gui-miner.svg)](https://github.com/open-orchard/koinos-gui-miner/issues)
@@ -93,7 +95,7 @@ The miner estimates how many proofs you can mine before running out so you can k
 
 <a name="figure-1"></a>
 <div align="center">
-  <img src="assets/images/koinos-miner-diagram.jpg">
+  <img src="assets/images/koinos-miner-diagram.png">
   <em>Figure 1</em>
 </div>
 
