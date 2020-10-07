@@ -15,6 +15,7 @@
     - [Dev Tip](#dev-tip)
     - [Recipient Address](#recipient-address)
     - [Power Button](#power-button)
+  - [Understanding Proof Frequency](#understanding-proof-frequency)
   - [Key Management](#key-management)
   - [Mining Behavior](#mining-behavior)
   - [Koinos Airdrop](#koinos-airdrop)
@@ -63,7 +64,7 @@ The Ethereum Endpoint enables the Koinos Miner to submit transactions for inclus
 [(*Figure 1.1*)](#figure-1)
 
 ### Proof Frequency
-The Proof Frequency indicates how often the miner will attempt to find and submit proofs. Everytime a proof is found a transaction is submitted for inclusion on the Ethereum blockchain. Ethereum transactions are not free therefore the less frequently one submits proofs the less ether it will cost to mine KOIN. The frequency in which a user decides to submit proofs does not necessarily imply the amount of KOIN rewarded. When decreasing the proof frequency the miner will increase the difficulty which attempts to balance KOIN rewarded based on effort. For more information see [Mining Behavior](#mining-behavior).  
+The Proof Frequency indicates how often the miner will attempt to find and submit proofs. Everytime a proof is found a transaction is submitted for inclusion on the Ethereum blockchain. Ethereum transactions are not free therefore the less frequently one submits proofs the less ether it will cost to mine KOIN. The frequency in which a user decides to submit proofs does not necessarily imply the amount of KOIN rewarded. When decreasing the proof frequency the miner will increase the difficulty which attempts to balance KOIN rewarded based on effort. For more information see [Understanding Proof Frequency](#understanding-proof-frequency) and [Mining Behavior](#mining-behavior).
 [(*Figure 1.2*)](#figure-1)
 
 ### Ether Balance
@@ -81,6 +82,14 @@ The Recipient Address is the Ethereum Address in which KOIN will be rewarded. It
 ### Power Button
 The Power Button is used to toggle the miner on and off. When the user has supplied all the necessary configuration and presses the power button mining will begin, feedback will be presented to the user regarding any invalid parameters, or a countdown will be presented if the user attempts to mine before the predetermined start time.  
 [(*Figure 1.6*)](#figure-1)
+
+## Understanding Proof Frequency
+
+The Koinos Token Mining smart contract can be thought of as a marketplace. In this marketplace, the vendor has KOIN and would like to trade said KOIN for hashes. Using the Koinos Miner, you can create hashes using electricity and the computational power of your CPU. Everytime you visit the market place, you are charged an entry fee (*Ethereum Transaction Fee*) to do business there.
+
+Therefore, visiting the marketplace less often (*Lower Proof Frequency*) with more hashes to trade results in a **lower amount of total marketplace fees**.
+
+You can also visit the marketplace more often (*Higher Proof Frequency*) to trade whatever hashes you have created thus far in order to have less variance in your KOIN returns. Visiting the marketplace more frequently results in a **greater amount of total marketplace entry fees** (*Ethereum Transaction Fees*) than you otherwise may have if you waited and made less visits with more hashes.
 
 ## Key Management
 Koinos is using a memory hard proof of work for the initial distribution of the Koinos core token (KOIN). This mining takes place via smart contracts on Ethereum. To mine, you'll need some Ether and a couple of Ethereum addresses.
