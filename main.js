@@ -35,8 +35,8 @@ let state = new Map([
 let config = {
   ethAddress: "",
   developerTip: true,
-  endpoint: "http://localhost:8545",
-  proofFrequency: 60,
+  endpoint: "wss://main-rpc.linkpool.io/ws",
+  proofFrequency: 4,
   proofPer: "day",
   gasMultiplier: 1,
   gasPriceLimit: 1000000000000,
@@ -44,30 +44,30 @@ let config = {
   endpointTimeout: 3000
 };
 
-const KnsTokenAddress = '0x7addb886A2f29D65A97c362e32B2A75b6397748b';
-const KnsTokenMiningAddress = '0x480B9989f62Ac453620aCf573A7bca86Ae19E9f7';
+const KnsTokenAddress = '0x66d28cb58487a7609877550E1a34691810A6b9FC';
+const KnsTokenMiningAddress = '0xa18c8756ee6B303190A702e81324C72C0E7080c5';
 
 const TipAddresses = [
-  "0xC07d28f95FC1486088590a0667257b14d695a93b",
-  "0x2C16aa54c987EE67F37CC3AFD017a5482eeDd158",
-  "0xa15323D19F0d939cbC7D8B4f63D712102dd8E547",
-  "0x30eB878c8B6D24dd2F0E548627605Bc8EeeEF4c8",
-  "0x8e34e90eF9944392a784CFAe2FBA1cf2001383e0",
-  "0x9bf587A46ab5F7c3CAc9Bb3DeE2137461Be6313C",
-  "0x8F60700324F2d670B32b1bc441EF06a2B2955345",
-  "0x26dbbb94C28A6F98FAE6f7c6317C871c06222cD6",
-  "0x7B292D5bc1c5dA1eE4Fb58419294c34Acd7a3F12",
-  "0x04eE64081676AE5cb8d0D30a3aBB3bc64d19DbD9",
-  "0x2f5e17000E8b449BABE2E95127C996440360a10b",
-  "0xDe807C12bd63696a1cdAd999066dC16E1d7a67Cb",
-  "0x7859f4C9559BE6F8b26F51116c4eD7185B4634F0",
-  "0xeF68ab59D293e843020F6275b142a6C7a2bc81dE",
-  "0x6D179d47eAAD63cb75374C10b6390160A0b4db53",
-  "0x9D8f0ed45dd05fFafA0607F2424B9163E37e9998",
-  "0xAe871f0a0AC4595487E403308cE202f4B87aED30",
-  "0xE4E041eb19191C6754E8F80c8C66b1C078058176",
-  "0x7816F8c83aAed6dF618960B3954c62179C85549D",
-  "0xB32613375c6Fc0be07433B751B75cd5B9FF04Db3"
+  "0x292B59941aE124acFca9a759892Ae5Ce246eaAD2",
+  "0xbf3C8Ffc87Ba300f43B2fDaa805CcA5DcB4bC984",
+  "0x407A73626697fd22b1717d294E6B39437531013d",
+  "0x69486fda786D82dBb61C78847A815d5F615C2B15",
+  "0x434eAbB24c0051280D1CC0AF6E12bF59b5F932e9",
+  "0xa524095504833359E6E1d41161102B1a314b97C0",
+  "0xf7771105679d2bfc27820B93C54516f1d8772C88",
+  "0xa0fc784961E6aCc30D28FA072Aa4FB3892C1938A",
+  "0x306443eeBf036A35a360f005BE306FD7855e8Cb5",
+  "0x40609227175ac3093086072391Ff603db2e3D72a",
+  "0xE536fdfF635aEB8B9DFd6Be207e1aE10A58fB85e",
+  "0x9d2DfA864887dF1f41bC02CE94C74Bb0dE471Da6",
+  "0x563f6EB769883f98e56BF20127c116ABce8EF564",
+  "0x33D682B145f4AA664353b6B6A7B42a13D1c190a9",
+  "0xea701365BC23Aa696D5DaFa0394cC6f1a18b2832",
+  "0xc8B02B313Bd56372D278CAfd275641181d29793d",
+  "0xd73B6Da85bE7Dae4AC2A7D5388e9F237ed235450",
+  "0x03b6470040b5139b82F96f8D9D61DAb43a01a75c",
+  "0xF8357581107a12c3989FFec217ACb6cd0336acbE",
+  "0xeAdB773d0896EC5A3463EFAF6A1b763ECEC33743"
 ];
 
 function notify(event, args) {
@@ -354,7 +354,6 @@ function stopMiner() {
 }
 
 ipcMain.handle(Koinos.StateKey.StopMiner, (event, ...args) => {
-  console.log("Koinos.StateKey.StopMiner")
   stopMiner();
 });
 
@@ -379,13 +378,11 @@ ipcMain.handle(Koinos.StateKey.ToggleMiner, async (event, ...args) => {
       promptPassword();
     }
     else {
-      console.log("Koinos.StateKey.ToggleMiner");
       stopMiner();
     }
   }
   catch (err) {
     console.log(err);
-    console.log("Koinos.StateKey.ToggleMiner Error");
     stopMiner();
     notify(Koinos.StateKey.ErrorReport, err);
   }
