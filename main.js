@@ -35,13 +35,14 @@ let state = new Map([
 let config = {
   ethAddress: "",
   developerTip: true,
-  endpoint: "wss://main-rpc.linkpool.io/ws",
+  endpoint: "http://mining.koinos.io",
   proofFrequency: 4,
   proofPer: "day",
   gasMultiplier: 1,
   gasPriceLimit: 1000000000000,
   tipPercent: 5,
-  endpointTimeout: 3000
+  endpointTimeout: 3000,
+  version: state.get(Koinos.StateKey.Version)
 };
 
 const KnsTokenAddress = '0x66d28cb58487a7609877550E1a34691810A6b9FC';
@@ -84,6 +85,20 @@ function readConfiguration() {
     for (let i = 0; i < keys.length; i++) {
       config[keys[i]] = userConfig[keys[i]];
     }
+
+    if (userConfig.version != state.get(Koinos.StateKey.Version)) {
+      config.version = state.get(Koinos.StateKey.Version);
+
+      switch (userConfig.version) {
+        case undefined:
+        case "1.0.0":
+          if (config.endpoint == "wss://main-rpc.linkpool.io/ws") {
+            config.endpoint = "http://mining.koinos.io";
+          }
+          break;
+      }
+    }
+
   }
 
   openKeystore();
