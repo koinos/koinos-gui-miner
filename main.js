@@ -9,6 +9,7 @@ let Web3 = require('web3');
 let Tx = require('ethereumjs-tx').Transaction;
 let KoinosMiner = require('koinos-miner');
 let { Looper } = require("koinos-miner/looper.js");
+let Retry = require("koinos-miner/retry.js");
 const { assert } = require("console");
 const { create } = require('domain');
 let miner = null;
@@ -209,7 +210,7 @@ async function updateTokenBalance() {
          kMessage: "There was a problem retrieving the KOIN balance.",
          error: err
       };
-      notify(Koinos.StateKey.ErrorReport, error);
+      throw error;
    }
 }
 
@@ -226,13 +227,15 @@ async function updateEtherBalance() {
         kMessage: "There was a problem retrieving the Ether balance.",
         error: err
       };
-      notify(Koinos.StateKey.ErrorReport, error);
+      throw error;
    }
 }
 
 async function guiUpdateBlockchain() {
-   await updateTokenBalance();
-   await updateEtherBalance();
+  await Retry('update UI data', async function() {
+    await updateTokenBalance();
+    await updateEtherBalance();
+  });
 }
 
 function guiUpdateBlockchainError(e) {
