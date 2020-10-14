@@ -74,6 +74,7 @@ function setAppVersion(version) {
   v += ", Chrome: " + process.versions.chrome;
   v += ", Electon: " + process.versions.electron;
   document.getElementById(Koinos.Field.VersionInfo).innerHTML = v;
+  document.getElementById(Koinos.Field.MinerVersion).innerHTML = "v" + version;
 }
 
 function toggleProofPeriod(which) {

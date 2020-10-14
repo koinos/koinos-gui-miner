@@ -253,6 +253,15 @@ a {
   color: gray;
   font-size: 0.8em;
 }
+
+#miner-version {
+  position: absolute;
+  top: 166px;
+  left: 280px;
+  font-size: .7em;
+  color: gray;  
+}
+
 .version {
   position: absolute;
   bottom: 0;
