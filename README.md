@@ -5,10 +5,9 @@
 [![GitHub License](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://github.com/open-orchard/koinos-gui-miner/blob/master/LICENSE.md)
 ![Releases](https://img.shields.io/github/downloads/open-orchard/koinos-gui-miner/total.svg)
 
-<a href="https://etherscan.io/token/0x66d28cb58487a7609877550E1a34691810A6b9FC" target="_blank">Koinos Token ►</a><br/>
+[Koinos Token ►](https://etherscan.io/token/0x66d28cb58487a7609877550E1a34691810A6b9FC)
 
-<a href="https://etherscan.io/address/0xa18c8756ee6B303190A702e81324C72C0E7080c5" target="_blank">Koinos Mining Contract ►</a><br/>
-
+[Koinos Mining Contract ►](https://etherscan.io/address/0xa18c8756ee6B303190A702e81324C72C0E7080c5)
 
 ## Table of Contents
   - [Installation](#installation)
