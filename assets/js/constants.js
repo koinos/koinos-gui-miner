@@ -82,6 +82,7 @@ module.exports = {
     WarningMessage: "warning-message",
     WarningClose: "warning-close",
     VersionInfo: "version-info",
+    MinerVersion: "miner-version",
     GenerateKey: {
       Password: "generate-password",
       PasswordConfirm: "generate-password-confirm",
