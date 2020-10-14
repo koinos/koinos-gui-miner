@@ -5,10 +5,6 @@
 [![GitHub License](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://github.com/open-orchard/koinos-gui-miner/blob/master/LICENSE.md)
 ![Releases](https://img.shields.io/github/downloads/open-orchard/koinos-gui-miner/total.svg)
 
-[Koinos Token ►](https://etherscan.io/token/0x66d28cb58487a7609877550E1a34691810A6b9FC)
-
-[Koinos Mining Contract ►](https://etherscan.io/address/0xa18c8756ee6B303190A702e81324C72C0E7080c5)
-
 ## Table of Contents
   - [Installation](#installation)
   - [Getting Started](#getting-started)
@@ -23,6 +19,7 @@
   - [Key Management](#key-management)
   - [Mining Behavior](#mining-behavior)
   - [Koinos Airdrop](#koinos-airdrop)
+  - [Useful Links](#useful-links)
   - [License](#license)
 
 
@@ -129,6 +126,16 @@ Proof rewards are handled via an internal market maker that exchanges hashes for
 After the mining period, what next? Koinos is a new blockchain and KOIN currently exists as an ERC-20 on Ethereum.
 Prior to launching Koinos, we will announce a snapshot time. The ERC-20 contract we are using supports creating a snapshot of all KOIN balances. To redeem your KOIN on Koinos, you will need to sign a transaction on Koinos using the Ethereum private key associated with the address holding the KOIN. We will provide simple tooling to generate and submit this transaction, but bear the requirements in mind when deciding which address(es) to hold your KOIN prior to the snapshot date.
 We encourage you to sign up to the Koinos mailing list on [koinos.io](https://koinos.io/). We will be using this mailing list as the primary form of communication with KOIN holders prior to the snapshot, launch of Koinos, and airdrop.
+
+## Useful Links
+
+[Koinos Token ►](https://etherscan.io/token/0x66d28cb58487a7609877550E1a34691810A6b9FC)
+
+[Koinos Mining Contract ►](https://etherscan.io/address/0xa18c8756ee6B303190A702e81324C72C0E7080c5)
+
+[Discord ►](https://discord.gg/gpWEfK)
+
+[Subreddit ►](https://www.reddit.com/r/Koinos/)
 
 ## License
 Copyright 2020 [Open Orchard, Inc.](https://openorchard.io)
