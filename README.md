@@ -19,6 +19,7 @@
   - [Key Management](#key-management)
   - [Mining Behavior](#mining-behavior)
   - [Koinos Airdrop](#koinos-airdrop)
+  - [FAQ](#faq)
   - [License](#license)
 
 
@@ -125,6 +126,30 @@ Proof rewards are handled via an internal market maker that exchanges hashes for
 After the mining period, what next? Koinos is a new blockchain and KOIN currently exists as an ERC-20 on Ethereum.
 Prior to launching Koinos, we will announce a snapshot time. The ERC-20 contract we are using supports creating a snapshot of all KOIN balances. To redeem your KOIN on Koinos, you will need to sign a transaction on Koinos using the Ethereum private key associated with the address holding the KOIN. We will provide simple tooling to generate and submit this transaction, but bear the requirements in mind when deciding which address(es) to hold your KOIN prior to the snapshot date.
 We encourage you to sign up to the Koinos mailing list on [koinos.io](https://koinos.io/). We will be using this mailing list as the primary form of communication with KOIN holders prior to the snapshot, launch of Koinos, and airdrop.
+
+# FAQ
+
+## What is “Proof Frequency?”
+
+The key to understanding the proof frequency is that this number isn’t a “real” setting in the miner. Instead what you are modifying is the *difficulty* of the problem your miner is trying to solve. Harder problems take longer to solve, but the time it takes to solve them is just a guesstimation. The miner might solve the problem right away, or take an unusually long time. It will only rarely take exactly the time you expect it to take.
+
+## Why Set a Low Frequency?
+
+In the case of PoW KOIN mining, increased difficulty results in a higher *potential* KOIN reward. But again, there is randomness here too. The KOIN reward *might* be large, but it might also be small. So a lower number (e.g. 1 per day or 2 per day) is likely to win you larger KOIN rewards. But an added benefit is that it minimizes your Ethereum fees as well.
+
+## Why Set a High Frequency?
+
+Low frequency proofs (i.e. high difficulty) give you bigger potential rewards, so why would you increase the frequency especially considering it will result in higher Ethereum fees? One way to think about mining is like it’s a lottery (except it has slightly better odds ;) ). If you buy enough tickets, you can expect to win an approximate number of times. But you know that your odds of winning with any single ticket is very low. So what do you do? You increase the number of tickets you buy. You make sure that you’re playing the game enough times so that *over the long run* you receive the rewards that the probabilities say you should.
+
+## What Happens if I Shut Down the Miner?
+
+Note that setting a higher frequency doesn’t help you beat someone else to the punch. Your computer is solving hundreds of thousands (or millions) of “losing” hashes every second that it is throwing in the trash, just as you would a losing lottery ticket. It is not saving those hashes, it is searching for one “winning” hash and when it finds that hash it immediately submits a proof to the Ethereum network. This is why it doesn’t matter if your computer loses access to the internet or you just turn off the miner for a moment. You don’t “lose” anything other than the opportunity costs associated with the time that could have been spent mining.
+
+# Why Mine?
+
+It’s important to remember that our mission is to give everyone ownership and control over their digital selves. The foundational product we are releasing to serve that mission is the Koinos mainnet and the purpose of this mining phase is to decentralize the token distribution and ensure that when it launches, the Koinos mainnet is as decentralized as any blockchain out there, if not more!
+
+KOIN will be the cryptocurrency that powers a decentralized computer built from the ground up to enable developers to offer delightful user experiences while protecting the user’s digital information through blockchain integration. The purpose of this phase is to get KOIN into the hands of developers and users who want be able to use the types of applications that Koinos is capable of powering.
 
 ## License
 Copyright 2020 [Open Orchard, Inc.](https://openorchard.io)
