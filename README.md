@@ -38,7 +38,7 @@ Download the package for your operating system and run the installer.
 
 ## Getting Started
 
-Once installed click the Key button [(*Figure 1.7*)](#figure-1) in the navbar and follow the prompts to generate your private key and 12 word pharase (read the warnings carefully). Once the private key is generated you will have an ethereum address where you can send funds to in order to pay the transaction fees.  [(*Figure 0.1*)](#figure-0.1)
+Once installed click the Key button [(*Figure 1.7*)](#figure-1) in the navbar and follow the prompts to generate your private key and 12 word phrase (read the warnings carefully). Once the private key is generated you will have an ethereum address where you can send funds to in order to pay the transaction fees.  [(*Figure 0.1*)](#figure-0.1)
   
 
 <a name="figure-0.1"></a>
@@ -95,7 +95,7 @@ You can also visit the marketplace more often (*Higher Proof Frequency*) to trad
 ## Key Management
 Koinos is using a memory hard proof of work for the initial distribution of the Koinos core token (KOIN). This mining takes place via smart contracts on Ethereum. To mine, you'll need some Ether and a couple of Ethereum addresses.
 We recommend using two Ethereum addresses. One of them will be generated in the miner itself, and the other is created via another Ethereum wallet such as Metamask or MyEtherWallet.  
-Your Metamask address will be used as the destination for your KOIN as well as an intermediary account to fund your mining. Metamask has considerable [documention](https://metamask.zendesk.com/hc/en-us/articles/360028141672-How-to-send-deposit-tokens-to-your-MetaMask-Wallet) on how to use their software.
+Your Metamask address will be used as the destination for your KOIN as well as an intermediary account to fund your mining. Metamask has considerable [documentation](https://metamask.zendesk.com/hc/en-us/articles/360028141672-How-to-send-deposit-tokens-to-your-MetaMask-Wallet) on how to use their software.
 
 When you start the Koinos miner, click the `Keys` button in the top bar. This will open a dialogue to generate a key in the miner. You will want to write down the 12 word recovery phrase to prevent loss of access to the account. You can use the same 12 word recovery phrase to recover this address in Metamask.
 Copy your address from Metamask and paste it in the address field on the main miner window.
